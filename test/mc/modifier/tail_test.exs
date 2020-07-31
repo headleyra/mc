@@ -1,0 +1,41 @@
+defmodule Mc.Modifier.TailTest do
+  use ExUnit.Case, async: true
+  alias Mc.Modifier.Tail
+
+  describe "Mc.Modifier.Tail.modify/2" do
+    test "returns the last 'n' (`args`) lines" do
+      assert Tail.modify("one\ntwo\nthree", "1") == {:ok, "three"}
+      assert Tail.modify("one\ntwo\nthree", "2") == {:ok, "two\nthree"}
+      assert Tail.modify("one\ntwo\nthree", "3") == {:ok, "one\ntwo\nthree"}
+      assert Tail.modify("one\ntwo\nthree", "4") == {:ok, "one\ntwo\nthree"}
+      assert Tail.modify("one\ntwo\nthree\n", "3") == {:ok, "two\nthree\n"}
+      assert Tail.modify("\none\n\ntwo\nthree\n\n", "5") == {:ok, "\ntwo\nthree\n\n"}
+    end
+
+    test "returns `buffer` if 'n' exceeds lines present" do
+      assert Tail.modify("one\ntwo", "19") == {:ok, "one\ntwo"}
+    end
+
+    test "returns empty string when 'n' is zero" do
+      assert Tail.modify("foo\nbar", "0") == {:ok, ""}
+    end
+
+    test "returns an error tuple when 'n' is negative" do
+      assert Tail.modify("test\n123", "-1") == {:error, "Tail: negative"}
+      assert Tail.modify("foobar", "-11") == {:error, "Tail: negative"}
+    end
+
+    test "returns an error tuple when 'n' is not an integer" do
+      assert Tail.modify("test\n123", "hi") == {:error, "Tail: not an integer"}
+      assert Tail.modify("helicopter\ndrop", "four") == {:error, "Tail: not an integer"}
+    end
+
+    test "works with ok tuples" do
+      assert Tail.modify({:ok, "some\nbuffer\ntext"}, "2") == {:ok, "buffer\ntext"}
+    end
+
+    test "allows error tuples to pass-through unchanged" do
+      assert Tail.modify({:error, "reason"}, "gets ignored") == {:error, "reason"}
+    end
+  end
+end
