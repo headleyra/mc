@@ -16,55 +16,66 @@ defmodule Mc.Modifier.Web do
   end
 
   def post(_buffer, ""), do: {:error, @err_msg}
+
   def post(_buffer, args) do
     case build_url_params(args) do
       :error ->
         {:error, @err_msg}
 
-      call_args ->
-        apply(web_client_impl_module(), :post, call_args)
+      list_containing_url_and_params_map ->
+        apply(web_client_impl_module(), :post, list_containing_url_and_params_map)
     end
   end
 
-  # TODO: Refactor
   def build_params(params_string) do
-    params_list =
-      String.split(params_string)
-      |> Enum.map(fn(param_pairs) -> String.split(param_pairs, ":") end)
-
-    ok_params = Enum.all?(params_list, fn(e) ->
-      Enum.count(e) == 2 && Enum.all?(e, fn(x) -> x != "" end)
-    end)
-
-    if ok_params do
-      params_list
-      |> Enum.map(fn([param_name, kv_key]) -> [String.to_atom(param_name), kv_key] end)
-      |> Map.new(fn([param_name_atom, kv_key]) ->
-        {:ok, kv_value} = Mc.modify("", "get #{kv_key}")
-        {param_name_atom, kv_value}
-      end)
-    else
-      :error
-    end
+    create_params_list(params_string)
+    |> validate()
+    |> mapify()
   end
 
-  # TODO: Refactor
   def build_url_params(url_params_string) do
-    case String.split(url_params_string) do
-      [] ->
+    case String.split(url_params_string, ~r/\s+/, parts: 2) do
+      [""] ->
         :error
 
       [url] ->
         [url, %{}]
 
-      [url | params_list] ->
-        params_string = Enum.join(params_list, " ")
+      [url, params_string] ->
         case build_params(params_string) do
           :error ->
             :error
+
           params_map ->
             [url, params_map]
         end
+    end
+  end
+
+  defp create_params_list(params_string) do
+    String.split(params_string)
+    |> Enum.map(fn param_pairs -> String.split(param_pairs, ":") end)
+  end
+
+  defp validate(params_list) do
+    valid? =
+      Enum.all?(params_list, fn e ->
+        Enum.count(e) == 2 && Enum.all?(e, &(&1 != ""))
+      end)
+
+    {valid?, params_list}
+  end
+
+  defp mapify({valid?, params_list}) do
+    if valid? do
+      params_list
+      |> Enum.map(fn [param_name, kv_key] -> {String.to_atom(param_name), kv_key} end)
+      |> Map.new(fn {param_name_atom, kv_key} ->
+        {:ok, kv_value} = Mc.modify("", "get #{kv_key}")
+        {param_name_atom, kv_value}
+      end)
+    else
+      :error
     end
   end
 end
