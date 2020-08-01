@@ -27,8 +27,6 @@ defmodule Mc.MixProject do
       {:jason, "~> 1.1.2"},
       {:elixir_uuid, "~> 1.2"},
       {:tesla, "~> 1.3.3"},
-
-      # MongoDB
       {:mongodb, "~> 0.5.1"}
 
       # {:dep_from_hexpm, "~> 0.3.0"},
