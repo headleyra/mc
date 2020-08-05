@@ -116,7 +116,7 @@ The modifiers under `Mc.X` are experimental (for now).
 ### Infinite Lego(tm)
 
 Now you can think about coding in the same way you think about Lego -- all modifiers are automatically
-compatible with all other modifiers.  Write modifiers to do absolutely anything.
+compatible with all other modifiers.  And you can write modifiers to do absolutely anything.
 
 <!--
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
