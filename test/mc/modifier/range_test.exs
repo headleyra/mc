@@ -16,9 +16,9 @@ defmodule Mc.Modifier.RangeTest do
       assert Range.modify("", "-1") == {:ok, "1\n0\n-1"}
     end
 
-    test "errors when there are no or more than two range limits" do
-      assert Range.modify("", "") == {:error, "Range: missing limit(s)"}
-      assert Range.modify("", "1 2 3") == {:error, "Range: missing limit(s)"}
+    test "errors when there are zero or more than two range limits" do
+      assert Range.modify("", "") == {:error, "Range: bad limit(s)"}
+      assert Range.modify("", "1 2 3") == {:error, "Range: bad limit(s)"}
     end
 
     test "returns an error tuple when `args` aren't integers" do
