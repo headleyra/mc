@@ -1,5 +1,5 @@
 defmodule Mc.X do
-  def start_servers do
+  def defaults_start do
     {:ok, kv} = Mc.Modifier.Kv.start_link(%{})
     {:ok, web} = Mc.Modifier.Web.start_link(Mc.Util.WebClient)
     {:ok, email} = Mc.Modifier.Email.start_link(Mc.Util.Mailgun)
@@ -8,7 +8,7 @@ defmodule Mc.X do
     %{kv: kv, web: web, email: email, mc: mc}
   end
 
-  def start_mongokv(mongodb_uri: mongodb_uri, mongodb_collection: mongodb_collection) do
+  def mongo_start(mongodb_uri: mongodb_uri, mongodb_collection: mongodb_collection) do
     {:ok, mongo} = Mongo.start_link(url: mongodb_uri, name: :mongo)
     {:ok, kvp} = Mc.X.Mongokv.start_link(mongodb_collection)
 
