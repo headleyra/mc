@@ -53,6 +53,7 @@ defmodule Mc.Mappings do
     ucase: {Mc.Modifier.Ucase, :modify},
     url: {Mc.Modifier.Web, :get},
     urlp: {Mc.Modifier.Web, :post},
+    ver: {Mc.Modifier.Version, :modify},
     wcount: {Mc.Modifier.Wcount, :modify},
     wrap: {Mc.Modifier.Wrap, :modify},
     zip: {Mc.Modifier.Zip, :modify},
