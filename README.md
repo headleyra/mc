@@ -108,12 +108,13 @@ Mc.modify("bar chart", script)
 ### Standard mappings
 
 The `%Mc.Mappings{}` struct defines the standard mappings and references basic, concept-prover
-modifiers.  Feel free to use your own custom mappings, or (perhaps) create a tweaked version of the standard ones.
+modifiers.  Feel free to use your own custom mappings, or (perhaps) create a tweaked version of the standard
+ones.
 
 ### Infinite Lego(tm)
 
 Now you can think about coding in the same way you think about Lego -- all modifiers are automatically
-compatible with all other modifiers.  And you can write modifiers to do absolutely anything.
+compatible with all other modifiers.  And you can write modifiers to do absolutely anything.  Have fun!
 
 <!--
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
