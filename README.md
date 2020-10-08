@@ -105,9 +105,9 @@ Mc.modify("bar chart", script)
   #=> {:error, "boom!"}
 ```
 
-### Standard mappings
+### Standard modifiers
 
-The `%Mc.Mappings{}` struct defines the standard mappings and references basic, concept-prover
+The `%Mc.Mappings{}` struct defines the standard mappings which reference basic (concept-prover) standard
 modifiers.  Feel free to use your own custom mappings, or (perhaps) create a tweaked version of the standard
 ones.
 
