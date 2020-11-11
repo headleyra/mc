@@ -3,7 +3,7 @@ defmodule Mc.Modifier.Login do
 
   def modify(buffer, args) do
     if String.match?(args, ~r/^[a-z][a-z0-9]{1,15}$/) do
-      Mc.modify(args, "set! !user")
+      Mc.modify(args, "set !user")
       {:ok, buffer}
     else
       {:error, "Login: bad userid"}

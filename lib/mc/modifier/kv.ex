@@ -11,14 +11,6 @@ defmodule Mc.Modifier.Kv do
   end
 
   def set(buffer, args) do
-    if Mc.Util.Sys.writeable_key?(args) do
-      setkey(buffer, args)
-    else
-      {:error, "Set: not allowed: #{args}"}
-    end
-  end
-
-  def set!(buffer, args) do
     setkey(buffer, args)
   end
 

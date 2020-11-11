@@ -1,20 +1,16 @@
 defmodule Mc.X.Setkv do
-  use Mc.Railway, [:modify, :modify!]
+  use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    doit(buffer, args, false)
+    doit(buffer, args)
   end
 
-  def modify!(buffer, args) do
-    doit(buffer, args, true)
-  end
-
-  def doit(buffer, args, overwrite) do
+  def doit(buffer, args) do
     try do
       separator = if args == "", do: "\n---\n", else: args
       String.split(buffer, URI.decode(separator))
       |> Enum.map(fn(e) -> kv2tuple(e) end)
-      |> kvset(overwrite)
+      |> kvset()
 
       {:ok, buffer}
     rescue ArgumentError ->
@@ -31,11 +27,9 @@ defmodule Mc.X.Setkv do
     end
   end
 
-  def kvset(kv_tuple_list, overwrite) do
-    set_suffix = if overwrite, do: "!", else: ""
-
+  def kvset(kv_tuple_list) do
     if Enum.all?(kv_tuple_list) do
-      Enum.each(kv_tuple_list, fn({key, value}) -> Mc.modify(value, "set#{set_suffix} #{key}") end)
+      Enum.each(kv_tuple_list, fn({key, value}) -> Mc.modify(value, "set #{key}") end)
     else
       {:error, "SetKv: bad KVs"}
     end

@@ -23,45 +23,45 @@ defmodule Mc.Modifier.KvTest do
 
   describe "Mc.Modifier.Kv.set/2" do
     test "requests that the `buffer` is stored under 'key' (i.e. `args`)" do
-      assert Kv.set("random data", "_rnd") == {:ok, "random data"}
-      assert Kv.set("stuff", "_") == {:ok, "stuff"}
+      assert Kv.set("random data", "rand") == {:ok, "random data"}
+      assert Kv.set("stuff", "_x") == {:ok, "stuff"}
     end
 
-    test "returns an error tuple when a 'readonly' key (one that doesn't start with underscore) is used" do
-      assert Kv.set("foo", "a.key") == {:error, "Set: not allowed: a.key"}
-      assert Kv.set("bar", "*system.key") == {:error, "Set: not allowed: *system.key"}
-    end
+    # test "returns an error tuple when a 'readonly' key (one that doesn't start with underscore) is used" do
+    #   assert Kv.set("foo", "a.key") == {:error, "Set: not allowed: a.key"}
+    #   assert Kv.set("bar", "*system.key") == {:error, "Set: not allowed: *system.key"}
+    # end
 
     test "works with ok tuples" do
-      assert Kv.set({:ok, "big tune"}, "_yeah") == {:ok, "big tune"}
+      assert Kv.set({:ok, "big tune"}, "yeah") == {:ok, "big tune"}
     end
 
     test "allows error tuples to pass-through unchanged" do
-      assert Kv.set({:error, "reason"}, "_n/a") == {:error, "reason"}
+      assert Kv.set({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
 
-  describe "Mc.Modifier.Kv.set!/2" do
-    test "requests that the `buffer` is stored under 'key' (i.e. `args`)" do
-      assert Kv.set!("random data", "_dosh") == {:ok, "random data"}
-      assert Kv.set!("stuff", "_foo") == {:ok, "stuff"}
-    end
+  # describe "Mc.Modifier.Kv.set!/2" do
+  #   test "requests that the `buffer` is stored under 'key' (i.e. `args`)" do
+  #     assert Kv.set!("random data", "_dosh") == {:ok, "random data"}
+  #     assert Kv.set!("stuff", "_foo") == {:ok, "stuff"}
+  #   end
 
-    test "sets all keys, even readonly ones" do
-      assert Kv.set!("oh", "normal.readonly.key") == {:ok, "oh"}
-      assert Kv.set!("bar", "*system.key") == {:ok, "bar"}
-      assert Kv.set!("weekend", "_writeable.key") == {:ok, "weekend"}
-    end
+  #   test "sets all keys, even readonly ones" do
+  #     assert Kv.set!("oh", "normal.readonly.key") == {:ok, "oh"}
+  #     assert Kv.set!("bar", "*system.key") == {:ok, "bar"}
+  #     assert Kv.set!("weekend", "_writeable.key") == {:ok, "weekend"}
+  #   end
 
-    test "works with ok tuples" do
-      assert Kv.set!({:ok, "treble"}, "yeah") == {:ok, "treble"}
-      assert Kv.set!({:ok, "bass"}, "_yeah") == {:ok, "bass"}
-    end
+  #   test "works with ok tuples" do
+  #     assert Kv.set!({:ok, "treble"}, "yeah") == {:ok, "treble"}
+  #     assert Kv.set!({:ok, "bass"}, "_yeah") == {:ok, "bass"}
+  #   end
 
-    test "allows error tuples to pass-through unchanged" do
-      assert Kv.set!({:error, "reason"}, "n/a") == {:error, "reason"}
-    end
-  end
+  #   test "allows error tuples to pass-through unchanged" do
+  #     assert Kv.set!({:error, "reason"}, "n/a") == {:error, "reason"}
+  #   end
+  # end
 
   describe "Mc.Modifier.Kv.get/2" do
     test "retrieves the value stored under 'key' (i.e. `args`)" do
