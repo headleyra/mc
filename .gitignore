@@ -27,3 +27,6 @@ mc-*.tar
 
 # Elixir version
 .elixir-version
+
+# asdf (version manager)
+.tool-versions
