@@ -13,7 +13,6 @@ defmodule Mc.Mappings do
     error: {Mc.Modifier.Error, :modify},
     findk: {Mc.Modifier.Kv, :findk},
     findv: {Mc.Modifier.Kv, :findv},
-    font: {Mc.X.Font, :modify},
     get: {Mc.Modifier.Kv, :get},
     getb: {Mc.Modifier.Getb, :modify},
     grep: {Mc.Modifier.Grep, :modify},
@@ -60,6 +59,7 @@ defmodule Mc.Mappings do
     # Experiments
     alturl: {Mc.X.Alturl, :modify},
     date: {Mc.X.Date, :modify},
+    font: {Mc.X.Font, :modify},
     iword: {Mc.X.Iword, :modify},
     rand: {Mc.X.Random, :modify},
     setkv: {Mc.X.Setkv, :modify},
