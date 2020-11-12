@@ -4,7 +4,7 @@ defmodule Mc.X.Urlj do
   def modify(_buffer, args) do
     if String.match?(args, ~r/^[a-z]+/) do
       {:ok, api_key} = Mc.modify("", "get api_key")
-      Mc.Util.WebClient.post(endpoint(), %{url: args, api_key: api_key})
+      Mc.Client.Http.post(endpoint(), %{url: args, api_key: api_key})
     else
       {:error, "Urlj: bad URL"}
     end

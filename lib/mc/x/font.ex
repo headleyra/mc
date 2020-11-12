@@ -5,7 +5,7 @@ defmodule Mc.X.Font do
 
   def modify(buffer, args) do
     font_name = args
-    Mc.Util.WebClient.post("#{endpoint()}/#{font_name}.html", %{text: buffer})
+    Mc.Client.Http.post("#{endpoint()}/#{font_name}.html", %{text: buffer})
     |> Mc.Modifier.Hselc.modify("pre")
   end
 

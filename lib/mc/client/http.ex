@@ -1,5 +1,5 @@
-defmodule Mc.Util.WebClient do
-  use Mc.WebClientInterface
+defmodule Mc.Client.Http do
+  use Mc.Interface.Http
   @user_agent "Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0"
   @http_options [recv_timeout: 11_000]
 

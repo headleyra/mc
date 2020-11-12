@@ -6,7 +6,7 @@ defmodule Mc.X.Iword do
 
     case Integer.parse(buffer) do
       {int, _} when int >= 0 ->
-        case Mc.Util.WebClient.post(endpoint(), %{x: buffer, api_key: api_key}) do
+        case Mc.Client.Http.post(endpoint(), %{x: buffer, api_key: api_key}) do
           {:ok, result_json} ->
             {:ok, result_map} = Jason.decode(result_json)
             {:ok, result_map |> Map.get("iw")}

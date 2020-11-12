@@ -1,18 +1,18 @@
-defmodule Mc.Modifier.Web do
+defmodule Mc.Modifier.Http do
   use Agent
   use Mc.Railway, [:get, :post]
-  @err_msg "Web (POST): bad args"
+  @err_msg "http (POST): bad args"
 
-  def start_link(web_client_impl_module) do
-    Agent.start_link(fn -> web_client_impl_module end, name: __MODULE__)
+  def start_link(http_impl_module) do
+    Agent.start_link(fn -> http_impl_module end, name: __MODULE__)
   end
 
-  def web_client_impl_module do
+  def http_impl_module do
     Agent.get(__MODULE__, & &1)
   end
 
   def get(_buffer, args) do
-    apply(web_client_impl_module(), :get, [args])
+    apply(http_impl_module(), :get, [args])
   end
 
   def post(_buffer, ""), do: {:error, @err_msg}
@@ -23,7 +23,7 @@ defmodule Mc.Modifier.Web do
         {:error, @err_msg}
 
       list_containing_url_and_params_map ->
-        apply(web_client_impl_module(), :post, list_containing_url_and_params_map)
+        apply(http_impl_module(), :post, list_containing_url_and_params_map)
     end
   end
 

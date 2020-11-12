@@ -1,17 +1,17 @@
-defmodule Mc.WebClientInterfaceTest do
+defmodule Mc.Interface.HttpTest do
   use ExUnit.Case, async: true
 
   defmodule Browser do
-    use Mc.WebClientInterface
+    use Mc.Interface.Http
   end
 
   defmodule BrowserOverride do
-    use Mc.WebClientInterface
+    use Mc.Interface.Http
     def get(url), do: {:overridden, url}
     def post(url, params), do: {:overridden, url, params}
   end
 
-  describe "Mc.WebClientInterface" do
+  describe "Mc.Interface.Http" do
     test "defines default functions" do
       assert Browser.get("url") == {"url"}
       assert Browser.post("url", %{post: "params"}) == {"url", %{post: "params"}}

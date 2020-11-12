@@ -1,4 +1,4 @@
-defmodule Mc.WebClientInterface do
+defmodule Mc.Interface.Http do
   defmacro __using__(_) do
     quote do
       def get(url), do: {url}

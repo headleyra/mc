@@ -3,7 +3,7 @@ defmodule Mc.Modifier.EmailTest do
   alias Mc.Modifier.Email
 
   defmodule Postee do
-    use Mc.MailerInterface
+    use Mc.Interface.Mailer
   end
 
   setup do

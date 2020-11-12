@@ -1,16 +1,16 @@
-defmodule Mc.MailerInterfaceTest do
+defmodule Mc.Interface.MailerTest do
   use ExUnit.Case, async: true
 
   defmodule Post do
-    use Mc.MailerInterface
+    use Mc.Interface.Mailer
   end
 
   defmodule PostOverride do
-    use Mc.MailerInterface
+    use Mc.Interface.Mailer
     def deliver(subject, message, recipient_list), do: {:overridden, subject, message, recipient_list}
   end
 
-  describe "Mc.MailerInterface" do
+  describe "Mc.Interface.Mailer" do
     test "defines a default `deliver/3` function" do
       assert Post.deliver("subject", "message", ["recipient list"]) ==
         {"subject", "message", ["recipient list"]}

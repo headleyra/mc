@@ -1,11 +1,16 @@
 defmodule Mc.MappingsTest do
   use ExUnit.Case, async: false
 
-  defmodule Gopher, do: use Mc.WebClientInterface
-  defmodule Postee, do: use Mc.MailerInterface
+  defmodule Gopher do
+    use Mc.Interface.Http
+  end
+
+  defmodule Postee do
+    use Mc.Interface.Mailer
+  end
 
   setup do
-    start_supervised({Mc.Modifier.Web, Gopher})
+    start_supervised({Mc.Modifier.Http, Gopher})
     start_supervised({Mc.Modifier.Email, Postee})
     start_supervised({Mc, %Mc.Mappings{}})
     start_supervised({Mc.Modifier.Kv, %{}})

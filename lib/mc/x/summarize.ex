@@ -5,7 +5,7 @@ defmodule Mc.X.Summarize do
     case Integer.parse(args) do
       {ratio, _} ->
         {:ok, api_key} = Mc.modify("", "get api_key")
-        Mc.Util.WebClient.post(endpoint(), %{text: buffer, ratio: ratio, api_key: api_key})
+        Mc.Client.Http.post(endpoint(), %{text: buffer, ratio: ratio, api_key: api_key})
 
       :error ->
         {:error, "Summarize: bad ratio"}
