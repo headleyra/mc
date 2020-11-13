@@ -24,7 +24,7 @@ defmodule Mc.MixProject do
     [
       {:floki, "~> 0.26.0"},
       {:httpoison, "~> 1.6.2"},
-      {:jason, "~> 1.1.2"},
+      {:jason, "~> 1.2.2"},
       {:elixir_uuid, "~> 1.2"},
       {:tesla, "~> 1.3.3"}
 
