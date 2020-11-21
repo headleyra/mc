@@ -16,9 +16,9 @@ defmodule Mc.Modifier.If do
   defp compare(buffer, args, func) do
     case String.split(args) do
       [compare_key, true_key, false_key] ->
-        {:ok, data} = Mc.modify("", "get #{compare_key}")
+        {:ok, compare_value} = Mc.modify("", "get #{compare_key}")
 
-        if func.(buffer, data) do
+        if func.(buffer, compare_value) do
           {:ok, true_script} = Mc.modify("", "get #{true_key}")
           Mc.modify(buffer, true_script)
         else
