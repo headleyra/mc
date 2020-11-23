@@ -57,7 +57,6 @@ defmodule Mc.Mappings do
     zip: {Mc.Modifier.Zip, :modify},
 
     # Experiments
-    alturl: {Mc.X.Alturl, :modify},
     date: {Mc.X.Date, :modify},
     font: {Mc.X.Font, :modify},
     iword: {Mc.X.Iword, :modify},
@@ -66,6 +65,7 @@ defmodule Mc.Mappings do
     sleep: {Mc.X.Sleep, :modify},
     summarize: {Mc.X.Summarize, :modify},
     time: {Mc.X.Time, :modify},
+    urla: {Mc.X.Urla, :modify},
     urlj: {Mc.X.Urlj, :modify},
     uuid: {Mc.X.Uuid, :modify},
 
