@@ -22,11 +22,15 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 mc-*.tar
 
-# Env
-.env
 
-# Elixir version
+# Elixir
 .elixir-version
 
-# asdf (version manager)
+# Ruby
+.ruby-version
+
+# asdf
 .tool-versions
+
+# Environment
+.env
