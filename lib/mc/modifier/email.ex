@@ -2,19 +2,19 @@ defmodule Mc.Modifier.Email do
   use Agent
   use Mc.Railway, [:deliver]
 
-  def start_link(mailer_impl_module) do
-    Agent.start_link(fn -> mailer_impl_module end, name: __MODULE__)
+  def start_link(mailer) do
+    Agent.start_link(fn -> mailer end, name: __MODULE__)
   end
 
-  def mailer_impl_module do
-    Agent.get(__MODULE__, &(&1))
+  def mailer do
+    Agent.get(__MODULE__, & &1)
   end
 
   def deliver(buffer, args) do
     case String.split(args, ", ", parts: 2) do
       [subject, recipients] ->
         recipient_list = String.split(recipients)
-        apply(mailer_impl_module(), :deliver, [subject, buffer, recipient_list])
+        apply(mailer(), :deliver, [subject, buffer, recipient_list])
 
       _bad_args ->
         {:error, "Email: subject and/or recipients missing"}

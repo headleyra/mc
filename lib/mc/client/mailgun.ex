@@ -1,15 +1,16 @@
 defmodule Mc.Client.Mailgun do
-  use Mc.Interface.Mailer
-  @http_impl_module Mc.Client.Http
+  @behaviour Mc.Behaviour.Mailer
 
+  @impl true
   def deliver(subject, message, recipients) do
-    params = %{
+    params = [
       from: "#{mailgun_from()}@#{mailgun_domain()}",
       to: recipients,
       subject: subject,
       text: message
-    }
-    apply(@http_impl_module, :post, [mailgun_url(), params])
+    ]
+
+    apply(Mc.Client.Http, :post, [mailgun_url(), params])
     {:ok, message}
   end
 

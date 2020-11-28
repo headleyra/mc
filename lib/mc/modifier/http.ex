@@ -3,16 +3,16 @@ defmodule Mc.Modifier.Http do
   use Mc.Railway, [:get, :post]
   @err_msg "http (POST): bad args"
 
-  def start_link(http_impl_module) do
-    Agent.start_link(fn -> http_impl_module end, name: __MODULE__)
+  def start_link(http_client) do
+    Agent.start_link(fn -> http_client end, name: __MODULE__)
   end
 
-  def http_impl_module do
+  def http_client do
     Agent.get(__MODULE__, & &1)
   end
 
   def get(_buffer, args) do
-    apply(http_impl_module(), :get, [args])
+    apply(http_client(), :get, [args])
   end
 
   def post(_buffer, ""), do: {:error, @err_msg}
@@ -22,15 +22,15 @@ defmodule Mc.Modifier.Http do
       :error ->
         {:error, @err_msg}
 
-      list_containing_url_and_params_map ->
-        apply(http_impl_module(), :post, list_containing_url_and_params_map)
+      url_params ->
+        apply(http_client(), :post, url_params)
     end
   end
 
   def build_params(params_string) do
     create_params_list(params_string)
     |> validate()
-    |> mapify()
+    |> keyword_listify()
   end
 
   def build_url_params(url_params_string) do
@@ -39,7 +39,7 @@ defmodule Mc.Modifier.Http do
         :error
 
       [url] ->
-        [url, %{}]
+        [url, []]
 
       [url, params_string] ->
         case build_params(params_string) do
@@ -66,11 +66,12 @@ defmodule Mc.Modifier.Http do
     {valid?, params_list}
   end
 
-  defp mapify({valid?, params_list}) do
+  # TODO: Use Map.reduce
+  defp keyword_listify({valid?, params_list}) do
     if valid? do
       params_list
       |> Enum.map(fn [param_name, kv_key] -> {String.to_atom(param_name), kv_key} end)
-      |> Map.new(fn {param_name_atom, kv_key} ->
+      |> Keyword.new(fn {param_name_atom, kv_key} ->
         {:ok, kv_value} = Mc.modify("", "get #{kv_key}")
         {param_name_atom, kv_value}
       end)

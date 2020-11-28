@@ -2,11 +2,14 @@ defmodule Mc.MappingsTest do
   use ExUnit.Case, async: false
 
   defmodule Gopher do
-    use Mc.Interface.Http
+    @behaviour Mc.Behaviour.HttpClient
+    def get(_url), do: {:ok, "get"}
+    def post(_url, _params), do: {:ok, "post"}
   end
 
   defmodule Postee do
-    use Mc.Interface.Mailer
+    @behaviour Mc.Behaviour.Mailer
+    def deliver(_subject, _message, _recipients), do: {:ok, "deliver"}
   end
 
   setup do
