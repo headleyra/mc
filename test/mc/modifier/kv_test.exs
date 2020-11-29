@@ -159,14 +159,14 @@ defmodule Mc.Modifier.KvTest do
   end
 
   describe "Mc.Modifier.Kv.find/1" do
-    test "filters keys/values with a function of form `fn({key, value}) -> ... end` returning corresponding keys" do
-      foo = fn({_key, value}) -> Regex.match?(~r/foo/, value) end
+    test "filters keys/values with a func of form `fn {key, value} -> ... end` returning corresponding keys" do
+      foo = fn {_key, value} -> Regex.match?(~r/foo/, value) end
       assert Kv.find(foo) == {:ok, "1st\n2nd"}
 
-      other = fn({_key, value}) -> value == "dosh" end
+      other = fn {_key, value} -> value == "dosh" end
       assert Kv.find(other) == {:ok, "3rd"}
 
-      bar = fn({key, _value}) -> Regex.match?(~r/d/, key) end
+      bar = fn {key, _value} -> Regex.match?(~r/d/, key) end
       assert Kv.find(bar) == {:ok, "2nd\n3rd"}
     end
   end

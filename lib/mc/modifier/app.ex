@@ -9,7 +9,7 @@ defmodule Mc.Modifier.App do
 
       [app_name, replacements] ->
         {result, _search_count} =
-          Enum.reduce(String.split(replacements), {build(app_name), 1}, fn(replacement, {script, search_count}) ->
+          Enum.reduce(String.split(replacements), {build(app_name), 1}, fn replacement, {script, search_count} ->
             {:ok, script_after_replacement} = Mc.modify(script, "replace #{@search_prefix}#{search_count} #{replacement}")
             {script_after_replacement, search_count+1}
           end)
@@ -27,8 +27,8 @@ defmodule Mc.Modifier.App do
     {:ok, sub_app_names} = Mc.modify("", "get #{app_name}")
     String.split(sub_app_names)
     |> Enum.map(& Mc.modify("", "get #{&1}"))
-    |> Enum.map(fn({:ok, script}) -> script end)
-    |> Enum.reject(fn(e) -> e == "" end)
+    |> Enum.map(fn {:ok, script} -> script end)
+    |> Enum.reject(fn script -> script == "" end)
     |> Enum.join("\n")
   end
 end

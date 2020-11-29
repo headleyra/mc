@@ -9,7 +9,7 @@ defmodule Mc.X.Setkv do
     try do
       separator = if args == "", do: "\n---\n", else: args
       String.split(buffer, URI.decode(separator))
-      |> Enum.map(fn(e) -> kv2tuple(e) end)
+      |> Enum.map(fn e -> kv2tuple(e) end)
       |> kvset()
 
       {:ok, buffer}
@@ -29,7 +29,7 @@ defmodule Mc.X.Setkv do
 
   def kvset(kv_tuple_list) do
     if Enum.all?(kv_tuple_list) do
-      Enum.each(kv_tuple_list, fn({key, value}) -> Mc.modify(value, "set #{key}") end)
+      Enum.each(kv_tuple_list, fn {key, value} -> Mc.modify(value, "set #{key}") end)
     else
       {:error, "SetKv: bad KVs"}
     end

@@ -2,15 +2,15 @@ defmodule Mc.Modifier.If do
   use Mc.Railway, [:modifye, :modifyl, :modifyg]
 
   def modifye(buffer, args) do
-    compare(buffer, args, fn(a, b) -> a == b end)
+    compare(buffer, args, fn a, b -> a == b end)
   end
 
   def modifyl(buffer, args) do
-    compare(buffer, args, fn(a, b) -> a < b end)
+    compare(buffer, args, fn a, b -> a < b end)
   end
 
   def modifyg(buffer, args) do
-    compare(buffer, args, fn(a, b) -> a > b end)
+    compare(buffer, args, fn a, b -> a > b end)
   end
 
   defp compare(buffer, args, func) do

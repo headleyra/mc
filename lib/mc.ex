@@ -14,8 +14,8 @@ defmodule Mc do
 
       double_list ->
         double_list
-        |> Enum.map(fn(double) -> double_to_triple(double, mappings) end)
-        |> Enum.reduce(buffer, fn({module, modifier, args}, acc) -> apply(module, modifier, [acc, args]) end)
+        |> Enum.map(fn double -> double_to_triple(double, mappings) end)
+        |> Enum.reduce(buffer, fn {module, modifier, args}, acc -> apply(module, modifier, [acc, args]) end)
     end
   end
 

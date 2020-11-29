@@ -12,8 +12,8 @@ defmodule Mc.Modifier.Htab do
           result =
             Floki.find(html, row_css)
             |> Enum.map(fn row_tags -> Floki.find(row_tags, col_css) end)
-            |> Enum.map(fn col_tags -> Enum.map(col_tags, fn(tag) -> Floki.text(tag) end) end)
-            |> Enum.map(fn list -> Enum.map(list, fn(e) -> String.trim(e) end) end)
+            |> Enum.map(fn col_tags -> Enum.map(col_tags, fn tag -> Floki.text(tag) end) end)
+            |> Enum.map(fn list -> Enum.map(list, fn e -> String.trim(e) end) end)
             |> Enum.map(fn content -> Enum.join(content, "\t") end)
             |> Enum.reject(& &1 == "")
             |> Enum.join("\n")

@@ -10,7 +10,7 @@ defmodule Mc.Modifier.Wrap do
       {column, _} ->
         result = buffer
         |> String.split("\n")
-        |> Enum.map(fn(line) -> wrap(line, column) end)
+        |> Enum.map(fn line -> wrap(line, column) end)
         |> Enum.join("\n")
         {:ok, result}
 
@@ -29,12 +29,12 @@ defmodule Mc.Modifier.Wrap do
         text
         |> String.graphemes()
         |> Enum.chunk_every(col)
-        |> Enum.map(fn(wrap_chars_list) -> Enum.join(wrap_chars_list) end)
-        |> Enum.map(fn(wrap_string) -> String.trim(wrap_string, " ") end)
+        |> Enum.map(fn wrap_chars_list -> Enum.join(wrap_chars_list) end)
+        |> Enum.map(fn wrap_string -> String.trim(wrap_string, " ") end)
         |> Enum.join()
         |> String.graphemes()
         |> Enum.chunk_every(col)
-        |> Enum.map(fn(wrap_chars_list) -> Enum.join(wrap_chars_list) end)
+        |> Enum.map(fn wrap_chars_list -> Enum.join(wrap_chars_list) end)
         |> Enum.join("\n")
     end
   end
