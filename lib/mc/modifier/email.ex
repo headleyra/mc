@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Email do
   use Agent
   use Mc.Railway, [:deliver]
 
-  def start_link(mailer) do
+  def start_link(mailer: mailer) do
     Agent.start_link(fn -> mailer end, name: __MODULE__)
   end
 

@@ -3,7 +3,7 @@ defmodule Mc.Modifier.McastTest do
   alias Mc.Modifier.Mcast
 
   setup do
-    start_supervised({Mc.Modifier.Kv, %{
+    start_supervised({Mc.Modifier.Kv, map: %{
       "script1" => "buffer buffer FOO; lcase\nrun",
       "s2" => "buffer buffer Explain rice; delete Ex\nrun",
       "s3" => "error boom!\nlcase",
@@ -13,7 +13,7 @@ defmodule Mc.Modifier.McastTest do
       "empty.keys" => "",
       "nokeys" => "oops\tnope"
     }})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

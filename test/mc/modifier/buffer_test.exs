@@ -4,7 +4,7 @@ defmodule Mc.Modifier.BufferTest do
 
   setup do
     start_supervised({Mc.Modifier.Kv, %{}})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

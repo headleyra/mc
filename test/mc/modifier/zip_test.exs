@@ -3,11 +3,8 @@ defmodule Mc.Modifier.ZipTest do
   alias Mc.Modifier.Zip
 
   setup do
-    start_supervised({Mc.Modifier.Kv, %{
-      "z1" => "forda money\nforda show",
-      "z2" => "bar"
-    }})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc.Modifier.Kv, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

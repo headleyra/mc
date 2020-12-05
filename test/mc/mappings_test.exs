@@ -13,10 +13,10 @@ defmodule Mc.MappingsTest do
   end
 
   setup do
-    start_supervised({Mc.Modifier.Http, Gopher})
-    start_supervised({Mc.Modifier.Email, Postee})
-    start_supervised({Mc, %Mc.Mappings{}})
-    start_supervised({Mc.Modifier.Kv, %{}})
+    start_supervised({Mc.Modifier.Http, http_client: Gopher})
+    start_supervised({Mc.Modifier.Email, mailer: Postee})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
+    start_supervised({Mc.Modifier.Kv, map: %{}})
     :ok
   end
 

@@ -3,7 +3,7 @@ defmodule Mc.Modifier.AppTest do
   alias Mc.Modifier.App
 
   setup do
-    start_supervised({Mc.Modifier.Kv, %{
+    start_supervised({Mc.Modifier.Kv, map: %{
       "app1" => "script1",
       "app2" => "script2   \t script3",
       "app4" => "script2",
@@ -12,7 +12,7 @@ defmodule Mc.Modifier.AppTest do
       "script2" => "b brexit ex why\nreplace ex ::1",
       "script3" => "r why ::2"
     }})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

@@ -3,7 +3,7 @@ defmodule Mc.Modifier.Http do
   use Mc.Railway, [:get, :post]
   @err_msg "http (POST): bad args"
 
-  def start_link(http_client) do
+  def start_link(http_client: http_client) do
     Agent.start_link(fn -> http_client end, name: __MODULE__)
   end
 

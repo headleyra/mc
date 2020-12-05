@@ -3,8 +3,8 @@ defmodule Mc.Modifier.IfTest do
   alias Mc.Modifier.If
 
   setup do
-    start_supervised({Mc, %Mc.Mappings{}})
-    start_supervised({Mc.Modifier.Kv, %{
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
+    start_supervised({Mc.Modifier.Kv, map: %{
       "a_key" => "aaa",
       "z_key" => "zzz",
       "small" => "lcase",

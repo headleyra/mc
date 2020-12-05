@@ -3,7 +3,7 @@ defmodule Mc.Modifier.MapTest do
   alias Mc.Modifier.Map
 
   setup do
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

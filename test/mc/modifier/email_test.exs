@@ -8,7 +8,7 @@ defmodule Mc.Modifier.EmailTest do
   end
 
   setup do
-    start_supervised({Email, Postee})
+    start_supervised({Email, mailer: Postee})
     :ok
   end
 

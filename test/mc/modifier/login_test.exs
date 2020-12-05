@@ -3,8 +3,8 @@ defmodule Mc.Modifier.LoginTest do
   alias Mc.Modifier.Login
 
   setup do
-    start_supervised({Mc.Modifier.Kv, %{}})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Mc.Modifier.Kv, map: %{}})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

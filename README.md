@@ -12,8 +12,10 @@ A *ModifyChain* 'script' specifies a 'chain' of 'modifiers' (functions) that, on
 ### Modifiers
 
 All modifiers declare two arguments and return either `{:ok, result}` or `{:error, reason}`.  The first
-argument will be passed the *modified* buffer from the previous modifier (in the chain).  The second
-argument will be passed the arguments for the modifier itself.
+argument is passed the modified buffer from the previous modifier (in the chain); the second argument
+is passed the arguments for the modifier itself.
+
+Let's say we have the following modifiers:
 
 ```elixir
 defmodule Foo.Big do
@@ -32,10 +34,8 @@ defmodule Biz.Boom do
 end
 ```
 
-### Mappings
-
-To use the modifiers, above, we need to create a `Map` that defines their names and specifies their
-locations.  This map is said to define the 'mappings'.  One such map might look like this:
+In order to use them we create a `Map` ('the mappings') that defines their names and specifies their
+locations.  One such map might look like this:
 
 ```elixir
 mappings =
@@ -50,7 +50,7 @@ We've assigned the name 'capify' to the first modifier; 'change' to the second; 
 Next we start the ModifyChain server, passing it the mappings:
 
 ```elixir
-Mc.start_link(mappings)
+Mc.start_link(mappings: mappings)
 ```
 
 ### Now we can modify stuff
@@ -89,10 +89,11 @@ Foo.Big.capify(new_buffer, "")
   #=> {:ok, "WINE BOTTLE"}
 ```
 
-So, the output of one modifier is the input to the next, and so on.  If at any point a modifier returns
-an error tuple, the whole process is short-circuited and the error tuple is returned immediately.  This
-is the default behaviour (for the standard modifiers, see below) and is handled by the `use Mc.Railway`
-code:
+So, the output of one modifier is the input to the next, and so on.
+
+If at any point a modifier returns an error tuple, the next modifier simply passes it on down the chain,
+unchanged.  This is the default behaviour (for the standard modifiers, see below) and is handled by the
+`use Mc.Railway` code:
 
 ```elixir
 script = """

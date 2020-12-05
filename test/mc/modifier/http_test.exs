@@ -9,12 +9,9 @@ defmodule Mc.Modifier.HttpTest do
   end
 
   setup do
-    start_supervised({Kv, %{
-      "data" => "big data",
-      "payload" => "testing\n123"
-    }})
-    start_supervised({Http, Gopher})
-    start_supervised({Mc, %Mc.Mappings{}})
+    start_supervised({Kv, map: %{"data" => "big data", "payload" => "testing\n123"}})
+    start_supervised({Http, http_client: Gopher})
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

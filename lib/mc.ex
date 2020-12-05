@@ -1,7 +1,7 @@
 defmodule Mc do
   use Agent
 
-  def start_link(mappings) do
+  def start_link(mappings: mappings) do
     Agent.start_link(fn -> mappings end, name: __MODULE__)
   end
 

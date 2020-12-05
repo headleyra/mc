@@ -1,15 +1,13 @@
 defmodule McTest do
   use ExUnit.Case, async: false
 
-  defmodule MyMod do
-    def modify(buffer, args) do
-      {:ok, "#{buffer} *#{args}*"}
-    end
+  defmodule TestModifier do
+    def test_func(buffer, args), do: {:ok, "#{buffer} *#{args}*"}
   end
 
   setup do
-    test_mappings = %Mc.Mappings{} |> Map.merge(%{tweak: {MyMod, :modify}})
-    start_supervised({Mc, test_mappings})
+    mappings = %Mc.Mappings{} |> Map.merge(%{tweak: {TestModifier, :test_func}})
+    start_supervised({Mc, mappings: mappings})
     :ok
   end
 
