@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Buffer do
   use Mc.Railway, [:modify]
   @err_msg "Buffer: bad URI"
 
-  # TODO: Refactor
+  # TODO: refactor
   def modify(buffer, args) do
     case Regex.run(~r/`(.*?)`/s, args) do
       [_, script] ->

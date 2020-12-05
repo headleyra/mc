@@ -1,4 +1,4 @@
-# TODO: Rewrite this when we understand macros better :)
+# TODO: rewrite when we understand macros better :)
 defmodule Mc.Railway do
   defmacro __using__(opts) do
     ast_defs_list =

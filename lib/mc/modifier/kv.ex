@@ -16,14 +16,9 @@ defmodule Mc.Modifier.Kv do
     setkey(buffer, args)
   end
 
-  defp setkey(buffer, args) do
-    Agent.update(__MODULE__, & Map.put(&1, args, buffer))
-    {:ok, buffer}
-  end
-
   @impl true
   def get(_buffer, args) do
-    result = Agent.get(__MODULE__, & Map.get(&1, args, ""))
+    result = Agent.get(__MODULE__, &Map.get(&1, args, ""))
     {:ok, result}
   end
 
@@ -64,12 +59,18 @@ defmodule Mc.Modifier.Kv do
   end
 
   def find(filter_func) do
-    result = map()
-    |> Enum.to_list()
-    |> Enum.filter(filter_func)
-    |> Enum.map(fn {key, _value} -> key end)
-    |> Enum.join("\n")
+    result =
+      map()
+      |> Enum.to_list()
+      |> Enum.filter(filter_func)
+      |> Enum.map(fn {key, _value} -> key end)
+      |> Enum.join("\n")
 
     {:ok, result}
+  end
+
+  defp setkey(buffer, args) do
+    Agent.update(__MODULE__, &Map.put(&1, args, buffer))
+    {:ok, buffer}
   end
 end

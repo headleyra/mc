@@ -27,56 +27,53 @@ defmodule Mc.Modifier.Http do
     end
   end
 
-  def build_params(params_string) do
-    create_params_list(params_string)
+  def build_params(params) do
+    create_params_list(params)
     |> validate()
     |> keyword_listify()
   end
 
-  def build_url_params(url_params_string) do
-    case String.split(url_params_string, ~r/\s+/, parts: 2) do
+  def build_url_params(url_params) do
+    case String.split(url_params, ~r/\s+/, parts: 2) do
       [""] ->
         :error
 
       [url] ->
         [url, []]
 
-      [url, params_string] ->
-        case build_params(params_string) do
+      [url, params] ->
+        case build_params(params) do
           :error ->
             :error
 
-          params_map ->
-            [url, params_map]
+          params_list ->
+            [url, params_list]
         end
     end
   end
 
-  defp create_params_list(params_string) do
-    String.split(params_string)
+  defp create_params_list(params) do
+    String.split(params)
     |> Enum.map(fn param_pairs -> String.split(param_pairs, ":") end)
   end
 
   defp validate(params_list) do
-    valid? =
+    valid =
       Enum.all?(params_list, fn e ->
         Enum.count(e) == 2 && Enum.all?(e, &(&1 != ""))
       end)
 
-    {valid?, params_list}
+    if valid, do: params_list, else: false
   end
 
-  # TODO: Use Map.reduce
-  defp keyword_listify({valid?, params_list}) do
-    if valid? do
-      params_list
-      |> Enum.map(fn [param_name, kv_key] -> {String.to_atom(param_name), kv_key} end)
-      |> Keyword.new(fn {param_name_atom, kv_key} ->
-        {:ok, kv_value} = Mc.modify("", "get #{kv_key}")
-        {param_name_atom, kv_value}
-      end)
-    else
-      :error
-    end
+  defp keyword_listify(false), do: :error
+
+  defp keyword_listify(params_list) do
+    params_list
+    |> Enum.map(fn [param_name, kv_key] -> {String.to_atom(param_name), kv_key} end)
+    |> Keyword.new(fn {param_name_atom, kv_key} ->
+      {:ok, kv_value} = Mc.modify("", "get #{kv_key}")
+      {param_name_atom, kv_value}
+    end)
   end
 end

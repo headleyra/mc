@@ -6,7 +6,7 @@ defmodule Mc do
   end
 
   def modify(buffer, script) do
-    mappings = Agent.get(__MODULE__, &(&1))
+    mappings = Agent.get(__MODULE__, & &1)
 
     case script_to_double_list(script) do
       [] ->
@@ -15,7 +15,9 @@ defmodule Mc do
       double_list ->
         double_list
         |> Enum.map(fn double -> double_to_triple(double, mappings) end)
-        |> Enum.reduce(buffer, fn {module, modifier, args}, acc -> apply(module, modifier, [acc, args]) end)
+        |> Enum.reduce(buffer, fn {module, modifier, args}, acc ->
+          apply(module, modifier, [acc, args])
+        end)
     end
   end
 
@@ -32,10 +34,10 @@ defmodule Mc do
   def script_to_double_list(script) do
     script
     |> String.split("\n")
-    |> Enum.map(& String.trim_leading(&1))
-    |> Enum.reject(& &1 == "")
-    |> Enum.reject(& is_comment?(&1))
-    |> Enum.map(& modify_instruction_to_double(&1))
+    |> Enum.map(&String.trim_leading(&1))
+    |> Enum.reject(&(&1 == ""))
+    |> Enum.reject(&is_comment?(&1))
+    |> Enum.map(&modify_instruction_to_double(&1))
   end
 
   def modify_instruction_to_double(modify_instruction) do
