@@ -3,6 +3,9 @@ defmodule Mc do
 
   def start_link(mappings: mappings) do
     Agent.start_link(fn -> mappings end, name: __MODULE__)
+
+    rname = Module.concat(__MODULE__, ReverseMappings)
+    Agent.start_link(fn -> reverse_mappings(mappings) end, name: rname)
   end
 
   def modify(buffer, script) do
@@ -24,7 +27,7 @@ defmodule Mc do
   def double_to_triple({modifier, args}, mappings) do
     case Map.get(mappings, modifier) do
       nil ->
-        {Mc.Modifier.Error, :modify, "Not found: #{Atom.to_string(modifier)}"}
+        {Mc.Modifier.Error, :modify, "Not found: #{modifier}"}
 
       {module, function} ->
         {module, function, args}
@@ -52,5 +55,27 @@ defmodule Mc do
 
   def is_comment?(string) do
     String.match?(string, ~r/^\s*#/)
+  end
+
+  def lookup(lookup_module, lookup_func) do
+    reverse_mappings = Agent.get(Module.concat(__MODULE__, ReverseMappings), & &1)
+
+    reverse_mappings
+    |> Enum.filter(fn {{module, func}, _name} -> module == lookup_module && func == lookup_func end)
+    |> Enum.at(0)
+    |> (fn
+          {{_module, _func}, name} -> Atom.to_string(name)
+          nil -> nil
+        end).()
+  end
+
+  defp reverse_mappings(mappings) do
+    mappings
+    |> Map.keys()
+    |> Enum.reject(fn key -> key == :__struct__ end)
+    |> Enum.map(fn key -> {Map.get(mappings, key), key} end)
+    |> Enum.sort(fn {{_, _}, func1}, {{_, _}, func2} ->
+      byte_size("#{func1}") >= byte_size("#{func2}")
+    end)
   end
 end

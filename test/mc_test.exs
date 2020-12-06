@@ -5,9 +5,19 @@ defmodule McTest do
     def test_func(buffer, args), do: {:ok, "#{buffer} *#{args}*"}
   end
 
-  setup do
-    mappings = %Mc.Mappings{} |> Map.merge(%{tweak: {TestModifier, :test_func}})
-    start_supervised({Mc, mappings: mappings})
+  defmodule TestMappings do
+    defstruct [
+      ccount: {Mc.Modifier.Ccount, :modify},
+      error: {Mc.Modifier.Error, :modify},
+      lcase: {Mc.Modifier.Lcase, :modify},
+      r: {Mc.Modifier.Replace, :modify},
+      replace: {Mc.Modifier.Replace, :modify},
+      tweak: {TestModifier, :test_func}
+    ]
+  end
+
+  setup_all do
+    start_supervised({Mc, mappings: %TestMappings{}})
     :ok
   end
 
@@ -15,13 +25,10 @@ defmodule McTest do
     test "returns a modified `buffer`" do
       assert Mc.modify("ON THE RADIO\n", "lcase") == {:ok, "on the radio\n"}
       assert Mc.modify("hurry, offer ends SOON!", "ccount") == {:ok, "23"}
-    end
-
-    test "returns a modified `buffer` (custom modifier)" do
       assert Mc.modify("let's", "tweak go") == {:ok, "let's *go*"}
     end
 
-    test "returns `buffer` when `script` is *all* whitespace" do
+    test "returns `buffer` when `script` is whitespace" do
       assert Mc.modify("foo", " ") == {:ok, "foo"}
       assert Mc.modify("", "\t \n") == {:ok, ""}
       assert Mc.modify("", "\t \n\n  ") == {:ok, ""}
@@ -125,6 +132,21 @@ defmodule McTest do
     test "returns false if `string` isn't a comment" do
       refute Mc.is_comment?("this #is not a comment")
       refute Mc.is_comment?("no#r this")
+    end
+  end
+
+  describe "Mc.lookup/2" do
+    test "looks up the name of the module/func_atom pair in the mappings" do
+      assert Mc.lookup(Mc.Modifier.Lcase, :modify) == "lcase"
+      assert Mc.lookup(TestModifier, :test_func) == "tweak"
+    end
+
+    test "returns the longest name if multiple matches are found" do
+      assert Mc.lookup(Mc.Modifier.Replace, :modify) == "replace"
+    end
+
+    test "returns nil for non existent module/func_atom pairs" do
+      assert Mc.lookup(Does.Not, :exist) == nil
     end
   end
 end

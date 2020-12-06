@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.BufferTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   alias Mc.Modifier.Buffer
 
   setup do
