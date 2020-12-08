@@ -1,25 +1,27 @@
 defmodule Mc.Modifier.Wrap do
   use Mc.Railway, [:modify]
-  @err_msg "Wrap: bad wrap number"
 
   def modify(buffer, args) do
     case Integer.parse(args) do
       {column, _} when column < 1 ->
-        {:error, @err_msg}
+        oops("bad column number", :modify)
 
       {column, _} ->
-        result = buffer
-        |> String.split("\n")
-        |> Enum.map(fn line -> wrap(line, column) end)
-        |> Enum.join("\n")
+        result =
+          buffer
+          |> String.split("\n")
+          |> Enum.map(fn line -> wrap(line, column) end)
+          |> Enum.join("\n")
+
         {:ok, result}
 
       :error ->
-        {:error, @err_msg}
+        oops("bad column number", :modify)
     end
   end
 
   def wrap("", _column), do: ""
+
   def wrap(text, column) do
     case column do
       col when col < 1 ->

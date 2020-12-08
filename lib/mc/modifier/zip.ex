@@ -16,12 +16,13 @@ defmodule Mc.Modifier.Zip do
             |> Enum.join("\n")
 
           {:ok, result}
-        rescue ArgumentError ->
-          {:error, "Zip: bad URI"}
+        rescue
+          ArgumentError ->
+            oops("bad URI", :modify)
         end
 
       _bad_args ->
-        {:error, "Zip: separator and key required"}
+        oops("separator and key required", :modify)
     end
   end
 end

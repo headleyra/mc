@@ -2,27 +2,22 @@ defmodule Mc.Modifier.HttpTest do
   use ExUnit.Case, async: false
   alias Mc.Modifier.{Kv, Http}
 
-  defmodule Gopher do
-    @behaviour Mc.Behaviour.HttpClient
-    def get(url), do: {:ok, url}
-    def post(url, params), do: {:ok, {url, params}}
-  end
-
   setup do
-    start_supervised({Kv, map: %{"data" => "big data", "payload" => "testing\n123"}})
-    start_supervised({Http, http_client: Gopher})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
+    start_supervised({Kv, map: %{
+      "data" => "big data",
+      "payload" => "testing\n123"}
+    })
     :ok
   end
 
   describe "Mc.Modifier.Http.http_client/0" do
-    test "returns the HTTP behaviour implementation" do
+    test "returns the HTTP implementation" do
       assert Http.http_client() == Gopher
     end
   end
 
   describe "Mc.Modifier.Http.get/2" do
-    test "delegates to the behaviour implementation" do
+    test "delegates to the implementation" do
       assert Http.get("n/a", "http://example.org") == {:ok, "http://example.org"}
     end
 
@@ -36,7 +31,7 @@ defmodule Mc.Modifier.HttpTest do
   end
 
   describe "Mc.Modifier.Http.post/2" do
-    test "builds a keyword list from `args` (pulling values from KV) and delegates to the behaviour implementation" do
+    test "builds a keyword list from `args` (pulling values from KV) and delegates to the implementation" do
       assert Http.post("n/a", "127.0.0.1") == {:ok, {"127.0.0.1", []}}
       assert Http.post("", "http://localhost x:data") == {:ok, {"http://localhost", [x: "big data"]}}
       assert Http.post("", "url grab:data say:payload") == {:ok, {"url", [grab: "big data", say: "testing\n123"]}}
@@ -44,11 +39,11 @@ defmodule Mc.Modifier.HttpTest do
     end
 
     test "returns an error tuple (given bad args)" do
-      assert Http.post("n/a", "") == {:error, "http (POST): bad args"}
-      assert Http.post("", "url param-name-only") == {:error, "http (POST): bad args"}
-      assert Http.post("", "url :") == {:error, "http (POST): bad args"}
-      assert Http.post("", "url foo:") == {:error, "http (POST): bad args"}
-      assert Http.post("", "url :bar") == {:error, "http (POST): bad args"}
+      assert Http.post("n/a", "") == {:error, "urlp: bad args"}
+      assert Http.post("", "url param-name-only") == {:error, "urlp: bad args"}
+      assert Http.post("", "url :") == {:error, "urlp: bad args"}
+      assert Http.post("", "url foo:") == {:error, "urlp: bad args"}
+      assert Http.post("", "url :bar") == {:error, "urlp: bad args"}
     end
 
     test "works with ok tuples" do

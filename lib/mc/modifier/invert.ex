@@ -4,10 +4,11 @@ defmodule Mc.Modifier.Invert do
   def modify("", _args), do: {:ok, ""}
 
   def modify(buffer, _args) do
-    result = buffer
-    |> String.split("\n")
-    |> Enum.reverse()
-    |> Enum.join("\n")
+    result =
+      buffer
+      |> String.split("\n")
+      |> Enum.reverse()
+      |> Enum.join("\n")
 
     {:ok, result}
   end

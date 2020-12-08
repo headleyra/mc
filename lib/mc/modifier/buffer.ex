@@ -1,6 +1,5 @@
 defmodule Mc.Modifier.Buffer do
   use Mc.Railway, [:modify]
-  @err_msg "Buffer: bad URI"
 
   # TODO: refactor
   def modify(buffer, args) do
@@ -8,7 +7,7 @@ defmodule Mc.Modifier.Buffer do
       [_, script] ->
         case Mc.Util.Sys.decode(script) do
           {:error, ""} ->
-            {:error, @err_msg}
+            oops("bad URI", :modify)
 
           decoded_script ->
             case Mc.modify(buffer, decoded_script) do
@@ -24,7 +23,7 @@ defmodule Mc.Modifier.Buffer do
       nil ->
         case Mc.Util.Sys.decode(args) do
           {:error, ""} ->
-            {:error, @err_msg}
+            oops("bad URI", :modify)
 
           decoded_script ->
             {:ok, decoded_script}

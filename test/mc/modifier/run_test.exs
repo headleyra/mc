@@ -4,7 +4,6 @@ defmodule Mc.Modifier.RunTest do
   alias Mc.Modifier.Kv
 
   setup do
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     start_supervised({Kv, map: %{
       "script1" => "replace FOO RADIO\nlcase",
       "s2" => "lcase\nr bass treble\nr one two",

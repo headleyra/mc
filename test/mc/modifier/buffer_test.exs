@@ -1,12 +1,6 @@
 defmodule Mc.Modifier.BufferTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   alias Mc.Modifier.Buffer
-
-  setup do
-    start_supervised({Mc.Modifier.Kv, %{}})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
-    :ok
-  end
 
   describe "Mc.Modifier.Buffer.modify/2" do
     test "returns `args`" do
@@ -57,8 +51,8 @@ defmodule Mc.Modifier.BufferTest do
     end
 
     test "returns an error tuple for badly formed URI characters" do
-      assert Buffer.modify("n/a", "foo %%20 bar") == {:error, "Buffer: bad URI"}
-      assert Buffer.modify("FOO", "`replace FOO %%`") == {:error, "Buffer: bad URI"}
+      assert Buffer.modify("n/a", "foo %%20 bar") == {:error, "buffer: bad URI"}
+      assert Buffer.modify("FOO", "`replace FOO %%`") == {:error, "buffer: bad URI"}
     end
 
     test "works with ok tuples" do

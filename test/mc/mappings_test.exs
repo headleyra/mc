@@ -1,21 +1,7 @@
 defmodule Mc.MappingsTest do
   use ExUnit.Case, async: false
 
-  defmodule Gopher do
-    @behaviour Mc.Behaviour.HttpClient
-    def get(_url), do: {:ok, "get"}
-    def post(_url, _params), do: {:ok, "post"}
-  end
-
-  defmodule Postee do
-    @behaviour Mc.Behaviour.Mailer
-    def deliver(_subject, _message, _recipients), do: {:ok, "deliver"}
-  end
-
   setup do
-    start_supervised({Mc.Modifier.Http, http_client: Gopher})
-    start_supervised({Mc.Modifier.Email, mailer: Postee})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     start_supervised({Mc.Modifier.Kv, map: %{}})
     :ok
   end

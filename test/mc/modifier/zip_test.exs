@@ -3,8 +3,10 @@ defmodule Mc.Modifier.ZipTest do
   alias Mc.Modifier.Zip
 
   setup do
-    start_supervised({Mc.Modifier.Kv, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
+    start_supervised({Mc.Modifier.Kv, map: %{
+      "z1" => "forda money\nforda show",
+      "z2" => "bar"
+    }})
     :ok
   end
 
@@ -18,8 +20,8 @@ defmodule Mc.Modifier.ZipTest do
     end
 
     test "returns an error tuple when `args` can't be parsed" do
-      assert Zip.modify("n/a", "too many args") == {:error, "Zip: separator and key required"}
-      assert Zip.modify("", "too.few.args") == {:error, "Zip: separator and key required"}
+      assert Zip.modify("n/a", "too many args") == {:error, "zip: separator and key required"}
+      assert Zip.modify("", "too.few.args") == {:error, "zip: separator and key required"}
     end
 
     test "interprets the separator as a URI encoded string" do
@@ -29,7 +31,7 @@ defmodule Mc.Modifier.ZipTest do
     end
 
     test "returns an error tuple when the separator contains bad URI characters" do
-      assert Zip.modify("one\ntwo", "%%09 z1") == {:error, "Zip: bad URI"}
+      assert Zip.modify("one\ntwo", "%%09 z1") == {:error, "zip: bad URI"}
     end
 
     test "works when the key doesn't exist" do

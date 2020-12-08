@@ -13,7 +13,6 @@ defmodule Mc.Modifier.McastTest do
       "empty.keys" => "",
       "nokeys" => "oops\tnope"
     }})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

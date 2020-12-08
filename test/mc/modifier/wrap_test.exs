@@ -17,11 +17,11 @@ defmodule Mc.Modifier.WrapTest do
     end
 
     test "returns an error tuple when `args` isn't a positive number" do
-      assert Wrap.modify("a bit of text", "") == {:error, "Wrap: bad wrap number"}
-      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "Wrap: bad wrap number"}
-      assert Wrap.modify("testing", "four") == {:error, "Wrap: bad wrap number"}
-      assert Wrap.modify("foo", "-10") == {:error, "Wrap: bad wrap number"}
-      assert Wrap.modify("bar", "0") == {:error, "Wrap: bad wrap number"}
+      assert Wrap.modify("a bit of text", "") == {:error, "wrap: bad column number"}
+      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "wrap: bad column number"}
+      assert Wrap.modify("testing", "four") == {:error, "wrap: bad column number"}
+      assert Wrap.modify("foo", "-10") == {:error, "wrap: bad column number"}
+      assert Wrap.modify("bar", "0") == {:error, "wrap: bad column number"}
     end
 
     test "works with ok tuples" do

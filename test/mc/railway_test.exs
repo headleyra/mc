@@ -1,32 +1,38 @@
 defmodule Mc.RailwayTest do
   use ExUnit.Case, async: true
 
+  defmodule TestModifier do
+    use Mc.Railway, [:down, :up]
+
+    def down(buffer, _args), do: {:ok, String.downcase(buffer)}
+    def up(buffer, _args), do: {:ok, String.upcase(buffer)}
+  end
+
+  # setup do
+  #   mappings = %{
+  #     small: {TestModifier, :down},
+  #     big: {TestModifier, :up}
+  #   }
+
+  #   start_supervised({Mc, mappings: mappings})
+  #   :ok
+  # end
+
   describe "Mc.Railway" do
-    defmodule TestMod do
-      use Mc.Railway, [:down, :up]
-
-      def down(buffer, _args) do
-        {:ok, String.downcase(buffer)}
-      end
-
-      def up(buffer, _args) do
-        {:ok, String.upcase(buffer)}
-      end
+    test "creates functions that, given an error tuple (as `buffer`), return it unchanged" do
+      assert TestModifier.down({:error, "boom"}, "n/a") == {:error, "boom"}
+      assert TestModifier.up({:error, "oops"}, "dont matter") == {:error, "oops"}
     end
 
-    test "creates a function to handle error tuples which should 'pass-through' unchanged" do
-      assert TestMod.down({:error, "boom"}, "n/a") == {:error, "boom"}
-      assert TestMod.up({:error, "oops"}, "dont matter") == {:error, "oops"}
+    test "creates functions that, given an ok tuple (as `buffer`), delegate to their string equivalents" do
+      assert TestModifier.down({:ok, "BoSh"}, "") == {:ok, "bosh"}
+      assert TestModifier.up({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
     end
 
-    test "creates a function to handle ok tuples" do
-      assert TestMod.down({:ok, "BoSh"}, "") == {:ok, "bosh"}
-      assert TestMod.up({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
-    end
-
-    test "handles the 'standard' case" do
-      assert TestMod.down("BIG\tLETTERS\n", "ignored") == {:ok, "big\tletters\n"}
-      assert TestMod.up("Orange Juice", "ignored") == {:ok, "ORANGE JUICE"}
+    @tag :skip
+    test "creates an error tuple builder function" do
+      assert TestModifier.oops("the error message", :down) == {:error, "small: the error message"}
+      assert TestModifier.oops("oops!", :up) == {:error, "big: oops!"}
     end
   end
 end

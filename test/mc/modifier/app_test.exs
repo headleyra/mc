@@ -12,7 +12,6 @@ defmodule Mc.Modifier.AppTest do
       "script2" => "b brexit ex why\nreplace ex ::1",
       "script3" => "r why ::2"
     }})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

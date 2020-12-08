@@ -1,11 +1,6 @@
 defmodule Mc.Modifier.MapTest do
-  use ExUnit.Case, async: false
+  use ExUnit.Case, async: true
   alias Mc.Modifier.Map
-
-  setup do
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
-    :ok
-  end
 
   describe "Mc.Modifier.Map.modify/2" do
     test "'runs' the script, i.e., `args`, in 'inline format', against each line in the `buffer`" do

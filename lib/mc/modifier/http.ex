@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.Http do
   use Agent
   use Mc.Railway, [:get, :post]
-  @err_msg "http (POST): bad args"
 
   def start_link(http_client: http_client) do
     Agent.start_link(fn -> http_client end, name: __MODULE__)
@@ -15,12 +14,12 @@ defmodule Mc.Modifier.Http do
     apply(http_client(), :get, [args])
   end
 
-  def post(_buffer, ""), do: {:error, @err_msg}
+  def post(_buffer, ""), do: oops("bad args", :post)
 
   def post(_buffer, args) do
     case build_url_params(args) do
       :error ->
-        {:error, @err_msg}
+        oops("bad args", :post)
 
       url_params ->
         apply(http_client(), :post, url_params)
@@ -30,7 +29,7 @@ defmodule Mc.Modifier.Http do
   def build_params(params) do
     create_params_list(params)
     |> validate()
-    |> keyword_listify()
+    |> keywordify()
   end
 
   def build_url_params(url_params) do
@@ -59,16 +58,16 @@ defmodule Mc.Modifier.Http do
 
   defp validate(params_list) do
     valid =
-      Enum.all?(params_list, fn e ->
-        Enum.count(e) == 2 && Enum.all?(e, &(&1 != ""))
+      Enum.all?(params_list, fn param_pair ->
+        Enum.count(param_pair) == 2 && Enum.all?(param_pair, &(&1 != ""))
       end)
 
     if valid, do: params_list, else: false
   end
 
-  defp keyword_listify(false), do: :error
+  defp keywordify(false), do: :error
 
-  defp keyword_listify(params_list) do
+  defp keywordify(params_list) do
     params_list
     |> Enum.map(fn [param_name, kv_key] -> {String.to_atom(param_name), kv_key} end)
     |> Keyword.new(fn {param_name_atom, kv_key} ->

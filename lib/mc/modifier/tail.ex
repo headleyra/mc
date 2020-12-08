@@ -17,6 +17,7 @@ defmodule Mc.Modifier.Tail do
           |> Enum.take(num)
           |> Enum.reverse()
           |> Enum.join("\n")
+
         {:ok, result}
     end
   end

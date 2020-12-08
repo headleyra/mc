@@ -4,7 +4,6 @@ defmodule Mc.Modifier.LoginTest do
 
   setup do
     start_supervised({Mc.Modifier.Kv, map: %{}})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 

@@ -8,7 +8,7 @@ defmodule Mc.X.Summarize do
         Mc.Client.Http.post(endpoint(), %{text: buffer, ratio: ratio, api_key: api_key})
 
       :error ->
-        {:error, "Summarize: bad ratio"}
+        oops("bad ratio", :modify)
     end
   end
 

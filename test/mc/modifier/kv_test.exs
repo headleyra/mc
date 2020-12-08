@@ -3,7 +3,11 @@ defmodule Mc.Modifier.KvTest do
   alias Mc.Modifier.Kv
 
   setup do
-    start_supervised({Kv, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}})
+    start_supervised({Kv, map: %{
+      "1st" => "foo",
+      "2nd" => "foobar",
+      "3rd" => "dosh"}
+    })
     :ok
   end
 

@@ -9,9 +9,12 @@ defmodule Mc.Modifier.MathTest do
       assert Math.add(" 3 4", "") == {:ok, "7"}
       assert Math.add("\n   3.4\t 4  11", "") == {:ok, "18.4"}
       assert Math.add("\n1.23\n4\n", "") == {:ok, "5.23"}
-      assert Math.add("", "") == {:error, "Add: fewer than two numbers found"}
-      assert Math.add("8", "") == {:error, "Add: fewer than two numbers found"}
-      assert Math.add("foo bar", "") == {:error, "Add: fewer than two numbers found"}
+    end
+
+    test "returns an error tuple with fewer than two numbers" do
+      assert Math.add("", "") == {:error, "add: fewer than two numbers found"}
+      assert Math.add("8", "") == {:error, "add: fewer than two numbers found"}
+      assert Math.add("foo bar", "") == {:error, "add: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -30,9 +33,12 @@ defmodule Mc.Modifier.MathTest do
       assert Math.subtract(" 3 4", "") == {:ok, "-1"}
       assert Math.subtract("\n   1.1\t 4  5", "") == {:ok, "-7.9"}
       assert Math.subtract("4\n1.23", "") == {:ok, "2.77"}
-      assert Math.subtract("", "") == {:error, "Sub: fewer than two numbers found"}
-      assert Math.subtract("1", "") == {:error, "Sub: fewer than two numbers found"}
-      assert Math.subtract("foo bar", "") == {:error, "Sub: fewer than two numbers found"}
+    end
+
+    test "returns an error tuple with fewer than two numbers" do
+      assert Math.subtract("", "") == {:error, "sub: fewer than two numbers found"}
+      assert Math.subtract("1", "") == {:error, "sub: fewer than two numbers found"}
+      assert Math.subtract("foo bar", "") == {:error, "sub: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -51,9 +57,12 @@ defmodule Mc.Modifier.MathTest do
       assert Math.multiply(" 3 4", "") == {:ok, "12"}
       assert Math.multiply("\n   1.1\t 4  5", "") == {:ok, "22.0"}
       assert Math.multiply("\n1.23\n4\n", "") == {:ok, "4.92"}
-      assert Math.multiply("", "") == {:error, "Mul: fewer than two numbers found"}
-      assert Math.multiply("2", "") == {:error, "Mul: fewer than two numbers found"}
-      assert Math.multiply("foo bar", "") == {:error, "Mul: fewer than two numbers found"}
+    end
+
+    test "returns an error tuple with fewer than two numbers" do
+      assert Math.multiply("", "") == {:error, "mul: fewer than two numbers found"}
+      assert Math.multiply("2", "") == {:error, "mul: fewer than two numbers found"}
+      assert Math.multiply("foo bar", "") == {:error, "mul: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -71,9 +80,12 @@ defmodule Mc.Modifier.MathTest do
       assert Math.divide("radio\n\n2\n4\n\n", "") == {:ok, "0.5"}
       assert Math.divide(" 3 4", "") == {:ok, "0.75"}
       assert Math.divide("\n   -30.0\t 3  4.0", "") == {:ok, "-2.5"}
-      assert Math.divide("", "") == {:error, "Div: fewer than two numbers found"}
-      assert Math.divide("5", "") == {:error, "Div: fewer than two numbers found"}
-      assert Math.divide("foo bar", "") == {:error, "Div: fewer than two numbers found"}
+    end
+
+    test "returns an error tuple with fewer than two numbers" do
+      assert Math.divide("", "") == {:error, "div: fewer than two numbers found"}
+      assert Math.divide("5", "") == {:error, "div: fewer than two numbers found"}
+      assert Math.divide("foo bar", "") == {:error, "div: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -85,27 +97,27 @@ defmodule Mc.Modifier.MathTest do
     end
   end
 
-  describe "Mc.Modifier.Math.apply_func/2" do
-    test "applies the given 'function' to a string (ignoring white space)" do
-      assert Math.apply_func("1\n7", "Add") == {:ok, "8"}
-      assert Math.apply_func("3 \t4.1", "Add") == {:ok, "7.1"}
-      assert Math.apply_func("4 1", "Sub") == {:ok, "3"}
-      assert Math.apply_func("2\n0.5\t0.5", "Sub") == {:ok, "1.0"}
-      assert Math.apply_func("4.2 2", "Mul") == {:ok, "8.4"}
-      assert Math.apply_func("2 4 5", "Mul") == {:ok, "40"}
-      assert Math.apply_func("4.0 2.0", "Div") == {:ok, "2.0"}
-      assert Math.apply_func("10 2 2", "Div") == {:ok, "2.5"}
+  describe "Mc.Modifier.Math.applyop/2" do
+    test "applies the given operation to the given string" do
+      assert Math.applyop("1\n7", :+) == {:ok, "8"}
+      assert Math.applyop("3 \t4.1", :+) == {:ok, "7.1"}
+      assert Math.applyop("4 1", :-) == {:ok, "3"}
+      assert Math.applyop("2\n0.5\t0.5", :-) == {:ok, "1.0"}
+      assert Math.applyop("4.2 2", :*) == {:ok, "8.4"}
+      assert Math.applyop("2 4 5", :*) == {:ok, "40"}
+      assert Math.applyop("4.0 2.0", :/) == {:ok, "2.0"}
+      assert Math.applyop("10 2 2", :/) == {:ok, "2.5"}
     end
 
-    test "returns an error tuple with fewer than 2 numbers" do
-      assert Math.apply_func("7", "Add") == {:error, "Add: fewer than two numbers found"}
-      assert Math.apply_func("", "Add") == {:error, "Add: fewer than two numbers found"}
-      assert Math.apply_func("-1", "Sub") == {:error, "Sub: fewer than two numbers found"}
-      assert Math.apply_func("", "Sub") == {:error, "Sub: fewer than two numbers found"}
-      assert Math.apply_func("5", "Mul") == {:error, "Mul: fewer than two numbers found"}
-      assert Math.apply_func("", "Mul") == {:error, "Mul: fewer than two numbers found"}
-      assert Math.apply_func("4.0", "Div") == {:error, "Div: fewer than two numbers found"}
-      assert Math.apply_func("", "Div") == {:error, "Div: fewer than two numbers found"}
+    test "returns error with fewer than two numbers" do
+      assert Math.applyop("7", :+) == :error
+      assert Math.applyop("", :+) == :error
+      assert Math.applyop("-1", :-) == :error
+      assert Math.applyop("", :-) == :error
+      assert Math.applyop("5", :*) == :error
+      assert Math.applyop("", :*) == :error
+      assert Math.applyop("4.0", :/) == :error
+      assert Math.applyop("", :/) == :error
     end
   end
 end

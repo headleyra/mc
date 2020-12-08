@@ -1,31 +1,10 @@
 defmodule McTest do
-  use ExUnit.Case, async: false
-
-  defmodule TestModifier do
-    def test_func(buffer, args), do: {:ok, "#{buffer} *#{args}*"}
-  end
-
-  defmodule TestMappings do
-    defstruct [
-      ccount: {Mc.Modifier.Ccount, :modify},
-      error: {Mc.Modifier.Error, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      r: {Mc.Modifier.Replace, :modify},
-      replace: {Mc.Modifier.Replace, :modify},
-      tweak: {TestModifier, :test_func}
-    ]
-  end
-
-  setup_all do
-    start_supervised({Mc, mappings: %TestMappings{}})
-    :ok
-  end
+  use ExUnit.Case, async: true
 
   describe "Mc.modify/2" do
     test "returns a modified `buffer`" do
       assert Mc.modify("ON THE RADIO\n", "lcase") == {:ok, "on the radio\n"}
       assert Mc.modify("hurry, offer ends SOON!", "ccount") == {:ok, "23"}
-      assert Mc.modify("let's", "tweak go") == {:ok, "let's *go*"}
     end
 
     test "returns `buffer` when `script` is whitespace" do
@@ -136,9 +115,9 @@ defmodule McTest do
   end
 
   describe "Mc.lookup/2" do
-    test "looks up the name of the module/func_atom pair in the mappings" do
+    test "looks up the name of the given module/function-atom pair in the mappings" do
       assert Mc.lookup(Mc.Modifier.Lcase, :modify) == "lcase"
-      assert Mc.lookup(TestModifier, :test_func) == "tweak"
+      assert Mc.lookup(Mc.Modifier.Http, :post) == "urlp"
     end
 
     test "returns the longest name if multiple matches are found" do
