@@ -27,7 +27,7 @@ defmodule Mc do
   def double_to_triple({modifier, args}, mappings) do
     case Map.get(mappings, modifier) do
       nil ->
-        {Mc.Modifier.Error, :modify, "Not found: #{modifier}"}
+        {Mc.Modifier.Error, :modify, "not found: #{modifier}"}
 
       {module, function} ->
         {module, function, args}

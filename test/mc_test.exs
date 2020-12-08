@@ -40,7 +40,7 @@ defmodule McTest do
     end
 
     test "returns the error modifier 'triple' when the modifier doesn't exist in the mappings" do
-      assert Mc.double_to_triple({:doesnt_exist, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "Not found: doesnt_exist"}
+      assert Mc.double_to_triple({:doesnt_exist, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "not found: doesnt_exist"}
     end
   end
 
