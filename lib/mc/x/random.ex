@@ -4,7 +4,7 @@ defmodule Mc.X.Random do
   def modify(_buffer, args) do
     case Mc.Util.Math.str2int(args) do
       :error ->
-        {:error, "Random: not an integer"}
+        oops("not an integer", :modify)
 
       int ->
         {:ok, "#{:rand.uniform(int)}"}
