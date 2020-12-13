@@ -45,26 +45,26 @@ defmodule Mc.Modifier.ReplaceTest do
       assert Replace.modify("Foo bar foobar abc", "[Bb]ar Biz") == {:ok, "Foo Biz fooBiz abc"}
     end
 
-    test "returns an error tuple when no replace term is given" do
-      assert Replace.modify("3s a crowd", "search-without-replace") == {:error, "Replace: missing replace term"}
-      assert Replace.modify("bish bosh", "") == {:error, "Replace: missing replace term"}
-      assert Replace.modify("", "") == {:error, "Replace: missing replace term"}
+    test "errors when no replace term is given" do
+      assert Replace.modify("3s a crowd", "search-without-replace") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("bish bosh", "") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("", "") == {:error, "usage: replace <search regex> <replace string>"}
     end
 
-    test "returns an error tuple for a replacment term with badly formed URI characters" do
-      assert Replace.modify("n/a", "foo %%0a") == {:error, "Replace: bad URI"}
+    test "errors for a replacment term with badly formed URI characters" do
+      assert Replace.modify("n/a", "foo %%0a") == {:error, "usage: replace <search regex> <replace string>"}
     end
 
-    test "returns an error tuple when the search regex is bad" do
-      assert Replace.modify("n/a", ") foo") == {:error, "Replace: bad search regex"}
-      assert Replace.modify("(foo)", "(?=)) bar") == {:error, "Replace: bad search regex"}
+    test "errors when the search regex is bad" do
+      assert Replace.modify("n/a", ") foo") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("(foo)", "(?=)) bar") == {:error, "usage: replace <search regex> <replace string>"}
     end
 
     test "works with ok tuples" do
       assert Replace.modify({:ok, "foo bar"}, "foo night") == {:ok, "night bar"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Replace.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end

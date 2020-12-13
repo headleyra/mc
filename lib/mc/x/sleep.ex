@@ -2,14 +2,13 @@ defmodule Mc.X.Sleep do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    case Integer.parse(args) do
-      {secs, _} ->
-        Process.sleep(secs * 1_000)
+    case Mc.Util.Math.str2int(args) do
+      {:ok, seconds} when seconds > 0 ->
+        Process.sleep(seconds * 1_000)
+        {:ok, buffer}
 
-      :error ->
-        nil
+      _bad_seconds ->
+        usage(:modify, "<positive integer>")
     end
-
-    {:ok, buffer}
   end
 end

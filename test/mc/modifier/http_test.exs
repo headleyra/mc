@@ -25,7 +25,7 @@ defmodule Mc.Modifier.HttpTest do
       assert Http.get({:ok, "n/a"}, "localhost:4000") == {:ok, "localhost:4000"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Http.get({:error, "reason"}, "url") == {:error, "reason"}
     end
   end
@@ -38,19 +38,19 @@ defmodule Mc.Modifier.HttpTest do
       assert Http.post("", "url y:noexist") == {:ok, {"url", [y: ""]}}
     end
 
-    test "returns an error tuple (given bad args)" do
-      assert Http.post("n/a", "") == {:error, "urlp: bad args"}
-      assert Http.post("", "url param-name-only") == {:error, "urlp: bad args"}
-      assert Http.post("", "url :") == {:error, "urlp: bad args"}
-      assert Http.post("", "url foo:") == {:error, "urlp: bad args"}
-      assert Http.post("", "url :bar") == {:error, "urlp: bad args"}
+    test "errors given bad args" do
+      assert Http.post("n/a", "") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
+      assert Http.post("", "url param-name-only") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
+      assert Http.post("", "url :") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
+      assert Http.post("", "url foo:") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
+      assert Http.post("", "url :bar") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
     end
 
     test "works with ok tuples" do
       assert Http.post({:ok, "n/a"}, "url db:data") == {:ok, {"url", [db: "big data"]}}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Http.post({:error, "reason"}, "url") == {:error, "reason"}
     end
   end

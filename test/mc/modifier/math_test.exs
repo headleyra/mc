@@ -11,7 +11,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.add("\n1.23\n4\n", "") == {:ok, "5.23"}
     end
 
-    test "returns an error tuple with fewer than two numbers" do
+    test "errors with fewer than two numbers" do
       assert Math.add("", "") == {:error, "add: fewer than two numbers found"}
       assert Math.add("8", "") == {:error, "add: fewer than two numbers found"}
       assert Math.add("foo bar", "") == {:error, "add: fewer than two numbers found"}
@@ -21,7 +21,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.add({:ok, "3\n4"}, "") == {:ok, "7"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Math.add({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -35,7 +35,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.subtract("4\n1.23", "") == {:ok, "2.77"}
     end
 
-    test "returns an error tuple with fewer than two numbers" do
+    test "errors with fewer than two numbers" do
       assert Math.subtract("", "") == {:error, "sub: fewer than two numbers found"}
       assert Math.subtract("1", "") == {:error, "sub: fewer than two numbers found"}
       assert Math.subtract("foo bar", "") == {:error, "sub: fewer than two numbers found"}
@@ -45,7 +45,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.subtract({:ok, "3\n4"}, "") == {:ok, "-1"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Math.subtract({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -59,7 +59,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.multiply("\n1.23\n4\n", "") == {:ok, "4.92"}
     end
 
-    test "returns an error tuple with fewer than two numbers" do
+    test "errors with fewer than two numbers" do
       assert Math.multiply("", "") == {:error, "mul: fewer than two numbers found"}
       assert Math.multiply("2", "") == {:error, "mul: fewer than two numbers found"}
       assert Math.multiply("foo bar", "") == {:error, "mul: fewer than two numbers found"}
@@ -69,7 +69,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.multiply({:ok, "3\n4"}, "") == {:ok, "12"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Math.multiply({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -82,7 +82,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.divide("\n   -30.0\t 3  4.0", "") == {:ok, "-2.5"}
     end
 
-    test "returns an error tuple with fewer than two numbers" do
+    test "errors with fewer than two numbers" do
       assert Math.divide("", "") == {:error, "div: fewer than two numbers found"}
       assert Math.divide("5", "") == {:error, "div: fewer than two numbers found"}
       assert Math.divide("foo bar", "") == {:error, "div: fewer than two numbers found"}
@@ -92,7 +92,7 @@ defmodule Mc.Modifier.MathTest do
       assert Math.divide({:ok, "3\n4"}, "") == {:ok, "0.75"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Math.divide({:error, "reason"}, "") == {:error, "reason"}
     end
   end

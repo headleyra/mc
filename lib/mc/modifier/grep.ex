@@ -2,28 +2,26 @@ defmodule Mc.Modifier.Grep do
   use Mc.Railway, [:modify, :modifyv]
 
   def modify(buffer, args) do
-    grep(buffer, args, :n)
+    grep(buffer, args, :modify, &Regex.match?/2)
   end
 
   def modifyv(buffer, args) do
-    grep(buffer, args, :i)
+    grep(buffer, args, :modifyv, &(Regex.match?(&1, &2) == false))
   end
 
-  def grep(buffer, args, type) do
+  defp grep(buffer, args, func_atom, match_func) do
     case Regex.compile(args) do
       {:ok, regex} ->
         result =
           buffer
           |> String.split("\n")
-          |> Enum.filter(fn line ->
-            if type == :n, do: Regex.match?(regex, line), else: !Regex.match?(regex, line)
-          end)
+          |> Enum.filter(fn line -> match_func.(regex, line) end)
           |> Enum.join("\n")
 
         {:ok, result}
 
       {:error, _} ->
-        {:error, "Grep: bad regex"}
+        usage(func_atom, "<regex>")
     end
   end
 end

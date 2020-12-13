@@ -14,7 +14,7 @@ defmodule Mc.Modifier.IfTest do
   end
 
   describe "Mc.Modifier.If.modifye/2" do
-    test "evaluates `buffer` == 'value of arg1 key'? (and runs 'arg2' else 'arg3')" do
+    test "evaluates `buffer` == 'value-of-arg1-key'? and runs the script in 'arg2' if true, else 'arg3'" do
       assert If.modifye("aaa", "a_key big small") == {:ok, "AAA"}
       assert If.modifye("NOT EQUAL", "z_key big small") == {:ok, "not equal"}
       assert If.modifye("aaa", "a_key empty.key oops") == {:ok, "aaa"}
@@ -22,22 +22,22 @@ defmodule Mc.Modifier.IfTest do
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifye("fiscal rules", "") == {:error, "If: Bad args"}
-      assert If.modifye("gig economy", "one") == {:error, "If: Bad args"}
-      assert If.modifye("yaba daba do", "buy the dip dude") == {:error, "If: Bad args"}
+      assert If.modifye("fiscal rules", "") == {:error, "usage: ife <compare key> <true key> <false key>"}
+      assert If.modifye("gig economy", "one") == {:error, "usage: ife <compare key> <true key> <false key>"}
+      assert If.modifye("yaba daba do", "buy the dip dude") == {:error, "usage: ife <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do
       assert If.modifye({:ok, "aaa"}, "a_key big any") == {:ok, "AAA"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert If.modifye({:error, "reason"}, "akey") == {:error, "reason"}
     end
   end
 
   describe "Mc.Modifier.If.modifyl/2" do
-    test "evaluates `buffer` < 'value of arg1 key'? (and runs 'arg2' else 'arg3')" do
+    test "evaluates `buffer` < 'value-of-arg1-key'? and runs the script in 'arg2' if true, else 'arg3'" do
       assert If.modifyl("zzz", "a_key small big") == {:ok, "ZZZ"}
       assert If.modifyl("GoLd", "z_key small big") == {:ok, "gold"}
       assert If.modifyl("big up", "empty.key n/a big") == {:ok, "BIG UP"}
@@ -45,38 +45,38 @@ defmodule Mc.Modifier.IfTest do
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifyl("fiscal rules", "") == {:error, "If: Bad args"}
-      assert If.modifyl("gig economy", "one") == {:error, "If: Bad args"}
-      assert If.modifyl("yaba daba do", "buy the dip dude") == {:error, "If: Bad args"}
+      assert If.modifyl("fiscal rules", "") == {:error, "usage: ifl <compare key> <true key> <false key>"}
+      assert If.modifyl("gig economy", "one") == {:error, "usage: ifl <compare key> <true key> <false key>"}
+      assert If.modifyl("yaba daba do", "buy the dip dude") == {:error, "usage: ifl <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do
       assert If.modifyl({:ok, "aaa"}, "z_key big small") == {:ok, "AAA"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert If.modifyl({:error, "reason"}, "akey") == {:error, "reason"}
     end
   end
 
   describe "Mc.Modifier.If.modifyg/2" do
-    test "evaluates `buffer` > 'value of arg1 key'? (and runs 'arg2' else 'arg3')" do
+    test "evaluates `buffer` > 'value-of-arg1-key'? and runs the script in 'arg2' if true, else 'arg3'" do
       assert If.modifyg("zzz", "a_key big small") == {:ok, "ZZZ"}
       assert If.modifyg("GoLd", "z_key small big") == {:ok, "GOLD"}
       assert If.modifyg("big up", "empty.key big nope") == {:ok, "BIG UP"}
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifyg("fiscal rules", "") == {:error, "If: Bad args"}
-      assert If.modifyg("gig economy", "one") == {:error, "If: Bad args"}
-      assert If.modifyg("yaba daba do", "buy the dip dude") == {:error, "If: Bad args"}
+      assert If.modifyg("fiscal rules", "") == {:error, "usage: ifg <compare key> <true key> <false key>"}
+      assert If.modifyg("gig economy", "one") == {:error, "usage: ifg <compare key> <true key> <false key>"}
+      assert If.modifyg("yaba daba do", "buy the dip dude") == {:error, "usage: ifg <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do
       assert If.modifyg({:ok, "aaa"}, "z_key small big") == {:ok, "AAA"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert If.modifyg({:error, "reason"}, "akey") == {:error, "reason"}
     end
   end

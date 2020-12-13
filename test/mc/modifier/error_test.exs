@@ -11,7 +11,7 @@ defmodule Mc.Modifier.ErrorTest do
       assert Error.modify({:ok, "buffer"}, "blah") == {:error, "blah"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Error.modify({:error, "boom!"}, "black coffee") == {:error, "boom!"}
     end
   end

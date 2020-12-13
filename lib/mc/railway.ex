@@ -3,8 +3,12 @@ defmodule Mc.Railway do
   defmacro __using__(func_list) do
     oops_def =
       quote do
-        def oops(message, func) do
+        defp oops(func, message) do
           {:error, "#{Mc.lookup(__MODULE__, func)}: #{message}"}
+        end
+
+        defp usage(func, args_spec) do
+          {:error, "usage: #{Mc.lookup(__MODULE__, func)} #{args_spec}"}
         end
       end
 

@@ -13,7 +13,7 @@ defmodule Mc.Modifier.CcountTest do
       assert Ccount.modify({:ok, "Over 50k"}, "n/a") == {:ok, "8"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Ccount.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

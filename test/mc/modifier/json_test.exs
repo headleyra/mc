@@ -3,7 +3,7 @@ defmodule Mc.Modifier.JsonTest do
   alias Mc.Modifier.Json
 
   describe "Mc.Modifier.Json.modify/2" do
-    test "parses `buffer` as JSON and uses `args` as a 'key' or 'index' to retrieve what it points to", do: true
+    test "parses `buffer` as JSON and uses `args` as a hash 'key' or an array 'index'", do: true
 
     test "retrieves from a JSON object" do
       assert Json.modify(~s({"num":201}), "num") == {:ok, "201"}
@@ -31,26 +31,26 @@ defmodule Mc.Modifier.JsonTest do
       assert Json.modify("[[1, 2], 8]", "0") == {:ok, ~s([1,2])}
     end
 
-    test "returns an error tuple when the 'index' of the array is a non-integer" do
-      assert Json.modify("[1, 2]", "wibble") == {:error, "Json: non integer JSON array index: wibble"}
+    test "errors when the 'index' of the array is a non-integer" do
+      assert Json.modify("[1, 2]", "wibble") == {:error, "json: non integer JSON array index: wibble"}
     end
 
-    test "returns an error tuple when the JSON is malformed or the empty string" do
-      assert Mc.Modifier.Json.modify(~s(oops!\"]), "0") == {:error, "Json: bad JSON"}
-      assert Mc.Modifier.Json.modify("", "n/a") == {:error, "Json: bad JSON"}
+    test "errors when the JSON is malformed or the empty string" do
+      assert Mc.Modifier.Json.modify(~s(oops!\"]), "0") == {:error, "json: bad JSON"}
+      assert Mc.Modifier.Json.modify("", "n/a") == {:error, "json: bad JSON"}
     end
 
-    test "returns an error tuple for 'null' JSON" do
-      assert Json.modify("null", "x") == {:error, "Json: null JSON"}
-      assert Json.modify("null", "n/a") == {:error, "Json: null JSON"}
-      assert Json.modify("null", "") == {:error, "Json: null JSON"}
+    test "errors for 'null' JSON" do
+      assert Json.modify("null", "x") == {:error, "json: null JSON"}
+      assert Json.modify("null", "n/a") == {:error, "json: null JSON"}
+      assert Json.modify("null", "") == {:error, "json: null JSON"}
     end
 
     test "accepts ok tuples" do
       assert Json.modify({:ok, "[20, 7]"}, "1") == {:ok, "7"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Json.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
@@ -61,21 +61,21 @@ defmodule Mc.Modifier.JsonTest do
       assert Json.modifya("[2, 3.142]", "ignored") == {:ok, "2\n3.142"}
     end
 
-    test "returns an error tuple when the JSON isn't an array" do
-      assert Json.modifya("{\"foo\":7}", "") == {:error, "Json: expected a JSON array"}
-      assert Json.modifya("{}", "ignored") == {:error, "Json: expected a JSON array"}
-      assert Json.modifya("null", "x") == {:error, "Json: expected a JSON array"}
+    test "errors when the JSON isn't an array" do
+      assert Json.modifya("{\"foo\":7}", "") == {:error, "jsona: expected a JSON array"}
+      assert Json.modifya("{}", "ignored") == {:error, "jsona: expected a JSON array"}
+      assert Json.modifya("null", "x") == {:error, "jsona: expected a JSON array"}
     end
 
-    test "returns an error tuple when the JSON is invalid" do
-      assert Json.modifya("boom!\"]", "") == {:error, "Json: bad JSON"}
+    test "errors when the JSON is invalid" do
+      assert Json.modifya("boom!\"]", "") == {:error, "jsona: bad JSON"}
     end
 
     test "works with ok tuples" do
       assert Json.modifya({:ok, "[20, 7]"}, "n/a") == {:ok, "20\n7"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Json.modifya({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
@@ -87,9 +87,9 @@ defmodule Mc.Modifier.JsonTest do
       assert Json.list2el([7, "cars"], "00") == {:ok, "7"}
     end
 
-    test "returns an error tuple given a non-integer 'index'" do
-      assert Json.list2el([2, "trois"], "nah") == {:error, "Json: non integer JSON array index: nah"}
-      assert Json.list2el("n/a", "zero") == {:error, "Json: non integer JSON array index: zero"}
+    test "errors given a non-integer 'index'" do
+      assert Json.list2el([2, "trois"], "nah") == {:error, "json: non integer JSON array index: nah"}
+      assert Json.list2el("n/a", "zero") == {:error, "json: non integer JSON array index: zero"}
     end
   end
 end

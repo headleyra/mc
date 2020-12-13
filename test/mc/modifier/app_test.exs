@@ -39,7 +39,7 @@ defmodule Mc.Modifier.AppTest do
       assert App.modify({:ok, "n/a"}, "app2 un deux") == {:ok, "b brexit ex why\nreplace ex un\nr why deux"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert App.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -64,7 +64,7 @@ defmodule Mc.Modifier.AppTest do
       assert App.modifyr({:ok, "n/a"}, "app2 x backstop") == {:ok, "brxit x backstop"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert App.modifyr({:error, "reason"}, "") == {:error, "reason"}
     end
   end

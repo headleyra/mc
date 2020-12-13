@@ -33,7 +33,7 @@ defmodule Mc.Modifier.SortTest do
       assert Sort.modify({:ok, "banana\napple\ntomatoe"}, "n/a") == {:ok, "apple\nbanana\ntomatoe\n"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Sort.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
@@ -56,14 +56,14 @@ defmodule Mc.Modifier.SortTest do
       assert Sort.modifyv({:ok, "banana\napple\ntomatoe"}, "n/a") == {:ok, "tomatoe\nbanana\napple\n"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Sort.modifyv({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
 
-  describe "Mc.Modifier.Sort.sorter/2" do
+  describe "Mc.Modifier.Sort.sorta/2" do
     test "sorts lines of text (ascending)", %{text: text} do
-      assert Sort.sorter(text, :asc) == """
+      assert Sort.sorta(text) == """
 
 
         zebra crossing
@@ -73,9 +73,11 @@ defmodule Mc.Modifier.SortTest do
       strawberries
       """
     end
+  end
 
+  describe "Mc.Modifier.Sort.sortd/2" do
     test "sorts lines of text (descending)", %{text: text} do
-      assert Sort.sorter(text, :dsc) == """
+      assert Sort.sortd(text) == """
       strawberries
       oranges lemons
       apples

@@ -3,12 +3,12 @@ defmodule Mc.Modifier.Map do
   @timeout 20_000
 
   def modify(buffer, args) do
-    case Mc.Util.Sys.decode(args) do
-      {:error, _} ->
-        {:error, "Map: bad URI"}
-
-      script ->
+    case Mc.Util.InlineString.decode(args) do
+      {:ok, script} ->
         result(buffer, script)
+
+      _error ->
+        usage(:modify, "<inline string>")
     end
   end
 
@@ -19,18 +19,25 @@ defmodule Mc.Modifier.Map do
   end
 
   defp buffer2tasks(buffer, script) do
-    buffer_lines = String.split(buffer, "\n")
-    Enum.map(buffer_lines, fn line -> Task.async(fn -> Mc.modify(line, script) end) end)
+    String.split(buffer, "\n")
+    |> Enum.map(fn buffer_line -> Task.async(fn -> Mc.modify(buffer_line, script) end) end)
   end
 
   defp report(results) do
-    if Enum.all?(results, fn result -> match?({:ok, _}, result) end) do
-      {:ok,
-        Enum.map(results, fn {:ok, result} -> result end)
-        |> Enum.join("\n")}
-    else
-      Enum.reject(results, fn result -> match?({:ok, _}, result) end)
-      |> List.first()
-    end
+    all_ok = Enum.all?(results, fn result -> match?({:ok, _}, result) end)
+    if all_ok, do: reporta(results), else: reportb(results)
+  end
+
+  defp reporta(results) do
+    result =
+      Enum.map(results, fn {:ok, result} -> result end)
+      |> Enum.join("\n")
+
+    {:ok, result}
+  end
+
+  defp reportb(results) do
+    Enum.reject(results, fn result -> match?({:ok, _}, result) end)
+    |> List.first()
   end
 end

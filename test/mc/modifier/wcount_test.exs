@@ -13,7 +13,7 @@ defmodule Mc.Modifier.WcountTest do
       assert Wcount.modify({:ok, "why not best\nof seven?"}, "n/a") == {:ok, "5"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Wcount.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

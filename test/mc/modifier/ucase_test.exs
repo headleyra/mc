@@ -11,7 +11,7 @@ defmodule Mc.Modifier.UcaseTest do
       assert Ucase.modify({:ok, "one, two\n3"}, "") == {:ok, "ONE, TWO\n3"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Ucase.modify({:error, {:file, :not_found}}, "") == {:error, {:file, :not_found}}
     end
   end

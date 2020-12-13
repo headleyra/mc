@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Delete do
         {:ok, result}
 
       {:error, _} ->
-        {:error, "Delete: bad regex"}
+        usage(:modify, "<regex>")
     end
   end
 end

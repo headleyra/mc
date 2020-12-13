@@ -2,20 +2,17 @@ defmodule Mc.Modifier.Sort do
   use Mc.Railway, [:modify, :modifyv]
 
   def modify(buffer, _args) do
-    {:ok, sorter(buffer, :asc)}
+    {:ok, sorta(buffer)}
   end
 
   def modifyv(buffer, _args) do
-    {:ok, sorter(buffer, :dsc)}
+    {:ok, sortd(buffer)}
   end
 
-  def sorter(text, order) do
-    func =
-      case order do
-        :asc -> (& &1 <= &2)
-        :dsc -> (& &1 >= &2)
-      end
+  def sorta(text), do: sorter(text, &(&1 <= &2))
+  def sortd(text), do: sorter(text, &(&1 >= &2))
 
+  defp sorter(text, func) do
     text
     |> String.split("\n")
     |> Enum.sort(func)

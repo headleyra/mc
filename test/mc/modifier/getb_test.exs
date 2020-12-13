@@ -12,7 +12,7 @@ defmodule Mc.Modifier.GetbTest do
       assert Getb.modify({:ok, "best of 3"}, "n/a") == {:ok, "best of 3"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Getb.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

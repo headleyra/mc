@@ -2,14 +2,8 @@ defmodule Mc.Modifier.Head do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    case Integer.parse(args) do
-      :error ->
-        {:error, "Head: not an integer"}
-
-      {num, _} when num < 0 ->
-        {:error, "Head: negative"}
-
-      {num, _} ->
+    case Mc.Util.Math.str2int(args) do
+      {:ok, num} when num >= 0 ->
         result =
           buffer
           |> String.split("\n")
@@ -17,6 +11,9 @@ defmodule Mc.Modifier.Head do
           |> Enum.join("\n")
 
         {:ok, result}
+
+      _error ->
+        usage(:modify, "<positive integer>")
     end
   end
 end

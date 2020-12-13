@@ -2,20 +2,15 @@ defmodule Mc.Modifier.Range do
   use Mc.Railway, [:modify]
 
   def modify(_buffer, args) do
-    try do
-      case String.split(args) |> Enum.map(&Mc.Util.Math.str2int(&1)) do
-        [start, finish] ->
-          {:ok, range_for(start, finish)}
+    case String.split(args) |> Enum.map(&Mc.Util.Math.str2int(&1)) do
+      [{:ok, start}, {:ok, finish}] ->
+        {:ok, range_for(start, finish)}
 
-        [finish] ->
-          {:ok, range_for(1, finish)}
+      [{:ok, finish}] ->
+        {:ok, range_for(1, finish)}
 
-        _bad_args ->
-          {:error, "Range: bad limit(s)"}
-      end
-    rescue
-      ArgumentError ->
-        {:error, "Range: limit(s) should be integers"}
+      _bad_args ->
+        usage(:modify, "<positive integer> [<positive integer>]")
     end
   end
 

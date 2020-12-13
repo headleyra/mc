@@ -16,7 +16,7 @@ defmodule Mc.Modifier.Regex do
         end
 
       {:error, _} ->
-        {:error, "Regex: bad regex"}
+        usage(:modify, "<regex>")
     end
   end
 end

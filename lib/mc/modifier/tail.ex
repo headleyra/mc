@@ -1,24 +1,23 @@
 defmodule Mc.Modifier.Tail do
   use Mc.Railway, [:modify]
 
+  def modify(_buffer, "0"), do: {:ok, ""}
+
   def modify(buffer, args) do
-    case Integer.parse(args) do
-      :error ->
-        {:error, "Tail: not an integer"}
-
-      {num, _} when num < 0 ->
-        {:error, "Tail: negative"}
-
-      {num, _} ->
+    case Mc.Util.Math.str2int(args) do
+      {:ok, tail} when tail > 0 ->
         result =
           buffer
           |> String.split("\n")
           |> Enum.reverse()
-          |> Enum.take(num)
+          |> Enum.take(tail)
           |> Enum.reverse()
           |> Enum.join("\n")
 
         {:ok, result}
+
+      _bad_args ->
+        usage(:modify, "<positive integer>")
     end
   end
 end

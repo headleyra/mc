@@ -64,23 +64,20 @@ defmodule Mc.Modifier.HtabTest do
     end
 
     test "returns a table", %{html: html} do
-      assert Htab.modify(html, "tr.alt td") == {
-        :ok,
+      assert Htab.modify(html, "tr.alt td") == {:ok,
         """
         08:44\tEarth [ERT]\tMars [MRS]\t08:53
         09:43\tJupiter [JUP]\tNeptune [NEP]\t11:04
         """
       }
 
-      assert Htab.modify(html, "tr th") == {
-        :ok,
+      assert Htab.modify(html, "tr th") == {:ok,
         """
         Leaving\tFrom\tTo\tArriving
         """
       }
 
-      assert Htab.modify(html, "tr abbr") == {
-        :ok,
+      assert Htab.modify(html, "tr abbr") == {:ok,
         """
         ERT\tMRS
         MRS\tJUP
@@ -90,8 +87,7 @@ defmodule Mc.Modifier.HtabTest do
     end
 
     test "returns a table (given URI encoded CSS selectors)", %{html: html} do
-      assert Htab.modify(html, "table%20tbody%20tr td.origin%20abbr") == {
-        :ok,
+      assert Htab.modify(html, "table%20tbody%20tr td.origin%20abbr") == {:ok,
         """
         ERT
         MRS
@@ -100,13 +96,13 @@ defmodule Mc.Modifier.HtabTest do
       }
     end
 
-    test "returns an error tuple for badly formed URI encoded selectors", %{html: html} do
-      assert Htab.modify(html, "table%%20tr td") == {:error, "Htab: bad URI"}
+    test "errors for badly formed URI encoded selectors", %{html: html} do
+      assert Htab.modify(html, "table%%20tr td") ==
+        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
     end
 
     test "returns a table (where the CSS selectors target lists of elements)", %{html: html} do
-      assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th") == {
-        :ok,
+      assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th") == {:ok,
         """
         Leaving\tFrom\tTo\tArriving
         Earth [ERT]\tMars [MRS]
@@ -116,8 +112,7 @@ defmodule Mc.Modifier.HtabTest do
     end
 
     test "returns a table after removing whitespace around content", %{html_whitespace: html_whitespace} do
-      assert Htab.modify(html_whitespace, "#one,#two p") == {
-        :ok,
+      assert Htab.modify(html_whitespace, "#one,#two p") == {:ok,
         """
         p1\tp2
         p3\tp4
@@ -125,22 +120,26 @@ defmodule Mc.Modifier.HtabTest do
       }
     end
 
-    test "returns an error tuple unless there are exactly 2 selectors", %{html: html} do
-      assert Htab.modify(html, "") == {:error, "Htab: requires exactly 2 selectors"}
-      assert Htab.modify(html, "p") == {:error, "Htab: requires exactly 2 selectors"}
-      assert Htab.modify(html, "table tr td") == {:error, "Htab: requires exactly 2 selectors"}
+    test "errors unless there are exactly 2 selectors", %{html: html} do
+      assert Htab.modify(html, "") ==
+        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+
+      assert Htab.modify(html, "p") ==
+        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+
+      assert Htab.modify(html, "table tr td") ==
+        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
     end
 
     test "works with ok tuples", %{html: html} do
-      assert Htab.modify({:ok, html}, "tr:nth-of-type(2) td") == {
-        :ok,
+      assert Htab.modify({:ok, html}, "tr:nth-of-type(2) td") == {:ok,
          """
          09:03\tMars [MRS]\tJupiter [JUP]\t09:26
          """
        }
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Htab.modify({:error, "some reason"}, "n/a") == {:error, "some reason"}
     end
   end

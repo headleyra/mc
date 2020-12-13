@@ -65,7 +65,7 @@ defmodule Mc.Modifier.HselcTest do
       assert Hselc.modify({:ok, html}, ".item") == {:ok, "Book"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Hselc.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end

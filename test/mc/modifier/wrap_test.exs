@@ -11,24 +11,19 @@ defmodule Mc.Modifier.WrapTest do
       assert Wrap.modify("\none\ntwo\nthree\n\n", "3") == {:ok, "\none\ntwo\nthr\nee\n\n"}
     end
 
-    test "works with column wraps that look like integers" do
-      assert Wrap.modify("a.long.word", "4a") == {:ok, "a.lo\nng.w\nord"}
-      assert Wrap.modify("two words", "5.1") == {:ok, "two w\nords"}
-    end
-
-    test "returns an error tuple when `args` isn't a positive number" do
-      assert Wrap.modify("a bit of text", "") == {:error, "wrap: bad column number"}
-      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "wrap: bad column number"}
-      assert Wrap.modify("testing", "four") == {:error, "wrap: bad column number"}
-      assert Wrap.modify("foo", "-10") == {:error, "wrap: bad column number"}
-      assert Wrap.modify("bar", "0") == {:error, "wrap: bad column number"}
+    test "errors when `args` isn't a positive integer" do
+      assert Wrap.modify("a bit of text", "") == {:error, "usage: wrap <positive integer>"}
+      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "usage: wrap <positive integer>"}
+      assert Wrap.modify("testing", "four") == {:error, "usage: wrap <positive integer>"}
+      assert Wrap.modify("foo", "-10") == {:error, "usage: wrap <positive integer>"}
+      assert Wrap.modify("trade and commerce", "5.0") == {:error, "usage: wrap <positive integer>"}
     end
 
     test "works with ok tuples" do
       assert Wrap.modify({:ok, "best of 3"}, "7") == {:ok, "best of\n3"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Wrap.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

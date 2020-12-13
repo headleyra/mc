@@ -17,7 +17,7 @@ defmodule Mc.Modifier.InvertTest do
       assert Invert.modify({:ok, "1\n2"}, "n/a") == {:ok, "2\n1"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Invert.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end

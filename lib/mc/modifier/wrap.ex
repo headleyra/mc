@@ -1,12 +1,10 @@
 defmodule Mc.Modifier.Wrap do
   use Mc.Railway, [:modify]
+  @argspec "<positive integer>"
 
   def modify(buffer, args) do
-    case Integer.parse(args) do
-      {column, _} when column < 1 ->
-        oops("bad column number", :modify)
-
-      {column, _} ->
+    case Mc.Util.Math.str2int(args) do
+      {:ok, column} when column >= 0 ->
         result =
           buffer
           |> String.split("\n")
@@ -15,8 +13,8 @@ defmodule Mc.Modifier.Wrap do
 
         {:ok, result}
 
-      :error ->
-        oops("bad column number", :modify)
+      _error ->
+        usage(:modify, @argspec)
     end
   end
 
@@ -24,10 +22,7 @@ defmodule Mc.Modifier.Wrap do
 
   def wrap(text, column) do
     case column do
-      col when col < 1 ->
-        :error
-
-      col ->
+      col when col > 0 ->
         text
         |> String.graphemes()
         |> Enum.chunk_every(col)
@@ -38,6 +33,9 @@ defmodule Mc.Modifier.Wrap do
         |> Enum.chunk_every(col)
         |> Enum.map(fn wrap_chars_list -> Enum.join(wrap_chars_list) end)
         |> Enum.join("\n")
+
+      _error ->
+        :error
     end
   end
 end

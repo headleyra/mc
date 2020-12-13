@@ -88,7 +88,7 @@ defmodule Mc.Modifier.HselTest do
       assert Hsel.modify({:ok, html}, ".item") == {:ok, "<td class=\"item\">Book</td>"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Hsel.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end

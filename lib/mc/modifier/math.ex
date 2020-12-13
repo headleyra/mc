@@ -10,7 +10,8 @@ defmodule Mc.Modifier.Math do
     string
     |> String.split()
     |> Enum.map(fn num_str -> Mc.Util.Math.str2num(num_str) end)
-    |> Enum.reject(fn num -> num == :error end)
+    |> Enum.reject(fn num_tuple -> num_tuple == :error end)
+    |> Enum.map(fn {:ok, num} -> num end)
     |> (fn
           [_, _ | _] = numbers_list ->
             {:ok, numbers_list |> Enum.reduce(get_func(operation)) |> Kernel.to_string()}
@@ -22,17 +23,20 @@ defmodule Mc.Modifier.Math do
 
   defp op(string, operation, from_func) do
     case applyop(string, operation) do
-      :error -> oops("fewer than two numbers found", from_func)
-      ok_result -> ok_result
+      :error ->
+        oops(from_func, "fewer than two numbers found")
+
+      ok_result ->
+        ok_result
     end
   end
 
   defp get_func(operation) do
     %{
-      :+ => fn num, acc -> acc + num end,
-      :- => fn num, acc -> acc - num end,
-      :* => fn num, acc -> acc * num end,
-      :/ => fn num, acc -> acc / num end
+      :+ => fn int, acc -> acc + int end,
+      :- => fn int, acc -> acc - int end,
+      :* => fn int, acc -> acc * int end,
+      :/ => fn int, acc -> acc / int end
     }
     |> Map.get(operation)
   end

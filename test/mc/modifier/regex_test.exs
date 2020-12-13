@@ -44,15 +44,15 @@ defmodule Mc.Modifier.RegexTest do
       assert Regex.modify("foo", "bar") == {:ok, ""}
     end
 
-    test "returns an error tuple when the regex is bad" do
-      assert Regex.modify("one\ntwo", "?") == {:error, "Regex: bad regex"}
+    test "errors when the regex is bad" do
+      assert Regex.modify("one\ntwo", "?") == {:error, "usage: regex <regex>"}
     end
 
     test "works with ok tuples" do
       assert Regex.modify({:ok, "some buffer text"}, "me.*uf") == {:ok, "me buf"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Regex.modify({:error, "reason"}, "gets ignored") == {:error, "reason"}
     end
   end

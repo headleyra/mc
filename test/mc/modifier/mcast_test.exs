@@ -32,7 +32,7 @@ defmodule Mc.Modifier.McastTest do
       assert Mcast.modify({:ok, "n/a"}, "s3 s2") == {:ok, "s3: error: boom!\ns2: ok: plain rice"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Mcast.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -54,7 +54,7 @@ defmodule Mc.Modifier.McastTest do
       assert Mcast.modifyk({:ok, "n/a"}, "sk1") == {:ok, "s3: error: boom!\ns2: ok: plain rice"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Mcast.modifyk({:error, "reason"}, "") == {:error, "reason"}
     end
   end

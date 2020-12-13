@@ -13,7 +13,7 @@ defmodule Mc.Modifier.LcountTest do
       assert Lcount.modify({:ok, "one\ntwo"}, "n/a") == {:ok, "2"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Lcount.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

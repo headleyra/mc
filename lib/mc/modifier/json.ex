@@ -10,10 +10,10 @@ defmodule Mc.Modifier.Json do
         list2el(data, args)
 
       {:ok, nil} ->
-        {:error, "Json: null JSON"}
+        oops(:modify, "null JSON")
 
       {:error, _reason} ->
-        {:error, "Json: bad JSON"}
+        oops(:modify, "bad JSON")
     end
   end
 
@@ -24,23 +24,24 @@ defmodule Mc.Modifier.Json do
           data
           |> Enum.map(&Kernel.inspect/1)
           |> Enum.join("\n")
+
         {:ok, result}
 
       {:error, _data} ->
-        {:error, "Json: bad JSON"}
+        oops(:modifya, "bad JSON")
 
       _not_a_json_array ->
-        {:error, "Json: expected a JSON array"}
+        oops(:modifya, "expected a JSON array")
     end
   end
 
   def list2el(list, index) do
     case Mc.Util.Math.str2int(index) do
-      :error ->
-        {:error, "Json: non integer JSON array index: #{index}"}
-
-      index_integer ->
+      {:ok, index_integer} ->
         {:ok, Enum.at(list, index_integer) |> Jason.encode!()}
+
+      _non_integer_index ->
+        oops(:modify, "non integer JSON array index: #{index}")
     end
   end
 end

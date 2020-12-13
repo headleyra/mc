@@ -6,7 +6,7 @@ defmodule Mc.X.Urlj do
       {:ok, api_key} = Mc.modify("", "get api_key")
       Mc.Client.Http.post(endpoint(), %{url: args, api_key: api_key})
     else
-      oops("bad URL", :modify)
+      oops(:modify, "bad URL")
     end
   end
 

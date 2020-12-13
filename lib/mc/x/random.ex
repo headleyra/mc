@@ -3,11 +3,11 @@ defmodule Mc.X.Random do
 
   def modify(_buffer, args) do
     case Mc.Util.Math.str2int(args) do
-      :error ->
-        oops("not an integer", :modify)
+      {:ok, integer} when integer > 0 ->
+        {:ok, "#{:rand.uniform(integer)}"}
 
-      int ->
-        {:ok, "#{:rand.uniform(int)}"}
+      _bad_args ->
+        usage(:modify, "<positive integer>")
     end
   end
 end

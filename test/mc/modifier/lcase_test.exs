@@ -11,7 +11,7 @@ defmodule Mc.Modifier.LcaseTest do
       assert Lcase.modify({:ok, "BEST\nOF 3"}, "n/a") == {:ok, "best\nof 3"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Lcase.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

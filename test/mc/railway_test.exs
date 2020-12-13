@@ -8,16 +8,6 @@ defmodule Mc.RailwayTest do
     def up(buffer, _args), do: {:ok, String.upcase(buffer)}
   end
 
-  # setup do
-  #   mappings = %{
-  #     small: {TestModifier, :down},
-  #     big: {TestModifier, :up}
-  #   }
-
-  #   start_supervised({Mc, mappings: mappings})
-  #   :ok
-  # end
-
   describe "Mc.Railway" do
     test "creates functions that, given an error tuple (as `buffer`), return it unchanged" do
       assert TestModifier.down({:error, "boom"}, "n/a") == {:error, "boom"}
@@ -27,12 +17,6 @@ defmodule Mc.RailwayTest do
     test "creates functions that, given an ok tuple (as `buffer`), delegate to their string equivalents" do
       assert TestModifier.down({:ok, "BoSh"}, "") == {:ok, "bosh"}
       assert TestModifier.up({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
-    end
-
-    @tag :skip
-    test "creates an error tuple builder function" do
-      assert TestModifier.oops("the error message", :down) == {:error, "small: the error message"}
-      assert TestModifier.oops("oops!", :up) == {:error, "big: oops!"}
     end
   end
 end

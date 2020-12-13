@@ -2,12 +2,13 @@ defmodule Mc.Modifier.Append do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    try do
-      result = buffer <> Mc.Util.Sys.decode(args)
-      {:ok, result}
-    rescue
-      ArgumentError ->
-        {:error, "Append: bad URI"}
+    case Mc.Util.InlineString.decode(args) do
+      {:ok, decoded_string} ->
+        result = buffer <> decoded_string
+        {:ok, result}
+
+      _error ->
+        usage(:modify, "<inline string>")
     end
   end
 end

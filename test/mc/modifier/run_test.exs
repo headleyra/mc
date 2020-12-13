@@ -22,7 +22,7 @@ defmodule Mc.Modifier.RunTest do
       assert Run.modify({:ok, "buffer look\nreplace l b"}, "") == {:ok, "book"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Run.modify({:error, "reason"}, "gets ignored") == {:error, "reason"}
     end
   end
@@ -43,7 +43,7 @@ defmodule Mc.Modifier.RunTest do
       assert Run.modifyk({:ok, "FOO"}, "script1") == {:ok, "radio"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Run.modifyk({:error, "reason"}, "gets ignored") == {:error, "reason"}
     end
   end

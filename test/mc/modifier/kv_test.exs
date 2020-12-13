@@ -27,7 +27,7 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.set({:ok, "big tune"}, "yeah") == {:ok, "big tune"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.set({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end
@@ -45,7 +45,7 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.get({:ok, "n/a"}, "bop") == {:ok, ""}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.get({:error, "reason"}, "rose") == {:error, "reason"}
     end
   end
@@ -63,7 +63,7 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.appendk({:ok, "dub "}, "foo") == {:ok, "dub "}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.appendk({:error, "reason"}, "key") == {:error, "reason"}
     end
   end
@@ -81,7 +81,7 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.prependk({:ok, "fast train"}, "key-no-exist") == {:ok, "fast train"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.prependk({:error, "reason"}, "anykey") == {:error, "reason"}
     end
   end
@@ -94,15 +94,15 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.findk("", "") == {:ok, "1st\n2nd\n3rd"}
     end
 
-    test "returns an error tuple when the regex is bad" do
-      assert Kv.findk("one\ntwo", "?") == {:error, "Findk: bad regex"}
+    test "errors when the regex is bad" do
+      assert Kv.findk("one\ntwo", "?") == {:error, "usage: findk <regex>"}
     end
 
     test "works with ok tuples" do
       assert Kv.findk({:ok, "n/a"}, "3") == {:ok, "3rd"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.findk({:error, "reason"}, "key") == {:error, "reason"}
     end
   end
@@ -114,15 +114,15 @@ defmodule Mc.Modifier.KvTest do
       assert Kv.findv("", "") == {:ok, "1st\n2nd\n3rd"}
     end
 
-    test "returns an error tuple when the regex is bad" do
-      assert Kv.findv("one\ntwo", "*") == {:error, "Findv: bad regex"}
+    test "errors when the regex is bad" do
+      assert Kv.findv("one\ntwo", "*") == {:error, "usage: findv <regex>"}
     end
 
     test "works with ok tuples" do
       assert Kv.findv({:ok, "n/a"}, ".") == {:ok, "1st\n2nd\n3rd"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Kv.findv({:error, "reason"}, "key") == {:error, "reason"}
     end
   end

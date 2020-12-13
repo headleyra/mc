@@ -19,7 +19,7 @@ defmodule McTest do
       assert Mc.modify("", "") == {:ok, ""}
     end
 
-    test "returns an error tuple for the first modifier in the 'chain' that produces an error" do
+    test "errors for the first modifier in the 'chain' that produces an error" do
       assert Mc.modify("n/a", "error an error message") == {:error, "an error message"}
       assert Mc.modify("FOOBAR", "lcase\nerror 1st error\nerror 2nd error") == {:error, "1st error"}
     end

@@ -12,7 +12,7 @@ defmodule Mc.Modifier.TrimTest do
       assert Trim.modify({:ok, "bat and ball \t\n"}, "n/a") == {:ok, "bat and ball"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Trim.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
@@ -28,7 +28,7 @@ defmodule Mc.Modifier.TrimTest do
       assert Trim.modifyn({:ok, "bat and ball \t\n"}, "n/a") == {:ok, "bat and ball \t"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Trim.modifyn({:error, "reason"}, "") == {:error, "reason"}
     end
   end

@@ -1,6 +1,7 @@
 defmodule Mc.Modifier.Http do
   use Agent
   use Mc.Railway, [:get, :post]
+  @argspec "<url> {<param name>:<payload key> }"
 
   def start_link(http_client: http_client) do
     Agent.start_link(fn -> http_client end, name: __MODULE__)
@@ -14,12 +15,12 @@ defmodule Mc.Modifier.Http do
     apply(http_client(), :get, [args])
   end
 
-  def post(_buffer, ""), do: oops("bad args", :post)
+  def post(_buffer, ""), do: usage(:post, @argspec)
 
   def post(_buffer, args) do
     case build_url_params(args) do
       :error ->
-        oops("bad args", :post)
+        usage(:post, @argspec)
 
       url_params ->
         apply(http_client(), :post, url_params)

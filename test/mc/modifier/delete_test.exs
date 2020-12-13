@@ -37,15 +37,15 @@ defmodule Mc.Modifier.DeleteTest do
       assert Delete.modify("They're gre gre great!", ~S"They.*?gre\s") == {:ok, "gre great!"}
     end
 
-    test "returns an error tuple when the regex is bad" do
-      assert Delete.modify("one\ntwo", "?") == {:error, "Delete: bad regex"}
+    test "errors when the regex is bad" do
+      assert Delete.modify("one\ntwo", "?") == {:error, "usage: delete <regex>"}
     end
 
     test "works with ok tuples" do
       assert Delete.modify({:ok, "chill on the beach"}, ~S"chill\s") == {:ok, "on the beach"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Delete.modify({:error, "reason"}, "n/a") == {:error, "reason"}
     end
   end

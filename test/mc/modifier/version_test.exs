@@ -15,7 +15,7 @@ defmodule Mc.Modifier.VersionTest do
       assert Version.modify({:ok, "BEST\nOF 3"}, "n/a") == {:ok, current_version()}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Version.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

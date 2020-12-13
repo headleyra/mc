@@ -4,14 +4,14 @@ defmodule Mc.Util.Math do
       :error ->
         str2flt(string)
 
-      num ->
-        num
+      ok_tuple ->
+        ok_tuple
     end
   end
 
   def str2int(string) do
     try do
-      String.to_integer(string)
+      {:ok, String.to_integer(string)}
     rescue
       ArgumentError ->
         :error
@@ -20,7 +20,7 @@ defmodule Mc.Util.Math do
 
   def str2flt(string) do
     try do
-      String.to_float(string)
+      {:ok, String.to_float(string)}
     rescue
       ArgumentError ->
         :error

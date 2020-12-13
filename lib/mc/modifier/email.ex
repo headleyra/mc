@@ -17,7 +17,7 @@ defmodule Mc.Modifier.Email do
         apply(mailer(), :deliver, [subject, buffer, recipient_list])
 
       _bad_args ->
-        oops("missing subject and/or recipients", :deliver)
+        usage(:deliver, "<subject>, <email> ...")
     end
   end
 end

@@ -2,6 +2,7 @@ defmodule Mc.Modifier.Kv do
   use Agent
   use Mc.Railway, [:set, :get, :appendk, :prependk, :findk, :findv]
   @behaviour Mc.Behaviour.KvServer
+  @argspec "<regex>"
 
   def start_link(map: map) do
     Agent.start_link(fn -> map end, name: __MODULE__)
@@ -43,7 +44,7 @@ defmodule Mc.Modifier.Kv do
         find(fn {key, _value} -> Regex.match?(regex, key) end)
 
       {:error, _} ->
-        {:error, "Findk: bad regex"}
+        usage(:findk, @argspec)
     end
   end
 
@@ -54,7 +55,7 @@ defmodule Mc.Modifier.Kv do
         find(fn {_key, value} -> Regex.match?(regex, value) end)
 
       {:error, _} ->
-        {:error, "Findv: bad regex"}
+        usage(:findv, @argspec)
     end
   end
 

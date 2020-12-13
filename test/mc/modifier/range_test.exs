@@ -17,21 +17,29 @@ defmodule Mc.Modifier.RangeTest do
     end
 
     test "errors when there are zero or more than two range limits" do
-      assert Range.modify("", "") == {:error, "Range: bad limit(s)"}
-      assert Range.modify("", "1 2 3") == {:error, "Range: bad limit(s)"}
+      assert Range.modify("", "") ==
+        {:error, "usage: range <positive integer> [<positive integer>]"}
+
+      assert Range.modify("", "1 2 3") ==
+        {:error, "usage: range <positive integer> [<positive integer>]"}
     end
 
-    test "returns an error tuple when `args` aren't integers" do
-      assert Range.modify("", "zero 7") == {:error, "Range: limit(s) should be integers"}
-      assert Range.modify("", "x y") == {:error, "Range: limit(s) should be integers"}
-      assert Range.modify("", "0 foo") == {:error, "Range: limit(s) should be integers"}
+    test "errors when `args` aren't integers" do
+      assert Range.modify("", "zero 7") ==
+        {:error, "usage: range <positive integer> [<positive integer>]"}
+
+      assert Range.modify("", "x y") ==
+        {:error, "usage: range <positive integer> [<positive integer>]"}
+
+      assert Range.modify("", "0 foo") ==
+        {:error, "usage: range <positive integer> [<positive integer>]"}
     end
 
     test "works with ok tuples" do
       assert Range.modify({:ok, "n/a"}, "1 2") == {:ok, "1\n2"}
     end
 
-    test "allows error tuples to pass-through unchanged" do
+    test "allows error tuples to pass-through" do
       assert Range.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
