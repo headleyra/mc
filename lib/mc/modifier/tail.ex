@@ -1,11 +1,9 @@
 defmodule Mc.Modifier.Tail do
   use Mc.Railway, [:modify]
 
-  def modify(_buffer, "0"), do: {:ok, ""}
-
   def modify(buffer, args) do
     case Mc.Util.Math.str2int(args) do
-      {:ok, tail} when tail > 0 ->
+      {:ok, tail} when tail >= 0 ->
         result =
           buffer
           |> String.split("\n")
