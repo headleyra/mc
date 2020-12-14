@@ -56,6 +56,15 @@ defmodule Mc.Mappings do
     wrap: {Mc.Modifier.Wrap, :modify},
     zip: {Mc.Modifier.Zip, :modify},
 
+    # Aliases
+    a: {Mc.Modifier.App, :modifyr},
+    b: {Mc.Modifier.Buffer, :modify},
+    d: {Mc.Modifier.Delete, :modify},
+    g: {Mc.Modifier.Grep, :modify},
+    gv: {Mc.Modifier.Grep, :modifyv},
+    m: {Mc.Modifier.Map, :modify},
+    r: {Mc.Modifier.Replace, :modify},
+
     # Experiments
     date: {Mc.X.Date, :modify},
     rand: {Mc.X.Random, :modify},
@@ -64,15 +73,6 @@ defmodule Mc.Mappings do
     time: {Mc.X.Time, :modify},
     urla: {Mc.X.Urla, :modify},
     urlj: {Mc.X.Urlj, :modify},
-    uuid: {Mc.X.Uuid, :modify},
-
-    # Aliases
-    a: {Mc.Modifier.App, :modifyr},
-    b: {Mc.Modifier.Buffer, :modify},
-    d: {Mc.Modifier.Delete, :modify},
-    g: {Mc.Modifier.Grep, :modify},
-    gv: {Mc.Modifier.Grep, :modifyv},
-    m: {Mc.Modifier.Map, :modify},
-    r: {Mc.Modifier.Replace, :modify}
+    uuid: {Mc.X.Uuid, :modify}
   ]
 end
