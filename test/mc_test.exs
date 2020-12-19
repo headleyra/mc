@@ -33,26 +33,26 @@ defmodule McTest do
     end
   end
 
-  describe "Mc.double_to_triple/2" do
+  describe "Mc.tripleize/2" do
     test "converts a modifier 'double' into a 'triple'" do
-      assert Mc.double_to_triple({:buffer, "arg1 arg2"}, %Mc.Mappings{}) == {Mc.Modifier.Buffer, :modify, "arg1 arg2"}
-      assert Mc.double_to_triple({:lcase, nil}, %Mc.Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
+      assert Mc.tripleize({:buffer, "arg1 arg2"}, %Mc.Mappings{}) == {Mc.Modifier.Buffer, :modify, "arg1 arg2"}
+      assert Mc.tripleize({:lcase, nil}, %Mc.Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
     end
 
     test "returns the error modifier 'triple' when the modifier doesn't exist in the mappings" do
-      assert Mc.double_to_triple({:doesnt_exist, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "not found: doesnt_exist"}
+      assert Mc.tripleize({:doesnt_exist, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "not found: doesnt_exist"}
     end
   end
 
-  describe "Mc.script_to_double_list/1" do
+  describe "Mc.doubleize/1" do
     test "converts a single-line script to internal form" do
-      assert Mc.script_to_double_list("\nbuffer arg\n\n") == [{:buffer, "arg"}]
-      assert Mc.script_to_double_list("GO 1") == [{:GO, "1"}]
+      assert Mc.doubleize("\nbuffer arg\n\n") == [{:buffer, "arg"}]
+      assert Mc.doubleize("GO 1") == [{:GO, "1"}]
     end
 
     test "removes leading white space before the modifier name" do
-      assert Mc.script_to_double_list("  dostuff foo") == [{:dostuff, "foo"}]
-      assert Mc.script_to_double_list(" \t  send a b") == [{:send, "a b"}]
+      assert Mc.doubleize("  dostuff foo") == [{:dostuff, "foo"}]
+      assert Mc.doubleize(" \t  send a b") == [{:send, "a b"}]
     end
 
     test "converts a single-line script (with a comment)" do
@@ -60,7 +60,7 @@ defmodule McTest do
       # This should be ignored ...
       rAndom arg1 arg2
       """
-      assert Mc.script_to_double_list(script) == [{:rAndom, "arg1 arg2"}]
+      assert Mc.doubleize(script) == [{:rAndom, "arg1 arg2"}]
     end
 
     test "converts a multi-line script" do
@@ -69,7 +69,7 @@ defmodule McTest do
         foo ARG
       bar Arg1 arg2
       """
-      assert Mc.script_to_double_list(script) == [{:Biz, ""}, {:foo, "ARG"}, {:bar, "Arg1 arg2"}]
+      assert Mc.doubleize(script) == [{:Biz, ""}, {:foo, "ARG"}, {:bar, "Arg1 arg2"}]
     end
 
     test "converts a multi-line script (with a comment)" do
@@ -79,23 +79,23 @@ defmodule McTest do
       Foo arg
       ##n/a
       """
-      assert Mc.script_to_double_list(script) == [{:biz, ""}, {:Foo, "arg"}]
+      assert Mc.doubleize(script) == [{:biz, ""}, {:Foo, "arg"}]
     end
   end
 
-  describe "Mc.modify_instruction_to_double/1" do
+  describe "Mc.to_double/1" do
     test "splits a 'modify instruction' into a modifier-name-atom/arguments tuple" do
-      assert Mc.modify_instruction_to_double("modifier_name arg1") == {:modifier_name, "arg1"}
-      assert Mc.modify_instruction_to_double("myModName_ Team") == {:myModName_, "Team"}
-      assert Mc.modify_instruction_to_double("eMiX 10") == {:eMiX, "10"}
-      assert Mc.modify_instruction_to_double("biz") == {:biz, ""}
-      assert Mc.modify_instruction_to_double("BosH") == {:BosH, ""}
-      assert Mc.modify_instruction_to_double("a_mode_name arg1 arg2") == {:a_mode_name, "arg1 arg2"}
+      assert Mc.to_double("modifier_name arg1") == {:modifier_name, "arg1"}
+      assert Mc.to_double("myModName_ Team") == {:myModName_, "Team"}
+      assert Mc.to_double("eMiX 10") == {:eMiX, "10"}
+      assert Mc.to_double("biz") == {:biz, ""}
+      assert Mc.to_double("BosH") == {:BosH, ""}
+      assert Mc.to_double("a_mode_name arg1 arg2") == {:a_mode_name, "arg1 arg2"}
     end
 
     test "assumes the modifier name and args are separated by exactly one space" do
-      assert Mc.modify_instruction_to_double("Bosh \s\t   arg1") == {:Bosh, "\s\t   arg1"}
-      assert Mc.modify_instruction_to_double("fix arg1 ... \t .*_ arg2\s") == {:fix, "arg1 ... \t .*_ arg2\s"}
+      assert Mc.to_double("Bosh \s\t   arg1") == {:Bosh, "\s\t   arg1"}
+      assert Mc.to_double("fix arg1 ... \t .*_ arg2\s") == {:fix, "arg1 ... \t .*_ arg2\s"}
     end
   end
 
@@ -126,6 +126,41 @@ defmodule McTest do
 
     test "returns nil for non existent module/func_atom pairs" do
       assert Mc.lookup(Does.Not, :exist) == nil
+    end
+  end
+
+  defmodule TestMappingsStruct do
+    defstruct [
+      c23: {Foo.Bar, :biz},
+      c2345: {Foo.Bar, :biz},
+      c2: {Concert, :gig},
+      c234: {Recipe, :cake}
+    ]
+  end
+
+  describe "Mc.flatten/1" do
+    test "returns `mappings` 'reversed/flattened' sorted (desc) by the length of characters in each key" do
+      assert Mc.flatten(%TestMappingsStruct{}) == [
+        {{Foo.Bar, :biz}, "c2345"},
+        {{Recipe, :cake}, "c234"},
+        {{Foo.Bar, :biz}, "c23"},
+        {{Concert, :gig}, "c2"}
+      ]
+    end
+
+    test "works with Maps" do
+      map = %TestMappingsStruct{} |> Map.from_struct()
+
+      assert Mc.flatten(map) == [
+        {{Foo.Bar, :biz}, "c2345"},
+        {{Recipe, :cake}, "c234"},
+        {{Foo.Bar, :biz}, "c23"},
+        {{Concert, :gig}, "c2"}
+      ]
+    end
+
+    test "returns an empty list with an empty Map" do
+      assert Mc.flatten(%{}) == []
     end
   end
 end

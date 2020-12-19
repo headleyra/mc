@@ -1,10 +1,10 @@
 defmodule Mc.Mappings do
   defstruct [
-    apps: {Mc.Modifier.App, :modify},
     add: {Mc.Modifier.Math, :add},
     app: {Mc.Modifier.App, :modifyr},
     append: {Mc.Modifier.Append, :modify},
     appendk: {Mc.Modifier.Kv, :appendk},
+    apps: {Mc.Modifier.App, :modify},
     buffer: {Mc.Modifier.Buffer, :modify},
     ccount: {Mc.Modifier.Ccount, :modify},
     delete: {Mc.Modifier.Delete, :modify},
