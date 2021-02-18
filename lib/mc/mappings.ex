@@ -72,7 +72,6 @@ defmodule Mc.Mappings do
     sleep: {Mc.X.Sleep, :modify},
     time: {Mc.X.Time, :modify},
     urla: {Mc.X.Urla, :modify},
-    urlj: {Mc.X.Urlj, :modify},
     uuid: {Mc.X.Uuid, :modify}
   ]
 end
