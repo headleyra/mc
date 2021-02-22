@@ -10,7 +10,7 @@ defmodule Mc.Modifier.Range do
         {:ok, range_for(1, finish)}
 
       _bad_args ->
-        usage(:modify, "<positive integer> [<positive integer>]")
+        usage(:modify, "<integer> [<integer>]")
     end
   end
 

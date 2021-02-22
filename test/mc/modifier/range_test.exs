@@ -7,6 +7,7 @@ defmodule Mc.Modifier.RangeTest do
       assert Range.modify("n/a", "1 3") == {:ok, "1\n2\n3"}
       assert Range.modify("", "2 1") == {:ok, "2\n1"}
       assert Range.modify("", "-1 2") == {:ok, "-1\n0\n1\n2"}
+      assert Range.modify("", "-1 -2") == {:ok, "-1\n-2"}
       assert Range.modify("", "1 1") == {:ok, "1"}
       assert Range.modify("", "0 0") == {:ok, "0"}
     end
@@ -17,22 +18,14 @@ defmodule Mc.Modifier.RangeTest do
     end
 
     test "errors when there are zero or more than two range limits" do
-      assert Range.modify("", "") ==
-        {:error, "usage: range <positive integer> [<positive integer>]"}
-
-      assert Range.modify("", "1 2 3") ==
-        {:error, "usage: range <positive integer> [<positive integer>]"}
+      assert Range.modify("", "") == {:error, "usage: range <integer> [<integer>]"}
+      assert Range.modify("", "1 2 3") == {:error, "usage: range <integer> [<integer>]"}
     end
 
     test "errors when `args` aren't integers" do
-      assert Range.modify("", "zero 7") ==
-        {:error, "usage: range <positive integer> [<positive integer>]"}
-
-      assert Range.modify("", "x y") ==
-        {:error, "usage: range <positive integer> [<positive integer>]"}
-
-      assert Range.modify("", "0 foo") ==
-        {:error, "usage: range <positive integer> [<positive integer>]"}
+      assert Range.modify("", "zero 7") == {:error, "usage: range <integer> [<integer>]"}
+      assert Range.modify("", "x y") == {:error, "usage: range <integer> [<integer>]"}
+      assert Range.modify("", "0 foo") == {:error, "usage: range <integer> [<integer>]"}
     end
 
     test "works with ok tuples" do
@@ -49,6 +42,7 @@ defmodule Mc.Modifier.RangeTest do
       assert Range.range_for(1, 3) == "1\n2\n3"
       assert Range.range_for(2, 1) == "2\n1"
       assert Range.range_for(-1, 2) == "-1\n0\n1\n2"
+      assert Range.range_for(-1, -3) == "-1\n-2\n-3"
       assert Range.range_for(1, 1) == "1"
     end
   end
