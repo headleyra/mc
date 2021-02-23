@@ -15,8 +15,8 @@ defmodule Mc.Modifier.EmailTest do
     end
 
     test "errors when subject and/or recipients are missing" do
-      assert Email.deliver("hi", "subj") == {:error, "usage: email <subject>, <email> ..."}
-      assert Email.deliver("hi", "") == {:error, "usage: email <subject>, <email> ..."}
+      assert Email.deliver("hi", "subj") == {:error, "usage: Mc.Modifier.Email#deliver <subject>, <email> ..."}
+      assert Email.deliver("hi", "") == {:error, "usage: Mc.Modifier.Email#deliver <subject>, <email> ..."}
     end
 
     test "works with ok tuples" do

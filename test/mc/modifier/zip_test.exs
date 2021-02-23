@@ -20,8 +20,8 @@ defmodule Mc.Modifier.ZipTest do
     end
 
     test "errors when `args` can't be parsed" do
-      assert Zip.modify("n/a", "too many args") == {:error, "usage: zip <uri encoded separator> <key>"}
-      assert Zip.modify("", "too.few.args") == {:error, "usage: zip <uri encoded separator> <key>"}
+      assert Zip.modify("n/a", "too many args") == {:error, "usage: Mc.Modifier.Zip#modify <uri encoded separator> <key>"}
+      assert Zip.modify("", "too.few.args") == {:error, "usage: Mc.Modifier.Zip#modify <uri encoded separator> <key>"}
     end
 
     test "interprets the separator as a URI encoded string" do
@@ -31,7 +31,7 @@ defmodule Mc.Modifier.ZipTest do
     end
 
     test "errors when the separator contains bad URI characters" do
-      assert Zip.modify("one\ntwo", "%%09 z1") == {:error, "usage: zip <uri encoded separator> <key>"}
+      assert Zip.modify("one\ntwo", "%%09 z1") == {:error, "usage: Mc.Modifier.Zip#modify <uri encoded separator> <key>"}
     end
 
     test "works when the key doesn't exist" do

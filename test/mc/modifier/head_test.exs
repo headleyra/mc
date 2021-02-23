@@ -31,12 +31,12 @@ defmodule Mc.Modifier.HeadTest do
     end
 
     test "errors when `args` is negative", %{text: text} do
-      assert Head.modify(text, "-1") == {:error, "usage: head <positive integer>"}
+      assert Head.modify(text, "-1") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
     end
 
     test "errors when `args` is not an integer", %{text: text} do
-      assert Head.modify(text, "hi") == {:error, "usage: head <positive integer>"}
-      assert Head.modify(text, "") == {:error, "usage: head <positive integer>"}
+      assert Head.modify(text, "hi") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
+      assert Head.modify(text, "") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
     end
 
     test "works with ok tuples" do

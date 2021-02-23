@@ -48,8 +48,11 @@ defmodule Mc.Modifier.BufferTest do
     end
 
     test "errors for badly formed URI characters" do
-      assert Buffer.modify("n/a", "foo %%20 bar") == {:error, "usage: buffer <inline string>"}
-      assert Buffer.modify("FOO", "`replace FOO %%`") == {:error, "usage: buffer <inline string>"}
+      assert Buffer.modify("n/a", "foo %%20 bar") ==
+        {:error, "usage: Mc.Modifier.Buffer#modify <inline string>"}
+
+      assert Buffer.modify("FOO", "`replace FOO %%`") ==
+        {:error, "usage: Mc.Modifier.Buffer#modify <inline string>"}
     end
 
     test "works with ok tuples" do

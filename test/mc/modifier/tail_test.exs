@@ -21,13 +21,19 @@ defmodule Mc.Modifier.TailTest do
     end
 
     test "errors when `args` is negative" do
-      assert Tail.modify("test\n123", "-1") == {:error, "usage: tail <positive integer>"}
-      assert Tail.modify("foobar", "-11") == {:error, "usage: tail <positive integer>"}
+      assert Tail.modify("test\n123", "-1") ==
+        {:error, "usage: Mc.Modifier.Tail#modify <positive integer>"}
+
+      assert Tail.modify("foobar", "-11") ==
+        {:error, "usage: Mc.Modifier.Tail#modify <positive integer>"}
     end
 
     test "errors when `args` is not an integer" do
-      assert Tail.modify("test\n123", "hi") == {:error, "usage: tail <positive integer>"}
-      assert Tail.modify("helicopter\ndrop", "four") == {:error, "usage: tail <positive integer>"}
+      assert Tail.modify("test\n123", "hi") ==
+        {:error, "usage: Mc.Modifier.Tail#modify <positive integer>"}
+
+      assert Tail.modify("helicopter\ndrop", "four") ==
+        {:error, "usage: Mc.Modifier.Tail#modify <positive integer>"}
     end
 
     test "works with ok tuples" do

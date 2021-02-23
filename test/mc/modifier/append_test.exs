@@ -11,7 +11,7 @@ defmodule Mc.Modifier.AppendTest do
     end
 
     test "errors given badly formed URI characters" do
-      assert Append.modify("the buff", "%%0a") == {:error, "usage: append <inline string>"}
+      assert Append.modify("the buff", "%%0a") == {:error, "usage: Mc.Modifier.Append#modify <inline string>"}
     end
 
     test "works with ok tuples" do

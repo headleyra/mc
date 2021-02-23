@@ -46,18 +46,27 @@ defmodule Mc.Modifier.ReplaceTest do
     end
 
     test "errors when no replace term is given" do
-      assert Replace.modify("3s a crowd", "search-without-replace") == {:error, "usage: replace <search regex> <replace string>"}
-      assert Replace.modify("bish bosh", "") == {:error, "usage: replace <search regex> <replace string>"}
-      assert Replace.modify("", "") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("3s a crowd", "search-without-replace") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+
+      assert Replace.modify("bish bosh", "") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+
+      assert Replace.modify("", "") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
     end
 
     test "errors for a replacment term with badly formed URI characters" do
-      assert Replace.modify("n/a", "foo %%0a") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("n/a", "foo %%0a") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
     end
 
     test "errors when the search regex is bad" do
-      assert Replace.modify("n/a", ") foo") == {:error, "usage: replace <search regex> <replace string>"}
-      assert Replace.modify("(foo)", "(?=)) bar") == {:error, "usage: replace <search regex> <replace string>"}
+      assert Replace.modify("n/a", ") foo") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+
+      assert Replace.modify("(foo)", "(?=)) bar") ==
+        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
     end
 
     test "works with ok tuples" do

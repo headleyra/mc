@@ -20,7 +20,7 @@ defmodule Mc.Modifier.GrepTest do
     end
 
     test "errors when the regex is bad" do
-      assert Grep.modify("one\ntwo", "?") == {:error, "usage: grep <regex>"}
+      assert Grep.modify("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Grep#modify <regex>"}
     end
 
     test "works with ok tuples" do
@@ -38,7 +38,7 @@ defmodule Mc.Modifier.GrepTest do
     end
 
     test "errors when the regex is bad" do
-      assert Grep.modifyv("one\ntwo", "*") == {:error, "usage: grepv <regex>"}
+      assert Grep.modifyv("one\ntwo", "*") == {:error, "usage: Mc.Modifier.Grep#modifyv <regex>"}
     end
 
     test "works with ok tuples" do

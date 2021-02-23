@@ -12,9 +12,9 @@ defmodule Mc.Modifier.MathTest do
     end
 
     test "errors with fewer than two numbers" do
-      assert Math.add("", "") == {:error, "add: fewer than two numbers found"}
-      assert Math.add("8", "") == {:error, "add: fewer than two numbers found"}
-      assert Math.add("foo bar", "") == {:error, "add: fewer than two numbers found"}
+      assert Math.add("", "") == {:error, "Mc.Modifier.Math#add: fewer than two numbers found"}
+      assert Math.add("8", "") == {:error, "Mc.Modifier.Math#add: fewer than two numbers found"}
+      assert Math.add("foo bar", "") == {:error, "Mc.Modifier.Math#add: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -36,9 +36,9 @@ defmodule Mc.Modifier.MathTest do
     end
 
     test "errors with fewer than two numbers" do
-      assert Math.subtract("", "") == {:error, "sub: fewer than two numbers found"}
-      assert Math.subtract("1", "") == {:error, "sub: fewer than two numbers found"}
-      assert Math.subtract("foo bar", "") == {:error, "sub: fewer than two numbers found"}
+      assert Math.subtract("", "") == {:error, "Mc.Modifier.Math#subtract: fewer than two numbers found"}
+      assert Math.subtract("1", "") == {:error, "Mc.Modifier.Math#subtract: fewer than two numbers found"}
+      assert Math.subtract("foo bar", "") == {:error, "Mc.Modifier.Math#subtract: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -60,9 +60,9 @@ defmodule Mc.Modifier.MathTest do
     end
 
     test "errors with fewer than two numbers" do
-      assert Math.multiply("", "") == {:error, "mul: fewer than two numbers found"}
-      assert Math.multiply("2", "") == {:error, "mul: fewer than two numbers found"}
-      assert Math.multiply("foo bar", "") == {:error, "mul: fewer than two numbers found"}
+      assert Math.multiply("", "") == {:error, "Mc.Modifier.Math#multiply: fewer than two numbers found"}
+      assert Math.multiply("2", "") == {:error, "Mc.Modifier.Math#multiply: fewer than two numbers found"}
+      assert Math.multiply("foo bar", "") == {:error, "Mc.Modifier.Math#multiply: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do
@@ -83,9 +83,9 @@ defmodule Mc.Modifier.MathTest do
     end
 
     test "errors with fewer than two numbers" do
-      assert Math.divide("", "") == {:error, "div: fewer than two numbers found"}
-      assert Math.divide("5", "") == {:error, "div: fewer than two numbers found"}
-      assert Math.divide("foo bar", "") == {:error, "div: fewer than two numbers found"}
+      assert Math.divide("", "") == {:error, "Mc.Modifier.Math#divide: fewer than two numbers found"}
+      assert Math.divide("5", "") == {:error, "Mc.Modifier.Math#divide: fewer than two numbers found"}
+      assert Math.divide("foo bar", "") == {:error, "Mc.Modifier.Math#divide: fewer than two numbers found"}
     end
 
     test "works with ok tuples" do

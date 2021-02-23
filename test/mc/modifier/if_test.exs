@@ -22,9 +22,14 @@ defmodule Mc.Modifier.IfTest do
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifye("fiscal rules", "") == {:error, "usage: ife <compare key> <true key> <false key>"}
-      assert If.modifye("gig economy", "one") == {:error, "usage: ife <compare key> <true key> <false key>"}
-      assert If.modifye("yaba daba do", "buy the dip dude") == {:error, "usage: ife <compare key> <true key> <false key>"}
+      assert If.modifye("fiscal rules", "") ==
+        {:error, "usage: Mc.Modifier.If#modifye <compare key> <true key> <false key>"}
+
+      assert If.modifye("gig economy", "one") ==
+        {:error, "usage: Mc.Modifier.If#modifye <compare key> <true key> <false key>"}
+
+      assert If.modifye("yaba daba do", "buy the dip dude") ==
+        {:error, "usage: Mc.Modifier.If#modifye <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do
@@ -45,9 +50,14 @@ defmodule Mc.Modifier.IfTest do
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifyl("fiscal rules", "") == {:error, "usage: ifl <compare key> <true key> <false key>"}
-      assert If.modifyl("gig economy", "one") == {:error, "usage: ifl <compare key> <true key> <false key>"}
-      assert If.modifyl("yaba daba do", "buy the dip dude") == {:error, "usage: ifl <compare key> <true key> <false key>"}
+      assert If.modifyl("fiscal rules", "") ==
+        {:error, "usage: Mc.Modifier.If#modifyl <compare key> <true key> <false key>"}
+
+      assert If.modifyl("gig economy", "one") ==
+        {:error, "usage: Mc.Modifier.If#modifyl <compare key> <true key> <false key>"}
+
+      assert If.modifyl("yaba daba do", "buy the dip dude") ==
+        {:error, "usage: Mc.Modifier.If#modifyl <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do
@@ -67,9 +77,14 @@ defmodule Mc.Modifier.IfTest do
     end
 
     test "errors when exactly 3 keys aren't provided" do
-      assert If.modifyg("fiscal rules", "") == {:error, "usage: ifg <compare key> <true key> <false key>"}
-      assert If.modifyg("gig economy", "one") == {:error, "usage: ifg <compare key> <true key> <false key>"}
-      assert If.modifyg("yaba daba do", "buy the dip dude") == {:error, "usage: ifg <compare key> <true key> <false key>"}
+      assert If.modifyg("fiscal rules", "") ==
+        {:error, "usage: Mc.Modifier.If#modifyg <compare key> <true key> <false key>"}
+
+      assert If.modifyg("gig economy", "one") ==
+        {:error, "usage: Mc.Modifier.If#modifyg <compare key> <true key> <false key>"}
+
+      assert If.modifyg("yaba daba do", "buy the dip dude") ==
+        {:error, "usage: Mc.Modifier.If#modifyg <compare key> <true key> <false key>"}
     end
 
     test "works with ok tuples" do

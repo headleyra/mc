@@ -95,7 +95,7 @@ defmodule Mc.Modifier.KvTest do
     end
 
     test "errors when the regex is bad" do
-      assert Kv.findk("one\ntwo", "?") == {:error, "usage: findk <regex>"}
+      assert Kv.findk("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Kv#findk <regex>"}
     end
 
     test "works with ok tuples" do
@@ -115,7 +115,7 @@ defmodule Mc.Modifier.KvTest do
     end
 
     test "errors when the regex is bad" do
-      assert Kv.findv("one\ntwo", "*") == {:error, "usage: findv <regex>"}
+      assert Kv.findv("one\ntwo", "*") == {:error, "usage: Mc.Modifier.Kv#findv <regex>"}
     end
 
     test "works with ok tuples" do

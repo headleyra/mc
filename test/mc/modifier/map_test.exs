@@ -17,7 +17,7 @@ defmodule Mc.Modifier.MapTest do
     end
 
     test "errors given badly formed URI" do
-      assert Map.modify("1\n2", "buffer foo %%0a") == {:error, "usage: map <inline string>"}
+      assert Map.modify("1\n2", "buffer foo %%0a") == {:error, "usage: Mc.Modifier.Map#modify <inline string>"}
     end
 
     test "returns the `buffer` unchanged when `script` is whitespace or empty" do

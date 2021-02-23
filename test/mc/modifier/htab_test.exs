@@ -98,7 +98,7 @@ defmodule Mc.Modifier.HtabTest do
 
     test "errors for badly formed URI encoded selectors", %{html: html} do
       assert Htab.modify(html, "table%%20tr td") ==
-        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+        {:error, "usage: Mc.Modifier.Htab#modify <uri encoded css row selector> <uri encoded css column selector>"}
     end
 
     test "returns a table (where the CSS selectors target lists of elements)", %{html: html} do
@@ -122,13 +122,13 @@ defmodule Mc.Modifier.HtabTest do
 
     test "errors unless there are exactly 2 selectors", %{html: html} do
       assert Htab.modify(html, "") ==
-        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+        {:error, "usage: Mc.Modifier.Htab#modify <uri encoded css row selector> <uri encoded css column selector>"}
 
       assert Htab.modify(html, "p") ==
-        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+        {:error, "usage: Mc.Modifier.Htab#modify <uri encoded css row selector> <uri encoded css column selector>"}
 
       assert Htab.modify(html, "table tr td") ==
-        {:error, "usage: htab <uri encoded css row selector> <uri encoded css column selector>"}
+        {:error, "usage: Mc.Modifier.Htab#modify <uri encoded css row selector> <uri encoded css column selector>"}
     end
 
     test "works with ok tuples", %{html: html} do

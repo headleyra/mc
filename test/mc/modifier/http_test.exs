@@ -39,11 +39,20 @@ defmodule Mc.Modifier.HttpTest do
     end
 
     test "errors given bad args" do
-      assert Http.post("n/a", "") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
-      assert Http.post("", "url param-name-only") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
-      assert Http.post("", "url :") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
-      assert Http.post("", "url foo:") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
-      assert Http.post("", "url :bar") == {:error, "usage: urlp <url> {<param name>:<payload key> }"}
+      assert Http.post("n/a", "") ==
+        {:error, "usage: Mc.Modifier.Http#post <url> {<param name>:<payload key> }"}
+
+      assert Http.post("", "url param-name-only") ==
+        {:error, "usage: Mc.Modifier.Http#post <url> {<param name>:<payload key> }"}
+
+      assert Http.post("", "url :") ==
+        {:error, "usage: Mc.Modifier.Http#post <url> {<param name>:<payload key> }"}
+
+      assert Http.post("", "url foo:") ==
+        {:error, "usage: Mc.Modifier.Http#post <url> {<param name>:<payload key> }"}
+
+      assert Http.post("", "url :bar") ==
+        {:error, "usage: Mc.Modifier.Http#post <url> {<param name>:<payload key> }"}
     end
 
     test "works with ok tuples" do

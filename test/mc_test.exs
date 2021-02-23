@@ -34,7 +34,7 @@ defmodule McTest do
   end
 
   describe "Mc.tripleize/2" do
-    test "converts a modifier 'double' into a 'triple'" do
+    test "converts a 'modifier tuple' into a 'triple'" do
       assert Mc.tripleize({:buffer, "arg1 arg2"}, %Mc.Mappings{}) == {Mc.Modifier.Buffer, :modify, "arg1 arg2"}
       assert Mc.tripleize({:lcase, nil}, %Mc.Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
     end
@@ -44,58 +44,50 @@ defmodule McTest do
     end
   end
 
-  describe "Mc.doubleize/1" do
-    test "converts a single-line script to internal form" do
-      assert Mc.doubleize("\nbuffer arg\n\n") == [{:buffer, "arg"}]
-      assert Mc.doubleize("GO 1") == [{:GO, "1"}]
+  describe "Mc.listize/1" do
+    test "converts a script into a list of 'modifier tuples'" do
+      assert Mc.listize("\nbuffer arg\n\n") == [{:buffer, "arg"}]
+      assert Mc.listize("GO 1") == [{:GO, "1"}]
     end
 
     test "removes leading white space before the modifier name" do
-      assert Mc.doubleize("  dostuff foo") == [{:dostuff, "foo"}]
-      assert Mc.doubleize(" \t  send a b") == [{:send, "a b"}]
+      assert Mc.listize("  dostuff foo") == [{:dostuff, "foo"}]
+      assert Mc.listize(" \t  send a b") == [{:send, "a b"}]
     end
 
-    test "converts a single-line script (with a comment)" do
-      script = """
-      # This should be ignored ...
-      rAndom arg1 arg2
-      """
-      assert Mc.doubleize(script) == [{:rAndom, "arg1 arg2"}]
-    end
-
-    test "converts a multi-line script" do
+    test "converts a script referencing several modifiers" do
       script = """
       Biz
         foo ARG
       bar Arg1 arg2
       """
-      assert Mc.doubleize(script) == [{:Biz, ""}, {:foo, "ARG"}, {:bar, "Arg1 arg2"}]
+      assert Mc.listize(script) == [{:Biz, ""}, {:foo, "ARG"}, {:bar, "Arg1 arg2"}]
     end
 
-    test "converts a multi-line script (with a comment)" do
+    test "ignores comments in the script" do
       script = """
         biz
       # Just saying
       Foo arg
       ##n/a
       """
-      assert Mc.doubleize(script) == [{:biz, ""}, {:Foo, "arg"}]
+      assert Mc.listize(script) == [{:biz, ""}, {:Foo, "arg"}]
     end
   end
 
-  describe "Mc.to_double/1" do
-    test "splits a 'modify instruction' into a modifier-name-atom/arguments tuple" do
-      assert Mc.to_double("modifier_name arg1") == {:modifier_name, "arg1"}
-      assert Mc.to_double("myModName_ Team") == {:myModName_, "Team"}
-      assert Mc.to_double("eMiX 10") == {:eMiX, "10"}
-      assert Mc.to_double("biz") == {:biz, ""}
-      assert Mc.to_double("BosH") == {:BosH, ""}
-      assert Mc.to_double("a_mode_name arg1 arg2") == {:a_mode_name, "arg1 arg2"}
+  describe "Mc.tupleize/1" do
+    test "creates a 'modifier tuple' given a 'modify instruction'" do
+      assert Mc.tupleize("modifier_name arg1") == {:modifier_name, "arg1"}
+      assert Mc.tupleize("myModName_ Team") == {:myModName_, "Team"}
+      assert Mc.tupleize("eMiX 10") == {:eMiX, "10"}
+      assert Mc.tupleize("biz") == {:biz, ""}
+      assert Mc.tupleize("BosH") == {:BosH, ""}
+      assert Mc.tupleize("a_mode_name arg1 arg2") == {:a_mode_name, "arg1 arg2"}
     end
 
     test "assumes the modifier name and args are separated by exactly one space" do
-      assert Mc.to_double("Bosh \s\t   arg1") == {:Bosh, "\s\t   arg1"}
-      assert Mc.to_double("fix arg1 ... \t .*_ arg2\s") == {:fix, "arg1 ... \t .*_ arg2\s"}
+      assert Mc.tupleize("Bosh \s\t   arg1") == {:Bosh, "\s\t   arg1"}
+      assert Mc.tupleize("fix arg1 ... \t .*_ arg2\s") == {:fix, "arg1 ... \t .*_ arg2\s"}
     end
   end
 
@@ -111,56 +103,6 @@ defmodule McTest do
     test "returns false if `string` isn't a comment" do
       refute Mc.is_comment?("this #is not a comment")
       refute Mc.is_comment?("no#r this")
-    end
-  end
-
-  describe "Mc.lookup/2" do
-    test "looks up the name of the given module/function-atom pair in the mappings" do
-      assert Mc.lookup(Mc.Modifier.Lcase, :modify) == "lcase"
-      assert Mc.lookup(Mc.Modifier.Http, :post) == "urlp"
-    end
-
-    test "returns the longest name if multiple matches are found" do
-      assert Mc.lookup(Mc.Modifier.Replace, :modify) == "replace"
-    end
-
-    test "returns nil for non existent module/func_atom pairs" do
-      assert Mc.lookup(Does.Not, :exist) == nil
-    end
-  end
-
-  defmodule TestMappingsStruct do
-    defstruct [
-      c23: {Foo.Bar, :biz},
-      c2345: {Foo.Bar, :biz},
-      c2: {Concert, :gig},
-      c234: {Recipe, :cake}
-    ]
-  end
-
-  describe "Mc.flatten/1" do
-    test "returns `mappings` 'reversed/flattened' sorted (desc) by the length of characters in each key" do
-      assert Mc.flatten(%TestMappingsStruct{}) == [
-        {{Foo.Bar, :biz}, "c2345"},
-        {{Recipe, :cake}, "c234"},
-        {{Foo.Bar, :biz}, "c23"},
-        {{Concert, :gig}, "c2"}
-      ]
-    end
-
-    test "works with Maps" do
-      map = %TestMappingsStruct{} |> Map.from_struct()
-
-      assert Mc.flatten(map) == [
-        {{Foo.Bar, :biz}, "c2345"},
-        {{Recipe, :cake}, "c234"},
-        {{Foo.Bar, :biz}, "c23"},
-        {{Concert, :gig}, "c2"}
-      ]
-    end
-
-    test "returns an empty list with an empty Map" do
-      assert Mc.flatten(%{}) == []
     end
   end
 end

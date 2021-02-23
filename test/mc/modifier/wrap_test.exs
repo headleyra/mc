@@ -12,11 +12,11 @@ defmodule Mc.Modifier.WrapTest do
     end
 
     test "errors when `args` isn't a positive integer" do
-      assert Wrap.modify("a bit of text", "") == {:error, "usage: wrap <positive integer>"}
-      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "usage: wrap <positive integer>"}
-      assert Wrap.modify("testing", "four") == {:error, "usage: wrap <positive integer>"}
-      assert Wrap.modify("foo", "-10") == {:error, "usage: wrap <positive integer>"}
-      assert Wrap.modify("trade and commerce", "5.0") == {:error, "usage: wrap <positive integer>"}
+      assert Wrap.modify("a bit of text", "") == {:error, "usage: Mc.Modifier.Wrap#modify <positive integer>"}
+      assert Wrap.modify("\ntesting\n123", "a5") == {:error, "usage: Mc.Modifier.Wrap#modify <positive integer>"}
+      assert Wrap.modify("testing", "four") == {:error, "usage: Mc.Modifier.Wrap#modify <positive integer>"}
+      assert Wrap.modify("foo", "-10") == {:error, "usage: Mc.Modifier.Wrap#modify <positive integer>"}
+      assert Wrap.modify("trade and commerce", "5.0") == {:error, "usage: Mc.Modifier.Wrap#modify <positive integer>"}
     end
 
     test "works with ok tuples" do

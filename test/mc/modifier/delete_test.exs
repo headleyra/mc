@@ -38,7 +38,7 @@ defmodule Mc.Modifier.DeleteTest do
     end
 
     test "errors when the regex is bad" do
-      assert Delete.modify("one\ntwo", "?") == {:error, "usage: delete <regex>"}
+      assert Delete.modify("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Delete#modify <regex>"}
     end
 
     test "works with ok tuples" do

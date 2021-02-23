@@ -11,7 +11,7 @@ defmodule Mc.Modifier.PrependTest do
     end
 
     test "errors for badly formed URI characters" do
-      assert Prepend.modify("1\n2", "0 %%0a") == {:error, "usage: prepend <inline string>"}
+      assert Prepend.modify("1\n2", "0 %%0a") == {:error, "usage: Mc.Modifier.Prepend#modify <inline string>"}
     end
 
     test "works with ok tuples" do

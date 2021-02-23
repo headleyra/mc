@@ -3,12 +3,16 @@ defmodule Mc.Railway do
   defmacro __using__(func_list) do
     oops_def =
       quote do
-        defp oops(func, message) do
-          {:error, "#{Mc.lookup(__MODULE__, func)}: #{message}"}
+        def name(atom) do
+          "#{Module.split(__MODULE__) |> Enum.join(".")}##{atom}"
         end
 
-        defp usage(func, args_spec) do
-          {:error, "usage: #{Mc.lookup(__MODULE__, func)} #{args_spec}"}
+        def oops(func, message) do
+          {:error, "#{name(func)}: #{message}"}
+        end
+
+        def usage(func, args_spec) do
+          {:error, "usage: #{name(func)} #{args_spec}"}
         end
       end
 

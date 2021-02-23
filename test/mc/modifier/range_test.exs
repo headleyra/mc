@@ -18,14 +18,14 @@ defmodule Mc.Modifier.RangeTest do
     end
 
     test "errors when there are zero or more than two range limits" do
-      assert Range.modify("", "") == {:error, "usage: range <integer> [<integer>]"}
-      assert Range.modify("", "1 2 3") == {:error, "usage: range <integer> [<integer>]"}
+      assert Range.modify("", "") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
+      assert Range.modify("", "1 2 3") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
     end
 
     test "errors when `args` aren't integers" do
-      assert Range.modify("", "zero 7") == {:error, "usage: range <integer> [<integer>]"}
-      assert Range.modify("", "x y") == {:error, "usage: range <integer> [<integer>]"}
-      assert Range.modify("", "0 foo") == {:error, "usage: range <integer> [<integer>]"}
+      assert Range.modify("", "zero 7") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
+      assert Range.modify("", "x y") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
+      assert Range.modify("", "0 foo") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
     end
 
     test "works with ok tuples" do
