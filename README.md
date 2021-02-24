@@ -72,10 +72,11 @@ Bar.Replace.edit("wine bar", "glass")
 But we can chain modifiers together by listing them in the script, like so:
 
 ```elixir
-script = """
-change bottle
-capify
-"""
+script =
+  """
+  change bottle
+  capify
+  """
 
 Mc.modify("wine bar", script)
   #=> {:ok, "WINE BOTTLE"}
@@ -91,9 +92,8 @@ Foo.Big.capify(new_buffer, "")
 
 So, the output of one modifier is the input to the next, and so on.
 
-If at any point a modifier returns an error tuple, the next modifier simply passes it on down the chain,
-unchanged.  This is the default behaviour (for the standard modifiers, see below) and is handled by the
-`use Mc.Railway` code:
+If at any point a modifier returns an error tuple the next modifier simply passes it on down the chain,
+unchanged.  This is the default behaviour for all of the 'standard modifiers'.  For example:
 
 ```elixir
 script = """
@@ -109,8 +109,12 @@ Mc.modify("bar chart", script)
 ### Standard modifiers
 
 The `%Mc.Mappings{}` struct defines the standard mappings which reference basic (concept-prover) standard
-modifiers.  Feel free to use your own custom mappings, or (perhaps) create a tweaked version of the standard
-ones.
+modifiers.  Feel free to use your own custom mappings or (perhaps) create a tweaked version of
+`%Mc.Mappings{}`.
+
+The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It creates functions that
+implement the 'error short-circuiting' behaviour mention above (along with a few utility functions for
+building error tuples).
 
 ### Infinite Lego(tm)
 
