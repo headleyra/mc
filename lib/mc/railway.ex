@@ -1,7 +1,7 @@
 # TODO: rewrite when we understand macros better :)
 defmodule Mc.Railway do
   defmacro __using__(func_list) do
-    oops_def =
+    utility_funcs =
       quote do
         def name(atom) do
           "#{Module.split(__MODULE__) |> Enum.join(".")}##{atom}"
@@ -27,6 +27,6 @@ defmodule Mc.Railway do
         end
       end
     end)
-    |> List.insert_at(-1, oops_def)
+    |> List.insert_at(-1, utility_funcs)
   end
 end
