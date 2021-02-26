@@ -38,7 +38,7 @@ defmodule Mc.Modifier.McastTest do
   end
 
   describe "Mc.Modifier.Mcast.modifyk/2" do
-    test "runs the scripts, indirectly, referenced by the key contained in `args` and returns a list of the results" do
+    test "runs the scripts indirectly referenced by the key contained in `args` and returns a list of the results" do
       assert Mcast.modifyk("n/a", "script.indirection.key") == {:ok, "script1: ok: foo\ns3: error: boom!"}
       assert Mcast.modifyk("", "sk1") == {:ok, "s3: error: boom!\ns2: ok: plain rice"}
       assert Mcast.modifyk("", "sk2") == {:ok, "nah: ok: \ns2: ok: plain rice"}
