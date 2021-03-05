@@ -8,6 +8,6 @@ defmodule Mc.Behaviour.KvServer do
   @callback get(buffer, args) :: {:ok, result} | {:error, reason}
   @callback appendk(buffer, args) :: {:ok, result} | {:error, reason}
   @callback prependk(buffer, args) :: {:ok, result} | {:error, reason}
-  @callback findk(buffer, args) :: {:ok, result} | {:error, reason}
+  @callback find(buffer, args) :: {:ok, result} | {:error, reason}
   @callback findv(buffer, args) :: {:ok, result} | {:error, reason}
 end

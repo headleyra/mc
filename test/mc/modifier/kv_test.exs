@@ -86,24 +86,24 @@ defmodule Mc.Modifier.KvTest do
     end
   end
 
-  describe "Mc.Modifier.Kv.findk/2" do
+  describe "Mc.Modifier.Kv.find/2" do
     test "filters on key given a regex and returns corresponding keys" do
-      assert Kv.findk("n/a", "rd") == {:ok, "3rd"}
-      assert Kv.findk("", "d") == {:ok, "2nd\n3rd"}
-      assert Kv.findk("", ".") == {:ok, "1st\n2nd\n3rd"}
-      assert Kv.findk("", "") == {:ok, "1st\n2nd\n3rd"}
+      assert Kv.find("n/a", "rd") == {:ok, "3rd"}
+      assert Kv.find("", "d") == {:ok, "2nd\n3rd"}
+      assert Kv.find("", ".") == {:ok, "1st\n2nd\n3rd"}
+      assert Kv.find("", "") == {:ok, "1st\n2nd\n3rd"}
     end
 
     test "errors when the regex is bad" do
-      assert Kv.findk("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Kv#findk <regex>"}
+      assert Kv.find("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Kv#find <regex>"}
     end
 
     test "works with ok tuples" do
-      assert Kv.findk({:ok, "n/a"}, "3") == {:ok, "3rd"}
+      assert Kv.find({:ok, "n/a"}, "3") == {:ok, "3rd"}
     end
 
     test "allows error tuples to pass-through" do
-      assert Kv.findk({:error, "reason"}, "key") == {:error, "reason"}
+      assert Kv.find({:error, "reason"}, "key") == {:error, "reason"}
     end
   end
 
@@ -127,16 +127,16 @@ defmodule Mc.Modifier.KvTest do
     end
   end
 
-  describe "Mc.Modifier.Kv.find/1" do
+  describe "Mc.Modifier.Kv.filter/1" do
     test "filters keys/values with a func of form `fn {key, value} -> ... end` returning corresponding keys" do
       foo = fn {_key, value} -> Regex.match?(~r/foo/, value) end
-      assert Kv.find(foo) == {:ok, "1st\n2nd"}
+      assert Kv.filter(foo) == {:ok, "1st\n2nd"}
 
       other = fn {_key, value} -> value == "dosh" end
-      assert Kv.find(other) == {:ok, "3rd"}
+      assert Kv.filter(other) == {:ok, "3rd"}
 
       bar = fn {key, _value} -> Regex.match?(~r/d/, key) end
-      assert Kv.find(bar) == {:ok, "2nd\n3rd"}
+      assert Kv.filter(bar) == {:ok, "2nd\n3rd"}
     end
   end
 end

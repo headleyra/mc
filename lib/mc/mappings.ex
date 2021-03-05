@@ -11,7 +11,7 @@ defmodule Mc.Mappings do
     div: {Mc.Modifier.Math, :divide},
     email: {Mc.Modifier.Email, :deliver},
     error: {Mc.Modifier.Error, :modify},
-    findk: {Mc.Modifier.Kv, :findk},
+    find: {Mc.Modifier.Kv, :find},
     findv: {Mc.Modifier.Kv, :findv},
     get: {Mc.Modifier.Kv, :get},
     getb: {Mc.Modifier.Getb, :modify},

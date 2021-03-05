@@ -1,6 +1,6 @@
 defmodule Mc.Modifier.Kv do
   use Agent
-  use Mc.Railway, [:set, :get, :appendk, :prependk, :findk, :findv]
+  use Mc.Railway, [:set, :get, :appendk, :prependk, :find, :findv]
   @behaviour Mc.Behaviour.KvServer
   @argspec "<regex>"
 
@@ -38,13 +38,13 @@ defmodule Mc.Modifier.Kv do
   end
 
   @impl true
-  def findk(_buffer, args) do
+  def find(_buffer, args) do
     case Regex.compile(args) do
       {:ok, regex} ->
-        find(fn {key, _value} -> Regex.match?(regex, key) end)
+        filter(fn {key, _value} -> Regex.match?(regex, key) end)
 
       {:error, _} ->
-        usage(:findk, @argspec)
+        usage(:find, @argspec)
     end
   end
 
@@ -52,14 +52,14 @@ defmodule Mc.Modifier.Kv do
   def findv(_buffer, args) do
     case Regex.compile(args) do
       {:ok, regex} ->
-        find(fn {_key, value} -> Regex.match?(regex, value) end)
+        filter(fn {_key, value} -> Regex.match?(regex, value) end)
 
       {:error, _} ->
         usage(:findv, @argspec)
     end
   end
 
-  def find(filter_func) do
+  def filter(filter_func) do
     result =
       map()
       |> Enum.to_list()
