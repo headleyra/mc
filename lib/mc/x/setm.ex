@@ -5,7 +5,7 @@ defmodule Mc.X.Setm do
     setm(buffer, args)
   end
 
-  def setm(buffer, ""), do: setm_(buffer, "---\n")
+  def setm(buffer, ""), do: setm_(buffer, "\n---\n")
   def setm(buffer, separator), do: setm_(buffer, separator)
 
   def setm_(buffer, separator) do
