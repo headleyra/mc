@@ -4,7 +4,7 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.33.0",
+      version: "0.34.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps()

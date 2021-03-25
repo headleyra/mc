@@ -66,6 +66,7 @@ defmodule Mc.Mappings do
     r: {Mc.Modifier.Replace, :modify},
 
     # Experiments
+    base64: {Mc.X.Base64, :modify},
     date: {Mc.X.Date, :modify},
     rand: {Mc.X.Random, :modify},
     setm: {Mc.X.Setm, :modify},
