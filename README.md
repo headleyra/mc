@@ -1,15 +1,11 @@
 # Mc
 
-**Code like Lego(tm)**
+**ModifyChain. Code like Lego(tm)**
 
 A *ModifyChain* 'script' specifies a 'chain' of 'modifiers' (functions) that, one by one, transform a
 'buffer', eventually producing a result.
 
-## Installation
-
-## Example
-
-### Modifiers
+## Modifiers
 
 All modifiers declare two arguments and return either `{:ok, result}` or `{:error, reason}`.  The first
 argument is passed the modified buffer from the previous modifier (in the chain); the second argument
@@ -53,7 +49,7 @@ Next we start the ModifyChain server, passing it the mappings:
 Mc.start_link(mappings: mappings)
 ```
 
-### Now we can modify stuff
+## Now we can modify stuff
 
 ```elixir
 Mc.modify("wine bar", "change glass")
@@ -106,7 +102,7 @@ Mc.modify("bar chart", script)
   #=> {:error, "boom!"}
 ```
 
-### Standard modifiers
+## Standard modifiers
 
 The `%Mc.Mappings{}` struct defines the standard mappings which reference basic (concept-prover) standard
 modifiers.  Feel free to use your own custom mappings or (perhaps) create a tweaked version of
@@ -116,7 +112,7 @@ The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It c
 implement the 'error short-circuiting' behaviour mention above (along with a few utility functions for
 building error tuples).
 
-### Infinite Lego(tm)
+## Infinite Lego(tm)
 
 Now you can think about coding in the same way you think about Lego -- all modifiers are automatically
 compatible with all other modifiers.  And you can write modifiers to do absolutely anything.  Have fun!
