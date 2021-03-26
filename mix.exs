@@ -4,7 +4,7 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.34.0",
+      version: "0.35.0",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -24,9 +24,7 @@ defmodule Mc.MixProject do
     [
       {:floki, "~> 0.26"},
       {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.2"},
-      {:elixir_uuid, "~> 1.2"},
-      {:tesla, "~> 1.3"}
+      {:jason, "~> 1.2"}
 
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},

@@ -63,16 +63,6 @@ defmodule Mc.Mappings do
     g: {Mc.Modifier.Grep, :modify},
     gv: {Mc.Modifier.Grep, :modifyv},
     m: {Mc.Modifier.Map, :modify},
-    r: {Mc.Modifier.Replace, :modify},
-
-    # Experiments
-    base64: {Mc.X.Base64, :modify},
-    date: {Mc.X.Date, :modify},
-    rand: {Mc.X.Random, :modify},
-    setm: {Mc.X.Setm, :modify},
-    sleep: {Mc.X.Sleep, :modify},
-    time: {Mc.X.Time, :modify},
-    urla: {Mc.X.Urla, :modify},
-    uuid: {Mc.X.Uuid, :modify}
+    r: {Mc.Modifier.Replace, :modify}
   ]
 end
