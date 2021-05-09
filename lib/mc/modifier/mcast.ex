@@ -1,6 +1,6 @@
 defmodule Mc.Modifier.Mcast do
   use Mc.Railway, [:modify, :modifyk]
-  @timeout 20_000
+  @timeout 40_000
 
   def modify(buffer, args) do
     keys = String.split(args)

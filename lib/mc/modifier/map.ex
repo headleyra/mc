@@ -1,6 +1,6 @@
 defmodule Mc.Modifier.Map do
   use Mc.Railway, [:modify]
-  @timeout 20_000
+  @timeout 40_000
 
   def modify(buffer, args) do
     case Mc.Util.InlineString.decode(args) do
