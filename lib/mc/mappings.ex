@@ -44,6 +44,7 @@ defmodule Mc.Mappings do
     set: {Mc.Modifier.Kv, :set},
     sort: {Mc.Modifier.Sort, :modify},
     sortv: {Mc.Modifier.Sort, :modifyv},
+    split: {Mc.Modifier.Split, :modify},
     sub: {Mc.Modifier.Math, :subtract},
     tail: {Mc.Modifier.Tail, :modify},
     trim: {Mc.Modifier.Trim, :modify},
