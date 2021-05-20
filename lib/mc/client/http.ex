@@ -1,7 +1,7 @@
 defmodule Mc.Client.Http do
   @behaviour Mc.Behaviour.HttpClient
   @user_agent "Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0"
-  @http_options [recv_timeout: 11_000]
+  @http_options [recv_timeout: 40_000]
 
   @impl true
   def get(url) do
