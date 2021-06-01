@@ -27,7 +27,7 @@ defmodule Mc do
         {module, func_atom, args}
 
       nil ->
-        {Mc.Modifier.Error, :modify, "not found: #{modifier_name}"}
+        {Mc.Modifier.Error, :modify, "modifier not found '#{modifier_name}'"}
     end
   end
 

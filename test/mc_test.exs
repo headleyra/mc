@@ -24,6 +24,10 @@ defmodule McTest do
       assert Mc.modify("FOOBAR", "lcase\nerror 1st error\nerror 2nd error") == {:error, "1st error"}
     end
 
+    test "errors when the modifier doesn't exist" do
+      assert Mc.modify("n/a", "nope") == {:error, "modifier not found 'nope'"}
+    end
+
     test "ignores blank lines in the script" do
       assert Mc.modify("SOME STUFF", "\n\n\nlcase\n\nreplace some nuff") == {:ok, "nuff stuff"}
     end
@@ -40,7 +44,7 @@ defmodule McTest do
     end
 
     test "returns the error modifier 'triple' when the modifier doesn't exist in the mappings" do
-      assert Mc.tripleize({:doesnt_exist, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "not found: doesnt_exist"}
+      assert Mc.tripleize({:nah, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "modifier not found 'nah'"}
     end
   end
 
