@@ -68,11 +68,10 @@ Bar.Replace.edit("wine bar", "glass")
 But we can chain modifiers together by listing them in the script, like so:
 
 ```elixir
-script =
-  """
-  change bottle
-  capify
-  """
+script = """
+change bottle
+capify
+"""
 
 Mc.modify("wine bar", script)
   #=> {:ok, "WINE BOTTLE"}
