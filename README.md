@@ -109,7 +109,7 @@ modifiers.  Feel free to use your own custom mappings or (perhaps) create a twea
 `%Mc.Mappings{}`.
 
 The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It creates functions that
-implement the 'error short-circuiting' behaviour mention above (along with a few utility functions for
+implement the 'error short-circuiting' behaviour mentioned above (along with a few utility functions for
 building error tuples).
 
 ## Infinite Lego(tm)
