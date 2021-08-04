@@ -8,8 +8,8 @@ A *ModifyChain* 'script' specifies a 'chain' of 'modifiers' (functions) that, on
 ## Modifiers
 
 All modifiers declare two arguments and return either `{:ok, result}` or `{:error, reason}`.  The first
-argument is passed the modified buffer from the previous modifier (in the chain); the second argument
-is passed the arguments for the modifier itself.
+argument receives the modified buffer from the previous modifier (in the chain) and the second argument
+receives the arguments for the modifier itself.
 
 Let's say we have the following modifiers:
 
@@ -56,9 +56,9 @@ Mc.modify("wine bar", "change glass")
   #=> {:ok, "wine glass"}
 ```
 
-The first argument is the *initial* buffer and the second is the modify script.  The result is obtained by
-transforming the initial buffer with the appropriate modifier and its arguments.  Effectively we ran the
-following code:
+The first argument is the *initial* buffer and the second argument is the modify script.  The result is
+obtained by transforming the initial buffer with the appropriate modifier and its arguments.  Effectively
+we ran the following code:
 
 ```elixir
 Bar.Replace.edit("wine bar", "glass")
