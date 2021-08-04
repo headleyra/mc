@@ -113,8 +113,11 @@ building error tuples).
 
 ## Infinite Lego(tm)
 
-Now you can think about coding in the same way you think about Lego -- all modifiers are automatically
-compatible with all other modifiers.  And you can write modifiers to do absolutely anything.  Have fun!
+Now you can think about coding in the same way you think about building a Lego model: all newly purchased
+bricks (modifiers you create) are automatically compatible with all the bricks you already have (your
+existing modifiers).  And you can purchase bricks (create new modifiers) to do absolutely anything.
+
+Have fun!
 
 <!--
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
