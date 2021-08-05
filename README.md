@@ -2,7 +2,7 @@
 
 **ModifyChain. Code like Lego(tm)**
 
-A *ModifyChain* 'script' specifies a 'chain' of 'modifiers' (functions) that, one by one, transform a
+A *ModifyChain Script* specifies a 'chain' of 'modifiers' (functions) that, one by one, transform a
 'buffer', eventually producing a result.
 
 ## Modifiers
@@ -56,9 +56,9 @@ Mc.modify("wine bar", "change glass")
   #=> {:ok, "wine glass"}
 ```
 
-The first argument is the *initial* buffer and the second argument is the modify script.  The result is
-obtained by transforming the initial buffer with the appropriate modifier and its arguments.  Effectively
-we ran the following code:
+The first argument is the *initial* buffer and the second argument is the ModifyChain Script.  The
+result is obtained by transforming the initial buffer with the named modifier and its arguments.
+Effectively we ran the following code:
 
 ```elixir
 Bar.Replace.edit("wine bar", "glass")
