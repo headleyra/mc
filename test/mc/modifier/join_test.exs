@@ -15,6 +15,15 @@ defmodule Mc.Modifier.JoinTest do
       assert Join.modify("\n\n\n", "A") == {:ok, "AAA"}
     end
 
+    test "joins lines separated with URI-encoded `args`" do
+      assert Join.modify("once\nupona\ntime", "%20") == {:ok, "once upona time"}
+      assert Join.modify("bish\nbosh", "%09") == {:ok, "bish\tbosh"}
+    end
+
+    test "errors with bad URI-encoded `args`" do
+      assert Join.modify("bish bosh", "%") == {:error, "usage: Mc.Modifier.Join#modify <uri encoded separator>"}
+    end
+
     test "works with ok tuples" do
       assert Join.modify({:ok, "best\nof\n3"}, "-") == {:ok, "best-of-3"}
     end
