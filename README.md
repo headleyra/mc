@@ -2,14 +2,14 @@
 
 **ModifyChain. Code like Lego(tm)**
 
-A *ModifyChain Script* specifies a 'chain' of 'modifiers' (functions) that, one by one, transform a
-'buffer', eventually producing a result.
+A *ModifyChain Script* lists a 'chain' of 'modifiers' (functions) that, one by one, modify a
+'buffer' (a string), eventually producing a result.
 
 ## Modifiers
 
-All modifiers declare two arguments and return either `{:ok, result}` or `{:error, reason}`.  The first
-argument receives the modified buffer from the previous modifier (in the chain) and the second argument
-receives the arguments for the modifier itself.
+All modifiers declare two arguments.  The first argument receives the modified buffer from the previous
+modifier (in the chain) and the second argument receives the arguments for the modifier itself.  All
+modifiers return either `{:ok, result}` or `{:error, reason}` (where 'result' and 'reason' are strings).
 
 Let's say we have the following modifiers:
 
@@ -43,7 +43,7 @@ mappings =
 ```
 
 We've assigned the name 'capify' to the first modifier; 'change' to the second; 'boom' to the third.
-Next we start the ModifyChain server, passing it the mappings:
+Next we start the ModifyChain server and pass it the mappings:
 
 ```elixir
 Mc.start_link(mappings: mappings)
@@ -114,8 +114,8 @@ building error tuples).
 ## Infinite Lego(tm)
 
 Now you can think about coding in the same way you think about building a Lego model: all newly purchased
-bricks (modifiers you create) are automatically compatible with all the bricks you already have (your
-existing modifiers).  And you can purchase bricks (create new modifiers) to do absolutely anything.
+bricks (modifiers you create) are automatically compatible with the bricks you already have.  And you can
+purchase bricks that do absolutely anything.
 
 Have fun!
 
