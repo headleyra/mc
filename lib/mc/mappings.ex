@@ -26,6 +26,7 @@ defmodule Mc.Mappings do
     ifl: {Mc.Modifier.If, :modifyl},
     invert: {Mc.Modifier.Invert, :modify},
     iword: {Mc.Modifier.Iword, :modify},
+    join: {Mc.Modifier.Join, :modify},
     json: {Mc.Modifier.Json, :modify},
     jsona: {Mc.Modifier.Json, :modifya},
     lcase: {Mc.Modifier.Lcase, :modify},
