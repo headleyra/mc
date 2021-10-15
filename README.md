@@ -111,14 +111,6 @@ The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It c
 implement the 'error short-circuiting' behaviour mentioned above (along with a few utility functions for
 building error tuples).
 
-## Infinite Lego(tm)
-
-Now you can think about coding in the same way you think about building a Lego model: all newly purchased
-bricks (modifiers you create) are automatically compatible with the bricks you already have.  And you can
-purchase bricks that do absolutely anything.
-
-Have fun!
-
 <!--
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
