@@ -32,12 +32,11 @@ defmodule Mc.Modifier.Math do
   end
 
   defp get_func(operation) do
-    %{
-      :+ => fn int, acc -> acc + int end,
-      :- => fn int, acc -> acc - int end,
-      :* => fn int, acc -> acc * int end,
-      :/ => fn int, acc -> acc / int end
-    }
-    |> Map.get(operation)
+    case operation do
+      :+ -> fn int, acc -> acc + int end
+      :- -> fn int, acc -> acc - int end
+      :* -> fn int, acc -> acc * int end
+      :/ -> fn int, acc -> acc / int end
+    end
   end
 end
