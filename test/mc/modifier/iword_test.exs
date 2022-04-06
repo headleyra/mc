@@ -3,22 +3,38 @@ defmodule Mc.Modifier.IwordTest do
   alias Mc.Modifier.Iword
 
   describe "Mc.Modifier.Iword.modify/2" do
-    test "converts integers in the `buffer` to words" do
-      assert Iword.modify("127", "n/a") == {:ok, "one hundred and twenty seven"}
-      assert Iword.modify("7 till 11", "") == {:ok, "seven\neleven"}
-      assert Iword.modify("\n   1 for the money\n  \t 2 for the show\n\n", "") == {:ok, "one\ntwo"}
-      assert Iword.modify("1000012 45", "") == {:ok, "one million and twelve\nforty five"}
-      assert Iword.modify("028 17", "") == {:ok, "twenty eight\nseventeen"}
+    test "parses the `buffer` as an integer and converts it into its word equivalent" do
+      assert Iword.modify("0", "n/a") == {:ok, "zero"}
+      assert Iword.modify("1", "") == {:ok, "one"}
+      assert Iword.modify("11", "") == {:ok, "eleven"}
+      assert Iword.modify("1048576", "") == {:ok, "one million, forty eight thousand, five hundred and seventy six"}
     end
 
-    test "returns empty string when no integers are found" do
-      assert Iword.modify("", "n/a") == {:ok, ""}
-      assert Iword.modify("no integers in here", "") == {:ok, ""}
-      assert Iword.modify("3.142 is a float", "") == {:ok, ""}
+    test "works with negative integers" do
+      assert Iword.modify("-1", "") == {:ok, "(minus) one"}
+      assert Iword.modify("-3142", "") == {:ok, "(minus) three thousand, one hundred and forty two"}
+    end
+
+    test "works with integers embedded in whitespace" do
+      assert Iword.modify("   -15", "") == {:ok, "(minus) fifteen"}
+      assert Iword.modify("5\n\n", "") == {:ok, "five"}
+      assert Iword.modify("\t 17 \n", "") == {:ok, "seventeen"}
+    end
+
+    test "errors when `buffer` is empty" do
+      assert Iword.modify("", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify(" ", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify("\n\t", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+    end
+
+    test "errors when `buffer` is not an integer" do
+      assert Iword.modify("random string", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify("3.142", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify("123 5", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
     end
 
     test "works with ok tuples" do
-      assert Iword.modify({:ok, "BEST\nOF 3"}, "n/a") == {:ok, "three"}
+      assert Iword.modify({:ok, "7"}, "") == {:ok, "seven"}
     end
 
     test "allows error tuples to pass-through" do

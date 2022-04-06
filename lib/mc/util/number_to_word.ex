@@ -7,6 +7,7 @@ defmodule Mc.Util.NumberToWord do
   def say(n), do: n |> say_io() |> IO.iodata_to_binary()
 
   @spec say_io(integer) :: iodata
+  def say_io(0), do: "zero"
   def say_io(1), do: "one"
   def say_io(2), do: "two"
   def say_io(3), do: "three"
