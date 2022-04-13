@@ -1,4 +1,4 @@
-defmodule Mc.Util.InlineString do
+defmodule Mc.InlineString do
   def decode(string) do
     String.split(string, "; ")
     |> Enum.join("\n")

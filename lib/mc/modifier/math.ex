@@ -9,7 +9,7 @@ defmodule Mc.Modifier.Math do
   def applyop(string, operation) do
     string
     |> String.split()
-    |> Enum.map(fn num_str -> Mc.Util.Math.str2num(num_str) end)
+    |> Enum.map(fn num_str -> Mc.Math.str2num(num_str) end)
     |> Enum.reject(fn num_tuple -> num_tuple == :error end)
     |> Enum.map(fn {:ok, num} -> num end)
     |> (fn

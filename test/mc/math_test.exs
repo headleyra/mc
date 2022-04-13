@@ -1,8 +1,8 @@
-defmodule Mc.Util.MathTest do
+defmodule Mc.MathTest do
   use ExUnit.Case, async: true
-  alias Mc.Util.Math
+  alias Mc.Math
 
-  describe "Mc.Util.Math.str2num/1" do
+  describe "Mc.Math.str2num/1" do
     test "converts its argument to an integer" do
       assert Math.str2num("0") == {:ok, 0}
       assert Math.str2num("-2") == {:ok, -2}
@@ -16,7 +16,7 @@ defmodule Mc.Util.MathTest do
     end
   end
 
-  describe "Mc.Util.Math.str2int/1" do
+  describe "Mc.Math.str2int/1" do
     test "converts its argument to an integer" do
       assert Math.str2int("0") == {:ok, 0}
       assert Math.str2int("-81") == {:ok, -81}
@@ -31,7 +31,7 @@ defmodule Mc.Util.MathTest do
     end
   end
 
-  describe "Mc.Util.Math.str2flt/1" do
+  describe "Mc.Math.str2flt/1" do
     test "converts its argument to a float" do
       assert Math.str2flt("0.0") == {:ok, 0.0}
       assert Math.str2flt("-22.04") == {:ok, -22.04}

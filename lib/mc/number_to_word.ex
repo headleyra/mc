@@ -1,4 +1,4 @@
-defmodule Mc.Util.NumberToWord do
+defmodule Mc.NumberToWord do
   @moduledoc """
   Credit: Mike Buhot, https://gist.github.com/mbuhot/ba2232750f8e892c4c52142b556c563a
   """

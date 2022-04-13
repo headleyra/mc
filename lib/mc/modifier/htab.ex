@@ -29,8 +29,8 @@ defmodule Mc.Modifier.Htab do
   defp parse(args) do
     case String.split(args) do
       [row, col] ->
-        row_css = Mc.Util.InlineString.uri_decode(row)
-        col_css = Mc.Util.InlineString.uri_decode(col)
+        row_css = Mc.InlineString.uri_decode(row)
+        col_css = Mc.InlineString.uri_decode(col)
 
         case [row_css, col_css] do
           [{:ok, ok_row_css}, {:ok, ok_col_css}] ->

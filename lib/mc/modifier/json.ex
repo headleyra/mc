@@ -48,7 +48,7 @@ defmodule Mc.Modifier.Json do
   end
 
   def list2el(list, index) do
-    case Mc.Util.Math.str2int(index) do
+    case Mc.Math.str2int(index) do
       {:ok, index_integer} ->
         {:ok, Enum.at(list, index_integer) |> Jason.encode!()}
 

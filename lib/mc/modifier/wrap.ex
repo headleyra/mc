@@ -3,7 +3,7 @@ defmodule Mc.Modifier.Wrap do
   @argspec "<positive integer>"
 
   def modify(buffer, args) do
-    case Mc.Util.Math.str2int(args) do
+    case Mc.Math.str2int(args) do
       {:ok, column} when column >= 0 ->
         result =
           buffer

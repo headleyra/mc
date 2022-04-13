@@ -21,7 +21,7 @@ defmodule Mc.Modifier.JoinTest do
     end
 
     test "errors with bad URI-encoded `args`" do
-      assert Join.modify("bish bosh", "%") == {:error, "usage: Mc.Modifier.Join#modify <uri encoded separator>"}
+      assert Join.modify("bish bosh", "%") == {:error, "usage: Mc.Modifier.Join#modify <URI-encoded separator>"}
     end
 
     test "works with ok tuples" do

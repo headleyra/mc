@@ -1,8 +1,8 @@
-defmodule Mc.Util.InlineStringTest do
+defmodule Mc.InlineStringTest do
   use ExUnit.Case, async: true
-  alias Mc.Util.InlineString
+  alias Mc.InlineString
 
-  describe "Mc.Util.InlineString.decode/1" do
+  describe "Mc.InlineString.decode/1" do
     test "inline decodes `string`" do
       assert InlineString.decode("split; into; lines") == {:ok, "split\ninto\nlines"}
       assert InlineString.decode("won't split into;lines") == {:ok, "won't split into;lines"}
@@ -19,7 +19,7 @@ defmodule Mc.Util.InlineStringTest do
     end
   end
 
-  describe "Mc.Util.InlineString.uri_decode/1" do
+  describe "Mc.InlineString.uri_decode/1" do
     test "URI decodes `string`" do
       assert InlineString.uri_decode("%0a") == {:ok, "\n"}
       assert InlineString.uri_decode("%20") == {:ok, " "}

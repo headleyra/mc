@@ -5,12 +5,12 @@ defmodule Mc.Modifier.Buffer do
   def modify(buffer, args) do
     with \
       [_, script] <- Regex.run(~r/`(.*?)`/s, args),
-      {:ok, decoded_script} <- Mc.Util.InlineString.decode(script)
+      {:ok, decoded_script} <- Mc.InlineString.decode(script)
     do
       modify_decoded_script(buffer, decoded_script, args)
     else
       nil ->
-        case Mc.Util.InlineString.decode(args) do
+        case Mc.InlineString.decode(args) do
           {:ok, decoded_script} ->
             {:ok, decoded_script}
 

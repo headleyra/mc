@@ -1,4 +1,4 @@
-defmodule Mc.Util.Math do
+defmodule Mc.Math do
   def str2num(string) do
     case str2int(string) do
       :error ->

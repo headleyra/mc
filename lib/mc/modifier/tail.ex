@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Tail do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    case Mc.Util.Math.str2int(args) do
+    case Mc.Math.str2int(args) do
       {:ok, tail} when tail >= 0 ->
         result =
           buffer
