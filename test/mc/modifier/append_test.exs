@@ -8,10 +8,7 @@ defmodule Mc.Modifier.AppendTest do
       assert Append.modify("foo\n", "bar") == {:ok, "foo\nbar"}
       assert Append.modify("foo\n", "bar; roo") == {:ok, "foo\nbar\nroo"}
       assert Append.modify("the tab", "%09; tub") == {:ok, "the tab\t\ntub"}
-    end
-
-    test "errors given badly formed URI characters" do
-      assert Append.modify("the buff", "%%0a") == {:error, "usage: Mc.Modifier.Append#modify <inline string>"}
+      assert Append.modify("the buff", "%%0a") == {:ok, "the buff%\n"}
     end
 
     test "works with ok tuples" do

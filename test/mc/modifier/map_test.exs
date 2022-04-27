@@ -9,15 +9,12 @@ defmodule Mc.Modifier.MapTest do
       assert Map.modify("\t\nbing\n", "replace bing bong") == {:ok, "\t\nbong\n"}
       assert Map.modify("FOO BAR\nfour four tWo", "lcase; r two 2") == {:ok, "foo bar\nfour four 2"}
       assert Map.modify("FOO BAR\nFOUR FOUR TWO", "lcase%0ar two 2") == {:ok, "foo bar\nfour four 2"}
+      assert Map.modify("1\n2", "buffer foo %%09") == {:ok, "foo %\t\nfoo %\t"}
     end
 
     test "returns the first error encountered" do
       assert Map.modify("FOO\nBAR", "lcase; error oops") == {:error, "oops"}
       assert Map.modify("FOO\nBAR", "error first; error second") == {:error, "first"}
-    end
-
-    test "errors given badly formed URI" do
-      assert Map.modify("1\n2", "buffer foo %%0a") == {:error, "usage: Mc.Modifier.Map#modify <inline string>"}
     end
 
     test "returns the `buffer` unchanged when `script` is whitespace or empty" do

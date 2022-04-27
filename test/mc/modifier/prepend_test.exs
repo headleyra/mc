@@ -8,10 +8,7 @@ defmodule Mc.Modifier.PrependTest do
       assert Prepend.modify(".foo\n", "bar") == {:ok, "bar.foo\n"}
       assert Prepend.modify("3 foo", "1; 2") == {:ok, "1\n23 foo"}
       assert Prepend.modify("at the border", "stop; %20") == {:ok, "stop\n at the border"}
-    end
-
-    test "errors for badly formed URI characters" do
-      assert Prepend.modify("1\n2", "0 %%0a") == {:error, "usage: Mc.Modifier.Prepend#modify <inline string>"}
+      assert Prepend.modify("1\n2", "0 %%0a") == {:ok, "0 %\n1\n2"}
     end
 
     test "works with ok tuples" do

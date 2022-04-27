@@ -28,10 +28,7 @@ defmodule Mc.Modifier.ZipTest do
       assert Zip.modify("one\ntwo", "%20 z1") == {:ok, "one forda money\ntwo forda show"}
       assert Zip.modify("one\ntwo", "%0a z1") == {:ok, "one\nforda money\ntwo\nforda show"}
       assert Zip.modify("one\ntwo", "%09 z1") == {:ok, "one\tforda money\ntwo\tforda show"}
-    end
-
-    test "errors when the separator contains bad URI characters" do
-      assert Zip.modify("one\ntwo", "%%09 z1") == {:error, "usage: Mc.Modifier.Zip#modify <uri encoded separator> <key>"}
+      assert Zip.modify("one\ntwo", "%%09 z1") == {:ok, "one%\tforda money\ntwo%\tforda show"}
     end
 
     test "works when the key doesn't exist" do

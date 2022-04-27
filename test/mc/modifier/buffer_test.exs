@@ -14,6 +14,7 @@ defmodule Mc.Modifier.BufferTest do
       assert Buffer.modify("", "won't split into;lines") == {:ok, "won't split into;lines"}
       assert Buffer.modify("", "foo;bar;") == {:ok, "foo;bar;"}
       assert Buffer.modify("", "big; tune; ") == {:ok, "big\ntune\n"}
+      assert Buffer.modify("", "foo %%20bar") == {:ok, "foo % bar"}
     end
 
     test "returns `args` with (back-ticked) 'inline scripts' replaced" do
@@ -22,6 +23,7 @@ defmodule Mc.Modifier.BufferTest do
       assert Buffer.modify("", "yes `buffer WHEE; lcase; replace whee we` can") == {:ok, "yes we can"}
       assert Buffer.modify("", "== `buffer FOO %0a lcase; replace foo bar` ==") == {:ok, "== bar  =="}
       assert Buffer.modify("", "; ;tumble; weed; ") == {:ok, "\n;tumble\nweed\n"}
+      assert Buffer.modify("FOO", "`replace FOO %%`") == {:ok, "%%"}
     end
 
     test "'runs' 'inline scripts' against the `buffer`" do
@@ -45,14 +47,6 @@ defmodule Mc.Modifier.BufferTest do
     test "handles replacements that return error tuples" do
       assert Buffer.modify("", "`error oops`") == {:error, "oops"}
       assert Buffer.modify("", "`error first` `error second`") == {:error, "first"}
-    end
-
-    test "errors for badly formed URI characters" do
-      assert Buffer.modify("n/a", "foo %%20 bar") ==
-        {:error, "usage: Mc.Modifier.Buffer#modify <inline string>"}
-
-      assert Buffer.modify("FOO", "`replace FOO %%`") ==
-        {:error, "usage: Mc.Modifier.Buffer#modify <inline string>"}
     end
 
     test "works with ok tuples" do

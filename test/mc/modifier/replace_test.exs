@@ -3,7 +3,8 @@ defmodule Mc.Modifier.ReplaceTest do
   alias Mc.Modifier.Replace
 
   describe "Mc.Modifier.Replace.modify/2" do
-    test "splits `args` (on the *first* space) into search and replace terms and returns `buffer` with the replacement applied", do: assert true
+    test "splits `args` (on the *first* space) into search and replace terms and returns `buffer`
+      with the replacement applied", do: assert true
 
     test "works with simple replacements" do
       assert Replace.modify("stuff like this", "this THAT") == {:ok, "stuff like THAT"}
@@ -31,6 +32,7 @@ defmodule Mc.Modifier.ReplaceTest do
 
     test "works with a URI-encoded replacement term" do
       assert Replace.modify("alpha beta", "alpha %0a %09") == {:ok, "\n \t beta"}
+      assert Replace.modify("foo", "foo %%0a") == {:ok, "%\n"}
     end
 
     test "works with a regex search term" do
@@ -53,11 +55,6 @@ defmodule Mc.Modifier.ReplaceTest do
         {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
 
       assert Replace.modify("", "") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
-    end
-
-    test "errors for a replacment term with badly formed URI characters" do
-      assert Replace.modify("n/a", "foo %%0a") ==
         {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
     end
 

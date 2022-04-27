@@ -6,11 +6,6 @@ defmodule Mc.InlineString do
   end
 
   def uri_decode(string) do
-    try do
-      {:ok, URI.decode(string)}
-    rescue
-      ArgumentError ->
-        :error
-    end
+    {:ok, URI.decode(string)}
   end
 end

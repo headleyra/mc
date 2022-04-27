@@ -96,11 +96,6 @@ defmodule Mc.Modifier.HtabTest do
       }
     end
 
-    test "errors for badly formed URI encoded selectors", %{html: html} do
-      assert Htab.modify(html, "table%%20tr td") ==
-        {:error, "usage: Mc.Modifier.Htab#modify <uri encoded css row selector> <uri encoded css column selector>"}
-    end
-
     test "returns a table (where the CSS selectors target lists of elements)", %{html: html} do
       assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th") == {:ok,
         """
