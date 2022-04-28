@@ -3,13 +3,7 @@ defmodule Mc.Modifier.Map do
   @timeout 40_000
 
   def modify(buffer, args) do
-    case Mc.InlineString.decode(args) do
-      {:ok, script} ->
-        result(buffer, script)
-
-      _error ->
-        usage(:modify, "<inline string>")
-    end
+    result(buffer, args)
   end
 
   defp result(buffer, script) do
