@@ -20,7 +20,7 @@ defmodule Mc.Mappings do
     head: {Mc.Modifier.Head, :modify},
     hsel: {Mc.Modifier.Hsel, :modify},
     hselc: {Mc.Modifier.Hselc, :modify},
-    htab: {Mc.Modifier.Htab, :modify},
+    htabc: {Mc.Modifier.Htab, :modify},
     if: {Mc.Modifier.If, :modify},
     ife: {Mc.Modifier.If, :modifye},
     invert: {Mc.Modifier.Invert, :modify},

@@ -13,7 +13,7 @@ defmodule Mc.Modifier.MapTest do
     end
 
     test "returns errors" do
-      assert Map.modify("FOO\nBAR", "error oops") == {:error, "oops"}
+      assert Map.modify("FOO\nBAR", "error oops") == {:ok, "ERROR: oops\nERROR: oops"}
     end
 
     test "returns the `buffer` unchanged when `script` is whitespace or empty" do
@@ -30,4 +30,24 @@ defmodule Mc.Modifier.MapTest do
       assert Map.modify({:error, "reason"}, "lcase") == {:error, "reason"}
     end
   end
+
+  # describe "Mc.Modifier.Map.parse/1" do
+  #   test "parses `args` into 'max conconcurrency' and 'script'" do
+  #     assert Map.parse("1 bar") == {1, "bar"}
+  #     assert Map.parse("2 an inline script") == {2, "an inline script"}
+  #     assert Map.parse("8 one two") == {8, "one two"}
+  #   end
+
+  #   test "errors when 'max conconcurrency' > 8" do
+  #     assert Map.parse("9 bigger than 8") == :error
+  #     assert Map.parse("17 seventeen") == :error
+  #   end
+
+  #   test "errors when 'max conconcurrency' isn't a positive integer" do
+  #     assert Map.parse("0 an inline script") == :error
+  #     assert Map.parse("3.142 pie for dinner") == :error
+  #     assert Map.parse("-1 auto go") == :error
+  #     assert Map.parse("oops auto go") == :error
+  #   end
+  # end
 end

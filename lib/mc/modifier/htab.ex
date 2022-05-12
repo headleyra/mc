@@ -27,19 +27,13 @@ defmodule Mc.Modifier.Htab do
   end
 
   defp parse(args) do
-    case String.split(args) do
-      [row, col] ->
-        row_css = Mc.InlineString.uri_decode(row)
-        col_css = Mc.InlineString.uri_decode(col)
-
-        case [row_css, col_css] do
-          [{:ok, ok_row_css}, {:ok, ok_col_css}] ->
-            {:ok, ok_row_css, ok_col_css}
-
-          _error ->
-            :error
-        end
-
+    with \
+      [row, col] <- String.split(args),
+      {:ok, row_css} <- Mc.InlineString.uri_decode(row),
+      {:ok, col_css} <- Mc.InlineString.uri_decode(col)
+    do
+      {:ok, row_css, col_css}
+    else
       _error ->
         :error
     end

@@ -14,13 +14,14 @@ defmodule Mc.Modifier.Replace do
   end
 
   defp parse(args) do
-    with [search, replace] <- String.split(args, " ", parts: 2),
-         {:ok, search_regex} <- Regex.compile(search, "sm"),
-         {:ok, uri_decoded_replace} <- Mc.InlineString.uri_decode(replace)
+    with \
+      [search, replace] <- String.split(args, " ", parts: 2),
+      {:ok, search_regex} <- Regex.compile(search, "sm"),
+      {:ok, uri_decoded_replace} <- Mc.InlineString.uri_decode(replace)
     do
       {:ok, search_regex, uri_decoded_replace}
     else
-      _ -> :error
+      _error -> :error
     end
   end
 end

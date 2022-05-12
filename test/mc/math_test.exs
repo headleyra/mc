@@ -14,6 +14,13 @@ defmodule Mc.MathTest do
       assert Math.str2num("-0.81") == {:ok, -0.81}
       assert Math.str2num("3.142") == {:ok, 3.142}
     end
+
+    test "errors for non-number strings" do
+      assert Math.str2num("") == :error
+      assert Math.str2num(".0") == :error
+      assert Math.str2num("apple") == :error
+      assert Math.str2num("%5") == :error
+    end
   end
 
   describe "Mc.Math.str2int/1" do
@@ -23,7 +30,7 @@ defmodule Mc.MathTest do
       assert Math.str2int("5") == {:ok, 5}
     end
 
-    test "returns :error for non-integer strings" do
+    test "errors for non-integer strings" do
       assert Math.str2int("") == :error
       assert Math.str2int("0.0") == :error
       assert Math.str2int("beans") == :error
@@ -38,7 +45,7 @@ defmodule Mc.MathTest do
       assert Math.str2flt("101.9") == {:ok, 101.9}
     end
 
-    test "returns :error for non-float strings" do
+    test "errors for non-float strings" do
       assert Math.str2flt("") == :error
       assert Math.str2flt("8") == :error
       assert Math.str2flt("foo") == :error

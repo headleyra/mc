@@ -1,6 +1,7 @@
 defmodule Mc.Modifier.App do
   use Mc.Railway, [:modify, :modifyr]
-  @search_prefix "::"
+  @arg_prefix "::"
+  @arg_all ":"
 
   def modify(_buffer, args) do
     case String.split(args, ~r/\s+/, parts: 2) do
@@ -8,13 +9,7 @@ defmodule Mc.Modifier.App do
         {:ok, build(app_name)}
 
       [app_name, replacements] ->
-        {result, _search_count} =
-          Enum.reduce(String.split(replacements), {build(app_name), 1}, fn replacement, {script, search_count} ->
-            {:ok, script_after_replacement} = Mc.modify(script, "replace #{@search_prefix}#{search_count} #{replacement}")
-            {script_after_replacement, search_count + 1}
-          end)
-
-        {:ok, result}
+        script_from(build(app_name), replacements)
     end
   end
 
@@ -31,5 +26,17 @@ defmodule Mc.Modifier.App do
     |> Enum.map(fn {:ok, script} -> script end)
     |> Enum.reject(&(&1 == ""))
     |> Enum.join("\n")
+  end
+
+  def script_from(script, replacements) do
+    replace_script =
+      String.split(replacements)
+      |> Enum.with_index(1)
+      |> Enum.into([], fn {arg, index} -> {"#{@arg_prefix}#{index}", arg} end)
+      |> Enum.map(fn {search, replace} -> "replace #{search} #{replace}" end)
+      |> Enum.join("\n")
+
+    replace_arg_all = "\nreplace #{@arg_prefix}#{@arg_all} #{replacements}"
+    Mc.modify(script, replace_script <> replace_arg_all)
   end
 end
