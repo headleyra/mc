@@ -1,16 +1,29 @@
 defmodule Mc.Modifier.Map do
   use Mc.Railway, [:modify]
-  @timeout 100_000
-  @concurrency 1
 
   def modify(buffer, args) do
-    String.split(buffer, "\n")
-    |> Task.async_stream(fn line -> Mc.modify(line, args) end,
-      ordered: true,
-      max_concurrency: @concurrency,
-      timeout: @timeout
-    )
-    |> report()
+    case parse(args) do
+      {script, [concurrency: cc]} ->
+        String.split(buffer, "\n")
+        |> Task.async_stream(&Mc.modify(&1, script), ordered: true, max_concurrency: cc, timeout: :infinity)
+        |> report()
+
+      :error ->
+        usage(:modify, "[-c <integer:positive>] <modifier> [<args>]")
+    end
+  end
+
+  def parse(args) do
+    case Mc.Util.parse(args, [{:concurrency, :integer, :c}]) do
+      {script, []} ->
+        {script, [concurrency: 1]}
+
+      {script, [concurrency: cc]} when cc > 0 ->
+        {script, [concurrency: cc]}
+
+      _error ->
+        :error
+    end
   end
 
   defp report(results) do
@@ -29,16 +42,4 @@ defmodule Mc.Modifier.Map do
 
     {:ok, result}
   end
-
-  # def parse(args) do
-  #   with \
-  #     [max, script] <- String.split(args, ~r/\s+/, parts: 2),
-  #     {:ok, max} when is_integer(max) and max in 1..8 <- Mc.Math.str2int(max)
-  #   do
-  #     {max, script}
-  #   else
-  #     _error ->
-  #       :error
-  #   end
-  # end
 end
