@@ -18,12 +18,12 @@ defmodule Mc.Modifier.MapTest do
       assert Map.modify("", "\n\n   \t") == {:ok, ""}
     end
 
-    test "accepts a max concurrency integer (max number of cores to use)" do
+    test "accepts a 'concurrency' integer (maximum number of CPU cores to use)" do
       assert Map.modify("1\n2", "-c 8 iword") == {:ok, "one\ntwo"}
       assert Map.modify("1\n2", "--concurrency 1 iword") == {:ok, "one\ntwo"}
     end
 
-    test "errors when max concurrency isn't a positive integer" do
+    test "errors when 'concurrency' isn't a positive integer" do
       assert Map.modify("1\n2", "-c foo iword") ==
         {:error, "usage: Mc.Modifier.Map#modify [-c <integer:positive>] <modifier> [<args>]"}
 
@@ -52,20 +52,20 @@ defmodule Mc.Modifier.MapTest do
   end
 
   describe "Mc.Modifier.Map.parse/1" do
-    test "parses its input for the concurrency option" do
+    test "parses its input for the 'concurrency' option" do
       assert Map.parse("-c 2 rand 10") == {"rand 10", [concurrency: 2]}
       assert Map.parse("--concurrency 3 modi 7") == {"modi 7", [concurrency: 3]}
     end
 
-    test "returns a default concurrency of 1" do
+    test "returns a default 'concurrency' of 1" do
       assert Map.parse("some script") == {"some script", [concurrency: 1]}
     end
 
-    test "errors when concurrency can't be parsed" do
+    test "errors when 'concurrency' can't be parsed" do
       assert Map.parse("-c not-an-integer arguments") == :error
     end
 
-    test "errors when concurrency is negative or zero" do
+    test "errors when 'concurrency' is negative or zero" do
       assert Map.parse("-c -1 modi") == :error
       assert Map.parse("-c 0 modi") == :error
     end
