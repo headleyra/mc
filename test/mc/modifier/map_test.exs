@@ -19,8 +19,9 @@ defmodule Mc.Modifier.MapTest do
     end
 
     test "accepts a 'concurrency' integer (maximum number of CPU cores to use)" do
-      assert Map.modify("1\n2", "-c 8 iword") == {:ok, "one\ntwo"}
-      assert Map.modify("1\n2", "--concurrency 1 iword") == {:ok, "one\ntwo"}
+      assert Map.modify("1\n2", "--concurrency 2 iword") == {:ok, "one\ntwo"}
+      assert Map.modify("1\n2", "-c 2 iword") == {:ok, "one\ntwo"}
+      assert Map.modify("1\n2", "-c 5 append a") == {:ok, "1a\n2a"}
     end
 
     test "errors when 'concurrency' isn't a positive integer" do
