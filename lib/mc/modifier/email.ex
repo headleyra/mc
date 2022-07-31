@@ -1,23 +1,50 @@
 defmodule Mc.Modifier.Email do
   use Agent
-  use Mc.Railway, [:deliver]
+  use Mc.Railway, [:modify]
 
-  def start_link(mailer: mailer) do
-    Agent.start_link(fn -> mailer end, name: __MODULE__)
+  @help """
+  modifier <subject>, {<email recipient>}
+  modifier -h
+
+  Sends the buffer as an email.
+
+  -h, --help
+    Show help
+  """
+
+  def start_link(mail_client: mail_client) do
+    Agent.start_link(fn -> mail_client end, name: __MODULE__)
   end
 
-  def mailer do
+  def mail_client do
     Agent.get(__MODULE__, & &1)
   end
 
-  def deliver(buffer, args) do
+  def modify(buffer, args) do
+    case parse(args) do
+      {_, []} ->
+        deliver(buffer, args)
+
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
+    end
+  end
+
+  defp parse(args) do
+    Mc.Switch.parse(args, [{:help, :boolean, :h}])
+  end
+
+  defp deliver(buffer, args) do
     case String.split(args, ", ", parts: 2) do
       [subject, recipients] ->
         recipient_list = String.split(recipients)
-        apply(mailer(), :deliver, [subject, buffer, recipient_list])
+        apply(mail_client(), :deliver, [subject, buffer, recipient_list])
 
       _bad_args ->
-        usage(:deliver, "<subject>, <email> ...")
+        usage(:modify, "<subject>, <email> ...")
     end
   end
 end

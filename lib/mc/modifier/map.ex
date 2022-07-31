@@ -1,45 +1,54 @@
 defmodule Mc.Modifier.Map do
   use Mc.Railway, [:modify]
 
+  @help """
+  modifier [-c <max concurrency>] <script>
+  modifier -h
+
+  Runs <script> against each line in the buffer and reports the results.
+
+  -c, --concurrency
+    The maximum number of CPU cores the system should use (hint)
+
+  -h, --help
+    Show help
+  """
+
   def modify(buffer, args) do
     case parse(args) do
-      {script, [concurrency: cc]} ->
+      {script, [concurrency: int]} ->
         String.split(buffer, "\n")
-        |> Task.async_stream(&Mc.modify(&1, script), ordered: true, max_concurrency: cc, timeout: :infinity)
+        |> Task.async_stream(&Mc.modify(&1, script), ordered: true, max_concurrency: int, timeout: :infinity)
         |> report()
 
+      {_, [help: true]} ->
+        help(:modify, @help)
+
       :error ->
-        usage(:modify, "[-c <integer:positive>] <modifier> [<args>]")
+        oops(:modify, "switch parse error")
     end
   end
 
-  def parse(args) do
-    case Mc.Util.parse(args, [{:concurrency, :integer, :c}]) do
+  defp parse(args) do
+    case Mc.Switch.parse(args, [{:concurrency, :integer, :c}, {:help, :boolean, :h}]) do
       {script, []} ->
         {script, [concurrency: 1]}
 
-      {script, [concurrency: cc]} when cc > 0 ->
-        {script, [concurrency: cc]}
-
-      _error ->
+      {_script, [concurrency: int]} when int <= 0 ->
         :error
+
+      catchall ->
+        catchall
     end
   end
 
   defp report(results) do
-    result =
-      Stream.map(
-        results,
-        fn
-          {:ok, {:ok, result}} ->
-            result
-
-          {:ok, {:error, reason}} ->
-            "ERROR: #{reason}"
-        end
-      )
+    {:ok,
+      Stream.map(results, &detuple/1)
       |> Enum.join("\n")
-
-    {:ok, result}
+    }
   end
+
+  defp detuple({:ok, {:ok, result}}), do: result
+  defp detuple({:ok, {:error, reason}}), do: "ERROR: #{reason}"
 end

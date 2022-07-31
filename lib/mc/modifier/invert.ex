@@ -1,15 +1,35 @@
 defmodule Mc.Modifier.Invert do
   use Mc.Railway, [:modify]
 
-  def modify("", _args), do: {:ok, ""}
+  @help """
+  modifier [-h]
 
-  def modify(buffer, _args) do
-    result =
-      buffer
-      |> String.split("\n")
-      |> Enum.reverse()
-      |> Enum.join("\n")
+  Inverts the buffer.
 
-    {:ok, result}
+  -h, --help
+    Show help
+  """
+
+  def modify(buffer, args) do
+    case parse(args) do
+      {_, []} ->
+        {:ok,
+          buffer
+          |> String.split("\n")
+          |> Enum.reverse()
+          |> Enum.join("\n")
+        }
+
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
+    end
+
+  end
+
+  defp parse(args) do
+    Mc.Switch.parse(args, [{:help, :boolean, :h}])
   end
 end

@@ -3,30 +3,36 @@ defmodule Mc.Railway do
   defmacro __using__(func_list) do
     utility_funcs =
       quote do
-        def name(atom) do
-          "#{Module.split(__MODULE__) |> Enum.join(".")}##{atom}"
+        def name(func_name) do
+          "#{Module.split(__MODULE__) |> Enum.join(".")}##{func_name}"
         end
 
-        def oops(func, message) do
-          {:error, "#{name(func)}: #{message}"}
+        def help(func_name, help_text) do
+          {:ok, "#{name(func_name)}\n\n#{help_text}"}
         end
 
-        def usage(func, args_spec) do
-          {:error, "usage: #{name(func)} #{args_spec}"}
+        def oops(func_name, message) do
+          {:error, "#{name(func_name)}: #{message}"}
+        end
+
+        def usage(func_name, args_spec) do
+          {:error, "usage: #{name(func_name)} #{args_spec}"}
         end
       end
 
-    Enum.map(func_list, fn func_name ->
-      quote do
-        def unquote(func_name)({:error, reason}, _args) do
-          {:error, reason}
-        end
+    delegate_funcs =
+      Enum.map(func_list, fn func_name ->
+        quote do
+          def unquote(func_name)({:error, reason}, _args) do
+            {:error, reason}
+          end
 
-        def unquote(func_name)({:ok, buffer}, args) do
-          unquote(func_name)(buffer, args)
+          def unquote(func_name)({:ok, buffer}, args) do
+            unquote(func_name)(buffer, args)
+          end
         end
-      end
-    end)
-    |> List.insert_at(-1, utility_funcs)
+      end)
+
+    List.insert_at(delegate_funcs, 0, utility_funcs)
   end
 end

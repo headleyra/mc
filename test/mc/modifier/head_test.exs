@@ -8,42 +8,49 @@ defmodule Mc.Modifier.HeadTest do
       line one
       line 2
 
-      line three
+      line four
       """
     }
   end
 
   describe "Mc.Modifier.Head.modify/2" do
-    test "returns the first `args` lines", %{text: text} do
+    test "parses `args` as an integer and returns that many lines from the start of `buffer`", %{text: text} do
       assert Head.modify(text, "1") == {:ok, "line one"}
       assert Head.modify(text, "2") == {:ok, "line one\nline 2"}
       assert Head.modify(text, "3") == {:ok, "line one\nline 2\n"}
-      assert Head.modify(text, "4") == {:ok, "line one\nline 2\n\nline three"}
+      assert Head.modify(text, "4") == {:ok, "line one\nline 2\n\nline four"}
       assert Head.modify("\n\nleading\nempties", "3") == {:ok, "\n\nleading"}
     end
 
     test "returns `buffer` if `args` exceeds lines present", %{text: text} do
-      assert Head.modify(text, "8") == {:ok, "line one\nline 2\n\nline three\n"}
+      assert Head.modify(text, "107") == {:ok, "line one\nline 2\n\nline four\n"}
     end
 
     test "returns empty string when `args` is zero", %{text: text} do
       assert Head.modify(text, "0") == {:ok, ""}
     end
 
-    test "errors when `args` is negative", %{text: text} do
-      assert Head.modify(text, "-1") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
+    test "errors when `args` isn't an integer or is negative", %{text: text} do
+      assert Head.modify(text, "-1") == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
+      assert Head.modify(text, "hi") == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
+      assert Head.modify(text, "2.7") == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
+      assert Head.modify(text, "") == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
     end
 
-    test "errors when `args` is not an integer", %{text: text} do
-      assert Head.modify(text, "hi") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
-      assert Head.modify(text, "") == {:error, "usage: Mc.Modifier.Head#modify <positive integer>"}
+    test "returns a help message" do
+      assert Check.has_help?(Head, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Head.modify("", "--unknown") == {:error, "Mc.Modifier.Head#modify: switch parse error"}
+      assert Head.modify("", "-u") == {:error, "Mc.Modifier.Head#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
       assert Head.modify({:ok, "some\nbuffer\ntext"}, "2") == {:ok, "some\nbuffer"}
     end
 
-    test "allows error tuples to pass-through" do
+    test "allows error tuples to pass through" do
       assert Head.modify({:error, "reason"}, "gets ignored") == {:error, "reason"}
     end
   end

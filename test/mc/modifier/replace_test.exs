@@ -47,31 +47,39 @@ defmodule Mc.Modifier.ReplaceTest do
       assert Replace.modify("Foo bar foobar abc", "[Bb]ar Biz") == {:ok, "Foo Biz fooBiz abc"}
     end
 
-    test "errors when no replace term is given" do
-      assert Replace.modify("3s a crowd", "search-without-replace") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+    test "errors when the replace term is missing" do
+      assert Replace.modify("3s a crowd", "search") ==
+        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+    end
 
+    test "errors when the search and replace terms are missing" do
       assert Replace.modify("bish bosh", "") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
-
-      assert Replace.modify("", "") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
     end
 
     test "errors when the search regex is bad" do
       assert Replace.modify("n/a", ") foo") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
 
       assert Replace.modify("(foo)", "(?=)) bar") ==
-        {:error, "usage: Mc.Modifier.Replace#modify <search regex> <replace string>"}
+        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+    end
+
+    test "returns a help message" do
+      assert Check.has_help?(Replace, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Replace.modify("", "--unknown") == {:error, "Mc.Modifier.Replace#modify: switch parse error"}
+      assert Replace.modify("", "-u") == {:error, "Mc.Modifier.Replace#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
       assert Replace.modify({:ok, "foo bar"}, "foo night") == {:ok, "night bar"}
     end
 
-    test "allows error tuples to pass-through" do
-      assert Replace.modify({:error, "reason"}, "n/a") == {:error, "reason"}
+    test "allows error tuples to pass through" do
+      assert Replace.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
 end

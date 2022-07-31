@@ -1,16 +1,12 @@
 ExUnit.start()
 
-defmodule Gopher do
-  @behaviour Mc.Behaviour.HttpClient
-  def get(url), do: {:ok, url}
-  def post(url, params), do: {:ok, {url, params}}
-end
+defmodule Check do
+  def blank?({:ok, value}), do: String.trim(value) == ""
+  def present?(tuple), do: !blank?(tuple)
 
-defmodule Postee do
-  @behaviour Mc.Behaviour.Mailer
-  def deliver(subject, message, recipients), do: {:ok, {subject, message, recipients}}
+  def has_help?(module, func) do
+    help_long = apply(module, func, ["", "--help"]) |> present?()
+    help_short = apply(module, func, ["", "-h"]) |> present?()
+    help_long && help_short
+  end
 end
-
-Mc.Modifier.Http.start_link(http_client: Gopher)
-Mc.Modifier.Email.start_link(mailer: Postee)
-Mc.start_link(mappings: %Mc.Mappings{})

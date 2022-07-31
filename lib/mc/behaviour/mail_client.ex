@@ -1,9 +1,9 @@
-defmodule Mc.Behaviour.Mailer do
+defmodule Mc.Behaviour.MailClient do
   @type subject :: String.t
   @type message :: String.t
   @type email :: String.t
   @type recipients :: [email]
-  @type reply :: term
+  @type reply :: String.t
   @type reason :: String.t
 
   @callback deliver(subject, message, recipients) :: {:ok, reply} | {:error, reason}

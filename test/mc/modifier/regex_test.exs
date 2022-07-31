@@ -45,14 +45,23 @@ defmodule Mc.Modifier.RegexTest do
     end
 
     test "errors when the regex is bad" do
-      assert Regex.modify("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Regex#modify <regex>"}
+      assert Regex.modify("one\ntwo", "?") == {:error, "Mc.Modifier.Regex#modify: bad regex"}
+    end
+
+    test "returns a help message" do
+      assert Check.has_help?(Regex, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Regex.modify("", "--unknown") == {:error, "Mc.Modifier.Regex#modify: switch parse error"}
+      assert Regex.modify("", "-u") == {:error, "Mc.Modifier.Regex#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
       assert Regex.modify({:ok, "some buffer text"}, "me.*uf") == {:ok, "me buf"}
     end
 
-    test "allows error tuples to pass-through" do
+    test "allows error tuples to pass through" do
       assert Regex.modify({:error, "reason"}, "gets ignored") == {:error, "reason"}
     end
   end

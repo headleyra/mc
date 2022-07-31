@@ -2,90 +2,48 @@ defmodule Mc.Modifier.SortTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Sort
 
-  setup do
-    %{
-      text: """
-        zebra crossing
-      strawberries
-      apples
-
-      oranges lemons
-      0-rated vat
-      """
-    }
-  end
-
   describe "Mc.Modifier.Sort.modify/2" do
-    test "sorts the `buffer`", %{text: text} do
-      assert Sort.modify(text, "") == {:ok, """
+    test "sorts the `buffer` in ascending order" do
+      assert Sort.modify("apple\nzoom\n0-rated\nbanana", "") == {:ok, "0-rated\napple\nbanana\nzoom"}
+    end
 
+    test "sorts the `buffer` in descending order ('inverse' switch)" do
+      assert Sort.modify("a\nc\nb", "--inverse") == {:ok, "c\nb\na"}
+      assert Sort.modify("a\nc\nb", "-v") == {:ok, "c\nb\na"}
+      assert Sort.modify("10\nten\ndix", "-v") == {:ok, "ten\ndix\n10"}
+    end
 
-        zebra crossing
-      0-rated vat
-      apples
-      oranges lemons
-      strawberries
-      """
-      }
+    test "returns a help message" do
+      assert Check.has_help?(Sort, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Sort.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Sort#modify: switch parse error"}
+      assert Sort.modify("n/a", "-u") == {:error, "Mc.Modifier.Sort#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
-      assert Sort.modify({:ok, "banana\napple\ntomatoe"}, "n/a") == {:ok, "apple\nbanana\ntomatoe\n"}
+      assert Sort.modify({:ok, "banana\napple"}, "") == {:ok, "apple\nbanana"}
     end
 
-    test "allows error tuples to pass-through" do
-      assert Sort.modify({:error, "reason"}, "n/a") == {:error, "reason"}
-    end
-  end
-
-  describe "Mc.Modifier.Sort.modifyv/2" do
-    test "reverse sorts the `buffer`", %{text: text} do
-      assert Sort.modifyv(text, "") == {:ok, """
-      strawberries
-      oranges lemons
-      apples
-      0-rated vat
-        zebra crossing
-
-
-      """
-      }
-    end
-
-    test "works with ok tuples" do
-      assert Sort.modifyv({:ok, "banana\napple\ntomatoe"}, "n/a") == {:ok, "tomatoe\nbanana\napple\n"}
-    end
-
-    test "allows error tuples to pass-through" do
-      assert Sort.modifyv({:error, "reason"}, "n/a") == {:error, "reason"}
+    test "allows error tuples to pass through" do
+      assert Sort.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
 
-  describe "Mc.Modifier.Sort.sorta/2" do
-    test "sorts lines of text (ascending)", %{text: text} do
-      assert Sort.sorta(text) == """
-
-
-        zebra crossing
-      0-rated vat
-      apples
-      oranges lemons
-      strawberries
-      """
+  describe "Mc.Modifier.Sort.parse/1" do
+    test "parses its input for the 'inverse' switch" do
+      assert Sort.parse("--inverse") == {"", [inverse: true]}
+      assert Sort.parse("-v") == {"", [inverse: true]}
+      assert Sort.parse("-v foo") == {"foo", [inverse: true]}
+      assert Sort.parse("") == {"", []}
+      assert Sort.parse("foo") == {"foo", []}
     end
-  end
 
-  describe "Mc.Modifier.Sort.sortd/2" do
-    test "sorts lines of text (descending)", %{text: text} do
-      assert Sort.sortd(text) == """
-      strawberries
-      oranges lemons
-      apples
-      0-rated vat
-        zebra crossing
-
-
-      """
+    test "errors given unknown switches" do
+      assert Sort.parse("-u") == :error
+      assert Sort.parse("--unknown opt") == :error
+      assert Sort.parse("--nope") == :error
     end
   end
 end

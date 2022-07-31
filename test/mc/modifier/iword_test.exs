@@ -7,7 +7,7 @@ defmodule Mc.Modifier.IwordTest do
       assert Iword.modify("0", "n/a") == {:ok, "zero"}
       assert Iword.modify("1", "") == {:ok, "one"}
       assert Iword.modify("11", "") == {:ok, "eleven"}
-      assert Iword.modify("1048576", "") == {:ok, "one million, forty eight thousand, five hundred and seventy six"}
+      assert Iword.modify("1024", "") == {:ok, "one thousand and twenty four"}
     end
 
     test "works with negative integers" do
@@ -33,11 +33,20 @@ defmodule Mc.Modifier.IwordTest do
       assert Iword.modify("123 5", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
     end
 
+    test "returns a help message" do
+      assert Check.has_help?(Iword, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Iword.modify("", "--unknown") == {:error, "Mc.Modifier.Iword#modify: switch parse error"}
+      assert Iword.modify("", "-u") == {:error, "Mc.Modifier.Iword#modify: switch parse error"}
+    end
+
     test "works with ok tuples" do
       assert Iword.modify({:ok, "7"}, "") == {:ok, "seven"}
     end
 
-    test "allows error tuples to pass-through" do
+    test "allows error tuples to pass through" do
       assert Iword.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end

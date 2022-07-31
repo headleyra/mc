@@ -1,30 +1,47 @@
 defmodule Mc.Modifier.If do
-  use Mc.Railway, [:modify, :modifye]
+  use Mc.Railway, [:modify]
+
+  @help """
+  modifier <compare key> <true key> <false key>
+  modifier -h
+
+  Runs the value of <true key> (against the buffer) if the buffer is the same as the value of <compare key>,
+  else runs the value of <false key>.
+
+  -h, --help
+    Show help
+  """
 
   def modify(buffer, args) do
-    case String.split(args) do
-      [script_key] ->
-        if String.match?(buffer, ~r/^\s*$/), do: get(buffer, script_key), else: {:ok, buffer}
+    case parse(args) do
+      {_, []} ->
+        ife(buffer, args)
 
-      _bad_args ->
-        usage(:modify, "<script key>")
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
     end
   end
 
-  def modifye(buffer, args) do
+  defp parse(args) do
+    Mc.Switch.parse(args, [{:help, :boolean, :h}])
+  end
+
+  defp ife(buffer, args) do
     with \
       [compare_key, true_key, false_key] <- String.split(args),
       {:ok, compare_value} = Mc.modify("", "get #{compare_key}")
     do
-      if buffer == compare_value, do: get(buffer, true_key), else: get(buffer, false_key)
+      if buffer == compare_value do
+        Mc.modify(buffer, "run -k #{true_key}")
+      else
+        Mc.modify(buffer, "run -k #{false_key}")
+      end
     else
       _bad_args ->
-        usage(:modifye, "<compare key> <true key> <false key>")
+        usage(:modify, "<compare key> <true key> <false key>")
     end
-  end
-
-  defp get(buffer, key) do
-    {:ok, script} = Mc.modify("", "get #{key}")
-    Mc.modify(buffer, script)
   end
 end

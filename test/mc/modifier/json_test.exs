@@ -3,9 +3,7 @@ defmodule Mc.Modifier.JsonTest do
   alias Mc.Modifier.Json
 
   describe "Mc.Modifier.Json.modify/2" do
-    test "parses `buffer` as JSON and uses `args` to access it, returning a JSON array result", do: true
-
-    test "accesses a JSON object" do
+    test "parses `buffer` as JSON and uses `args` to access it (returning a JSON array result)" do
       assert Json.modify(~s/{"x":201}/, "x") == {:ok, "[201]"}
       assert Json.modify(~s/{"a":1, "b":2, "c":{"d":"four"}}/, "a c") == {:ok, ~s/[1,{"d":"four"}]/}
       assert Json.modify(~s/{"a":1, "b":2, "c":{"d":"four"}}/, "c a") == {:ok, ~s/[{"d":"four"},1]/}
@@ -22,68 +20,56 @@ defmodule Mc.Modifier.JsonTest do
       assert Json.modify(~s/[21.7]/, "1") == {:ok, "null"}
     end
 
-    test "returns empty string when the JSON is white space or empty string" do
-      assert Mc.Modifier.Json.modify(" \t ", "n/a") == {:ok, ""}
-      assert Mc.Modifier.Json.modify("", "n/a") == {:ok, ""}
-    end
-
     test "returns empty string for 'null' JSON" do
       assert Json.modify("null", "x") == {:ok, ""}
       assert Json.modify("null", "") == {:ok, ""}
     end
 
-    test "errors when an array 'index' is non-integer" do
-      assert Json.modify("[1, 2]", "one") == {:error, "Mc.Modifier.Json#modify: non integer JSON array index"}
+    test "errors when an array 'index' is not an integer (>= 0)" do
+      assert Json.modify("[1, 2]", "one") == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "-1") == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "3.142") == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "!") == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
     end
 
     test "errors when the JSON is 'bad'" do
       assert Mc.Modifier.Json.modify(~s/oops!\"]/, "0") == {:error, "Mc.Modifier.Json#modify: bad JSON"}
+      assert Mc.Modifier.Json.modify(" \t ", "") == {:error, "Mc.Modifier.Json#modify: bad JSON"}
+      assert Mc.Modifier.Json.modify("", "") == {:error, "Mc.Modifier.Json#modify: bad JSON"}
     end
 
-    test "accepts ok tuples" do
-      assert Json.modify({:ok, "[20, 7]"}, "1") == {:ok, "7"}
+    test "converts a JSON array into a series of newline-separated strings ('array' switch)" do
+      assert Json.modify(~s/["one", 25]/, "--array") == {:ok, ~s/"one"\n25/}
+      assert Json.modify(~s/[{"a":1,"b":[2,"two"]}, 2, 3.1]/, "-a") == {:ok, ~s/{"a":1,"b":[2,"two"]}\n2\n3.1/}
     end
 
-    test "allows error tuples to pass-through" do
-      assert Json.modify({:error, "reason"}, "n/a") == {:error, "reason"}
-    end
-  end
-
-  describe "Mc.Modifier.Json.modifya/2" do
-    test "converts a JSON array into a series of newline-separated strings" do
-      assert Json.modifya(~s/["one", 25]/, "n/a") == {:ok, ~s/"one"\n25/}
-      assert Json.modifya(~s/[{"a":1,"b":[2,"two"]}, 2, 3.1]/, "n/a") == {:ok, ~s/{"a":1,"b":[2,"two"]}\n2\n3.1/}
+    test "returns an empty string when the JSON isn't an array ('array' switch)" do
+      assert Json.modify(~s/{"foo":7}/, "-a") == {:ok, ""}
+      assert Json.modify("{}", "-a") == {:ok, ""}
+      assert Json.modify("null", "-a") == {:ok, ""}
     end
 
-    test "returns an empty string when the JSON isn't an array" do
-      assert Json.modifya(~s/{"foo":7}/, "") == {:ok, ""}
-      assert Json.modifya("{}", "ignored") == {:ok, ""}
-      assert Json.modifya("null", "x") == {:ok, ""}
+    test "errors when the JSON is invalid ('array' switch)" do
+      assert Json.modify(~s/boom!"]/, "-a") == {:error, "Mc.Modifier.Json#modify: bad JSON"}
     end
 
-    test "errors when the JSON is invalid" do
-      assert Json.modifya(~s/boom!"]/, "") == {:error, "Mc.Modifier.Json#modifya: bad JSON"}
+    test "returns a help message" do
+      assert Check.has_help?(Json, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Json.modify("", "--unknown") == {:error, "Mc.Modifier.Json#modify: switch parse error"}
+      assert Json.modify("", "-u") == {:error, "Mc.Modifier.Json#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
-      assert Json.modifya({:ok, "[20, 7]"}, "n/a") == {:ok, "20\n7"}
+      assert Json.modify({:ok, "[20, 7]"}, "1") == {:ok, "7"}
+      assert Json.modify({:ok, "[20, 7]"}, "-a") == {:ok, "20\n7"}
     end
 
-    test "allows error tuples to pass-through" do
-      assert Json.modifya({:error, "reason"}, "n/a") == {:error, "reason"}
-    end
-  end
-
-  describe "Mc.Modifier.Json.list2el/2" do
-    test "returns the element at the (string) 'index' given `list`, and then converts it to a string" do
-      assert Json.list2el(["foo", 4], "1") == {:ok, "4"}
-      assert Json.list2el([2, 4, "cars"], "2") == {:ok, "\"cars\""}
-      assert Json.list2el([7, "cars"], "00") == {:ok, "7"}
-    end
-
-    test "errors given a non-integer 'index'" do
-      assert Json.list2el([2, "trois"], "nah") == {:error, "Mc.Modifier.Json#modify: non integer JSON array index"}
-      assert Json.list2el("n/a", "zero") == {:error, "Mc.Modifier.Json#modify: non integer JSON array index"}
+    test "allows error tuples to pass through" do
+      assert Json.modify({:error, "reason"}, "") == {:error, "reason"}
+      assert Json.modify({:error, "reason"}, "-a") == {:error, "reason"}
     end
   end
 end

@@ -7,6 +7,7 @@ defmodule Mc.Modifier.DeleteTest do
       assert Delete.modify("", "foo") == {:ok, ""}
       assert Delete.modify("something", "foo") == {:ok, "something"}
       assert Delete.modify("original", "al") == {:ok, "origin"}
+      assert Delete.modify("tennis is more than a game", ~S"mo.*a\s") == {:ok, "tennis is game"}
     end
 
     test "deletes multiple occurences" do
@@ -23,10 +24,6 @@ defmodule Mc.Modifier.DeleteTest do
       }
     end
 
-    test "handles regexs" do
-      assert Delete.modify("tennis is more than a game", ~S"mo.*a\s") == {:ok, "tennis is game"}
-    end
-
     test "matches across newlines" do
       assert Delete.modify("Tea\nis a great", ~S"Te.*is\s") == {:ok, "a great"}
       assert Delete.modify("one\ntwo\ntwo", ~S"one.*?two") == {:ok, "\ntwo"}
@@ -41,12 +38,17 @@ defmodule Mc.Modifier.DeleteTest do
       assert Delete.modify("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Delete#modify <regex>"}
     end
 
+    test "errors with unknown switches" do
+      assert Delete.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Delete#modify: switch parse error"}
+      assert Delete.modify("", "-u") == {:error, "Mc.Modifier.Delete#modify: switch parse error"}
+    end
+
     test "works with ok tuples" do
       assert Delete.modify({:ok, "chill on the beach"}, ~S"chill\s") == {:ok, "on the beach"}
     end
 
-    test "allows error tuples to pass-through" do
-      assert Delete.modify({:error, "reason"}, "n/a") == {:error, "reason"}
+    test "allows error tuples to pass through" do
+      assert Delete.modify({:error, "reason"}, "") == {:error, "reason"}
     end
   end
 end

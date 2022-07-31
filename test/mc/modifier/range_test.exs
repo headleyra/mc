@@ -18,32 +18,31 @@ defmodule Mc.Modifier.RangeTest do
     end
 
     test "errors when there are zero or more than two range limits" do
-      assert Range.modify("", "") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
-      assert Range.modify("", "1 2 3") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
+      assert Range.modify("", "") == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "1 2 3") == {:error, "Mc.Modifier.Range#modify: bad range"}
     end
 
     test "errors when `args` aren't integers" do
-      assert Range.modify("", "zero 7") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
-      assert Range.modify("", "x y") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
-      assert Range.modify("", "0 foo") == {:error, "usage: Mc.Modifier.Range#modify <integer> [<integer>]"}
+      assert Range.modify("", "zero 7") == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "x y") == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "0 foo") == {:error, "Mc.Modifier.Range#modify: bad range"}
+    end
+
+    test "returns a help message" do
+      assert Check.has_help?(Range, :modify)
+    end
+
+    test "errors with unknown switches" do
+      assert Range.modify("", "--unknown") == {:error, "Mc.Modifier.Range#modify: switch parse error"}
+      assert Range.modify("", "-u") == {:error, "Mc.Modifier.Range#modify: switch parse error"}
     end
 
     test "works with ok tuples" do
       assert Range.modify({:ok, "n/a"}, "1 2") == {:ok, "1\n2"}
     end
 
-    test "allows error tuples to pass-through" do
+    test "allows error tuples to pass through" do
       assert Range.modify({:error, "reason"}, "") == {:error, "reason"}
-    end
-  end
-
-  describe "Mc.Modifier.Range.range_for/2" do
-    test "generates a range string" do
-      assert Range.range_for(1, 3) == "1\n2\n3"
-      assert Range.range_for(2, 1) == "2\n1"
-      assert Range.range_for(-1, 2) == "-1\n0\n1\n2"
-      assert Range.range_for(-1, -3) == "-1\n-2\n-3"
-      assert Range.range_for(1, 1) == "1"
     end
   end
 end

@@ -1,22 +1,30 @@
 defmodule Mc.Modifier.Sort do
-  use Mc.Railway, [:modify, :modifyv]
+  use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
-    {:ok, sorta(buffer)}
+  def modify(buffer, args) do
+    case parse(args) do
+      {_, []} ->
+        {:ok, sort(buffer, &(&1 <= &2))}
+
+      {_, [inverse: true]} ->
+        {:ok, sort(buffer, &(&1 >= &2))}
+
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
+    end
   end
 
-  def modifyv(buffer, _args) do
-    {:ok, sortd(buffer)}
+  def parse(args) do
+    Mc.Switch.parse(args, [{:inverse, :boolean, :v}, {:help, :boolean, :h}])
   end
 
-  def sorta(text), do: sorter(text, &(&1 <= &2))
-  def sortd(text), do: sorter(text, &(&1 >= &2))
-
-  defp sorter(text, func) do
+  defp sort(text, func) do
     text
     |> String.split("\n")
     |> Enum.sort(func)
     |> Enum.join("\n")
-    |> Kernel.<>("\n")
   end
 end

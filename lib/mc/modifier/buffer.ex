@@ -1,25 +1,42 @@
 defmodule Mc.Modifier.Buffer do
   use Mc.Railway, [:modify]
-  @argspec "<inline string>"
+
+  @help """
+  modifier <inline string>
+  modifier [-h]
+
+  Decodes the <inline string> and puts it in the buffer.
+
+  -h, --help
+    Show help
+  """
 
   def modify(buffer, args) do
+    case parse(args) do
+      {_, []} ->
+        bufferize(buffer, args)
+
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
+    end
+  end
+
+  defp parse(args) do
+    Mc.Switch.parse(args, [{:help, :boolean, :h}])
+  end
+
+  defp bufferize(buffer, args) do
     with \
       [_, script] <- Regex.run(~r/`(.*?)`/s, args),
-      {:ok, decoded_script} <- Mc.InlineString.decode(script)
+      {:ok, decoded_script} <- Mc.String.Inline.decode(script)
     do
       modify_decoded_script(buffer, decoded_script, args)
     else
       nil ->
-        case Mc.InlineString.decode(args) do
-          {:ok, decoded_script} ->
-            {:ok, decoded_script}
-
-          _error ->
-            usage(:modify, @argspec)
-        end
-
-      _error ->
-        usage(:modify, @argspec)
+        Mc.String.Inline.decode(args)
     end
   end
 

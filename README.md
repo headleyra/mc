@@ -108,8 +108,7 @@ modifiers.  Feel free to use your own custom mappings or (perhaps) create a twea
 `%Mc.Mappings{}`.
 
 The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It creates functions that
-implement the 'error short-circuiting' behaviour mentioned above (along with a few utility functions for
-building error tuples).
+implement the 'error short-circuiting' behaviour mentioned above (along with some simple utility functions).
 
 <!--
 Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)

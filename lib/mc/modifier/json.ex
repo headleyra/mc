@@ -1,11 +1,43 @@
 defmodule Mc.Modifier.Json do
-  use Mc.Railway, [:modify, :modifya]
+  use Mc.Railway, [:modify]
+
+  @bad_json "bad JSON"
+
+  @help """
+  modifier <accessor>
+  modifier -a
+  modifier -h
+
+  Parses buffer as JSON and uses <accessor> to access JSON sub-objects (returning a JSON array result).
+
+  -a, --array
+    Expects buffer to be a JSON array and returns it as a newline-separated list
+
+  -h, --help
+    Show help
+  """
 
   def modify(buffer, args) do
-    if String.match?(buffer, ~r/^\s*$/), do: {:ok, ""}, else: modify_(buffer, args)
+    case parse(args) do
+      {_, []} ->
+        parse_object(buffer, args)
+
+      {_, [array: true]} ->
+        parse_list(buffer)
+
+      {_, [help: true]} ->
+        help(:modify, @help)
+
+      :error ->
+        oops(:modify, "switch parse error")
+    end
   end
 
-  def modify_(buffer, args) do
+  defp parse(args) do
+    Mc.Switch.parse(args, [{:array, :boolean, :a}, {:help, :boolean, :h}])
+  end
+
+  defp parse_object(buffer, args) do
     case Jason.decode(buffer) do
       {:ok, data} when is_map(data) ->
         {:ok, map2json(data, args)}
@@ -17,7 +49,24 @@ defmodule Mc.Modifier.Json do
         {:ok, ""}
 
       {:error, _reason} ->
-        oops(:modify, "bad JSON")
+        oops(:modify, @bad_json)
+    end
+  end
+
+  defp parse_list(buffer) do
+    case Jason.decode(buffer) do
+      {:ok, array} when is_list(array) ->
+        {:ok,
+          array
+          |> Enum.map(&Jason.encode!(&1))
+          |> Enum.join("\n")
+        }
+
+      {:ok, array} when is_map(array) or is_nil(array) ->
+        {:ok, ""}
+
+      {:error, _} ->
+        oops(:modify, @bad_json)
     end
   end
 
@@ -28,32 +77,13 @@ defmodule Mc.Modifier.Json do
     |> Jason.encode!()
   end
 
-  def modifya(buffer, _args) do
-    case Jason.decode(buffer) do
-      {:ok, array} ->
-        if is_list(array) do
-          result =
-            array
-            |> Enum.map(fn x -> Jason.encode!(x) end)
-            |> Enum.join("\n")
-
-          {:ok, result}
-        else
-          {:ok, ""}
-        end
-
-      {:error, _} ->
-        oops(:modifya, "bad JSON")
-    end
-  end
-
-  def list2el(list, index) do
+  defp list2el(list, index) do
     case Mc.Math.str2int(index) do
-      {:ok, index_integer} ->
-        {:ok, Enum.at(list, index_integer) |> Jason.encode!()}
+      {:ok, i} when i >= 0 ->
+        {:ok, Enum.at(list, i) |> Jason.encode!()}
 
-      _non_integer_index ->
-        oops(:modify, "non integer JSON array index")
+      _bad_integer ->
+        oops(:modify, "array index should be >= 0")
     end
   end
 end

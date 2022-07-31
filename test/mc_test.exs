@@ -1,6 +1,11 @@
 defmodule McTest do
   use ExUnit.Case, async: true
 
+  setup do
+    start_supervised({Mc, mappings: %Mc.Mappings{}})
+    :ok
+  end
+
   describe "Mc.modify/2" do
     test "returns a modified `buffer`" do
       assert Mc.modify("ON THE RADIO\n", "lcase") == {:ok, "on the radio\n"}
