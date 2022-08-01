@@ -35,6 +35,7 @@ defmodule Mc.RailwayTest do
 
     test "creates a 'help' function that returns help text" do
       assert Mymod.help(:up, "This is help\ntext") == {:ok, "Mc.RailwayTest.Mymod#up\n\nThis is help\ntext"}
+      assert Mymod.help(:up, nil) == {:ok, "TBA"}
     end
   end
 end

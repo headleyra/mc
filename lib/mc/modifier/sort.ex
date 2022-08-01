@@ -1,6 +1,19 @@
 defmodule Mc.Modifier.Sort do
   use Mc.Railway, [:modify]
 
+  @help """
+  modifier [-v]
+  modifier -h
+
+  Sort buffer lines in ascending order.
+
+  -v, --inverse
+    Sort in descending order
+
+  -h, --help
+    Show help
+  """
+
   def modify(buffer, args) do
     case parse(args) do
       {_, []} ->
