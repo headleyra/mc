@@ -9,9 +9,9 @@ defmodule Mc.Modifier.ReplaceTest do
     test "works with simple replacements" do
       assert Replace.modify("stuff like this", "this THAT") == {:ok, "stuff like THAT"}
       assert Replace.modify("one four", "one four 2") == {:ok, "four 2 four"}
-      assert Replace.modify("2x", "x  is company") == {:ok, "2 is company"}
+      assert Replace.modify("2x", "x is company") == {:ok, "2is company"}
       assert Replace.modify("one", "one two three") == {:ok, "two three"}
-      assert Replace.modify("one", "one   2 leading spaces") == {:ok, "  2 leading spaces"}
+      assert Replace.modify("one", "one %20%202 leading spaces") == {:ok, "  2 leading spaces"}
 
       times = """
       \t11:16\t[ABC]
@@ -35,7 +35,7 @@ defmodule Mc.Modifier.ReplaceTest do
       assert Replace.modify("foo", "foo %%0a") == {:ok, "%\n"}
     end
 
-    test "works with a regex search term" do
+   test "works with a regex search term" do
       assert Replace.modify("sunshine all day", "sh.*da n") == {:ok, "sunny"}
     end
 
@@ -45,6 +45,11 @@ defmodule Mc.Modifier.ReplaceTest do
 
     test "replaces multiple occurrences of the search term" do
       assert Replace.modify("Foo bar foobar abc", "[Bb]ar Biz") == {:ok, "Foo Biz fooBiz abc"}
+    end
+
+    test "uses the 'double dash' to terminate switch processing for args that look like switches" do
+      assert Replace.modify("one\ntwo", "-- ^ --switch%20") == {:ok, "--switch one\n--switch two"}
+      assert Replace.modify("--switch", "-- --switch to this") == {:ok, "to this"}
     end
 
     test "errors when the replace term is missing" do

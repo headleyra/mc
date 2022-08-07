@@ -1,17 +1,17 @@
 defmodule Mc.Modifier.RunTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Run
 
   setup do
-    start_supervised({Kv, map: %{
+    start_supervised({Memory, map: %{
       "s1" => "replace FOO RADIO\nlcase",
       "s2" => "lcase\nr bass treble\nr one two",
       "s3" => ""
     }})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

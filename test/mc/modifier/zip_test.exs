@@ -1,13 +1,13 @@
 defmodule Mc.Modifier.ZipTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Zip
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({Kv, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Memory, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

@@ -1,17 +1,17 @@
 defmodule Mc.Modifier.FindTest do
   use ExUnit.Case, async: false
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Find
 
   setup do
-    start_supervised({Kv, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}})
-    start_supervised({Find, kv_client: Kv})
+    start_supervised({Memory, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}})
+    start_supervised({Find, kv_client: Memory})
     :ok
   end
 
   describe "Mc.Modifier.Find.modify/2" do
     test "returns the KV client implementation" do
-      assert Find.kv_client() == Kv
+      assert Find.kv_client() == Memory
     end
 
     test "finds keys matching the given regex" do

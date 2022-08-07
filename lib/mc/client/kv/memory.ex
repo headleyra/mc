@@ -1,4 +1,4 @@
-defmodule Mc.Client.Kv do
+defmodule Mc.Client.Kv.Memory do
   use Agent
   @behaviour Mc.Behaviour.KvClient
 

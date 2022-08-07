@@ -1,12 +1,12 @@
 defmodule Mc.Modifier.AppTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Get
   alias Mc.Modifier.App
 
   setup do
-    start_supervised({Kv, map: %{
+    start_supervised({Memory, map: %{
       "app1" => "script1",
       "app3" => "script3\nscript5",
       "app5" => "script3",
@@ -16,7 +16,7 @@ defmodule Mc.Modifier.AppTest do
       "script5" => "r b ::2",
       "script7" => "b 1 => ::1, 2 => ::2, all => :::"
     }})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

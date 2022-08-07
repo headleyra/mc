@@ -1,17 +1,17 @@
 defmodule Mc.Modifier.SetTest do
   use ExUnit.Case, async: false
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Set
 
   setup do
-    start_supervised({Kv, map: %{}})
-    start_supervised({Set, kv_client: Kv})
+    start_supervised({Memory, map: %{}})
+    start_supervised({Set, kv_client: Memory})
     :ok
   end
 
   describe "Mc.Modifier.Set.modify/2" do
     test "returns the KV client implementation" do
-      assert Set.kv_client() == Kv
+      assert Set.kv_client() == Memory
     end
 
     test "stores `buffer` under the given key and returns `buffer`" do

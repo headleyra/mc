@@ -1,13 +1,13 @@
 defmodule Mc.Modifier.MapTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Map
 
   setup do
-    start_supervised({Kv, map: %{}})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Memory, map: %{}})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

@@ -1,12 +1,12 @@
 defmodule Mc.Modifier.McastTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Mcast
 
   setup do
-    start_supervised({Kv, map: %{
+    start_supervised({Memory, map: %{
       "s1" => "buffer buffer FOO; lcase\nrun",
       "s2" => "buffer buffer Explain rice; delete Ex\nrun",
       "s3" => "error boom!\nlcase",
@@ -16,7 +16,7 @@ defmodule Mc.Modifier.McastTest do
       "empty.keys" => "",
       "nokeys" => "oops\tnope"
     }})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

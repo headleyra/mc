@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.UrlpTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv
+  alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Urlp
 
@@ -12,8 +12,8 @@ defmodule Mc.Modifier.UrlpTest do
   end
 
   setup do
-    start_supervised({Kv, map: %{"big" => "data", "x" => "y\nz"}})
-    start_supervised({Get, kv_client: Kv})
+    start_supervised({Memory, map: %{"big" => "data", "x" => "y\nz"}})
+    start_supervised({Get, kv_client: Memory})
     start_supervised({Urlp, http_client: Gopher})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok

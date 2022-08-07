@@ -13,8 +13,8 @@ defmodule Mc.Modifier.Replace do
 
   def modify(buffer, args) do
     case parse(args) do
-      {_, []} ->
-        replace(buffer, args)
+      {args_pure, []} ->
+        replace(buffer, args_pure)
 
       {_, [help: true]} ->
         help(:modify, @help)
