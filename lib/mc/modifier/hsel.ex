@@ -25,7 +25,7 @@ defmodule Mc.Modifier.Hsel do
       {_, [help: true]} ->
         help(:modify, @help)
 
-      :error ->
+      _error ->
         oops(:modify, "switch parse error")
     end
   end
