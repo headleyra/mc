@@ -5,10 +5,10 @@ defmodule Mc.Modifier.Grep do
   modifier [-v] <regex>
   modifier -h
 
-  Returns lines in the buffer that match the regex.
+  Returns lines in the buffer that match <regex>.
 
   -v, --inverse
-    Returns lines that don't match the regex
+    Returns lines that don't match <regex>
 
   -h, --help
     Show help
