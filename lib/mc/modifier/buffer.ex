@@ -2,10 +2,12 @@ defmodule Mc.Modifier.Buffer do
   use Mc.Railway, [:modify]
 
   @help """
+  modifier
   modifier <inline string>
   modifier [-h]
 
-  Decodes the <inline string> and puts it in the buffer.
+  Decodes the <inline string> and places it in the buffer.  When no <inline string> is specified
+  an empty string is placed in the buffer.
 
   -h, --help
     Show help
