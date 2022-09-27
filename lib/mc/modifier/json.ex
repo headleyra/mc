@@ -29,7 +29,7 @@ defmodule Mc.Modifier.Json do
   end
 
   defp list2el(list, index) do
-    case Mc.String.str2int(index) do
+    case Mc.String.to_int(index) do
       {:ok, i} when i >= 0 ->
         {:ok, Enum.at(list, i) |> Jason.encode!()}
 

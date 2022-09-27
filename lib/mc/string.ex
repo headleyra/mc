@@ -3,7 +3,7 @@ defmodule Mc.String do
     {:ok,
       string
       |> String.split()
-      |> Enum.map(fn number -> str2num(number) end)
+      |> Enum.map(fn number -> to_num(number) end)
       |> Enum.reject(fn number_tuple -> number_tuple == :error end)
       |> Enum.map(fn {:ok, number} -> number end)
     }
@@ -44,17 +44,17 @@ defmodule Mc.String do
     }
   end
 
-  def str2num(string) do
-    case str2int(string) do
+  def to_num(string) do
+    case to_int(string) do
       :error ->
-        str2flt(string)
+        to_flt(string)
 
       ok_tuple ->
         ok_tuple
     end
   end
 
-  def str2int(string) do
+  def to_int(string) do
     try do
       {:ok, String.to_integer(string)}
     rescue
@@ -63,7 +63,7 @@ defmodule Mc.String do
     end
   end
 
-  def str2flt(string) do
+  def to_flt(string) do
     try do
       {:ok, String.to_float(string)}
     rescue

@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Head do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    case Mc.String.str2int(args) do
+    case Mc.String.to_int(args) do
       {:ok, count} when count >= 0 ->
         first(buffer, count)
 

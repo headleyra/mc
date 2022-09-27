@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Iword do
   use Mc.Railway, [:modify]
 
   def modify(buffer, _args) do
-    case String.trim(buffer) |> Mc.String.str2int() do
+    case String.trim(buffer) |> Mc.String.to_int() do
       {:ok, int} when int < 0 ->
         {:ok, "(minus) #{Mc.NumberToWord.say(abs(int))}"}
 

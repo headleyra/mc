@@ -15,10 +15,10 @@ defmodule Mc.Modifier.Mapc do
   defp max_concurrency_with_args(args) do
     case String.trim(args) |> String.split(~r/\s+/, parts: 2) do
       [max_concurrency, rest_of_args] ->
-        {Mc.String.str2int(max_concurrency), rest_of_args}
+        {Mc.String.to_int(max_concurrency), rest_of_args}
 
       [max_concurrency] ->
-        {Mc.String.str2int(max_concurrency), ""}
+        {Mc.String.to_int(max_concurrency), ""}
 
       _error ->
         :error

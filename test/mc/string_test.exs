@@ -62,55 +62,55 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.str2num/1" do
+  describe "Mc.String.to_num/1" do
     test "converts its argument to an integer" do
-      assert String.str2num("0") == {:ok, 0}
-      assert String.str2num("-2") == {:ok, -2}
-      assert String.str2num("22") == {:ok, 22}
+      assert String.to_num("0") == {:ok, 0}
+      assert String.to_num("-2") == {:ok, -2}
+      assert String.to_num("22") == {:ok, 22}
     end
 
     test "converts its argument to a float" do
-      assert String.str2num("0.0") == {:ok, 0.0}
-      assert String.str2num("-0.81") == {:ok, -0.81}
-      assert String.str2num("3.142") == {:ok, 3.142}
+      assert String.to_num("0.0") == {:ok, 0.0}
+      assert String.to_num("-0.81") == {:ok, -0.81}
+      assert String.to_num("3.142") == {:ok, 3.142}
     end
 
     test "errors for non-number strings" do
-      assert String.str2num("") == :error
-      assert String.str2num(".0") == :error
-      assert String.str2num("apple") == :error
-      assert String.str2num("%5") == :error
+      assert String.to_num("") == :error
+      assert String.to_num(".0") == :error
+      assert String.to_num("apple") == :error
+      assert String.to_num("%5") == :error
     end
   end
 
-  describe "Mc.String.str2int/1" do
+  describe "Mc.String.to_int/1" do
     test "converts its argument to an integer" do
-      assert String.str2int("0") == {:ok, 0}
-      assert String.str2int("-81") == {:ok, -81}
-      assert String.str2int("5") == {:ok, 5}
+      assert String.to_int("0") == {:ok, 0}
+      assert String.to_int("-81") == {:ok, -81}
+      assert String.to_int("5") == {:ok, 5}
     end
 
     test "errors for non-integer strings" do
-      assert String.str2int("") == :error
-      assert String.str2int("0.0") == :error
-      assert String.str2int("beans") == :error
-      assert String.str2int("^5") == :error
+      assert String.to_int("") == :error
+      assert String.to_int("0.0") == :error
+      assert String.to_int("beans") == :error
+      assert String.to_int("^5") == :error
     end
   end
 
-  describe "Mc.String.str2flt/1" do
+  describe "Mc.String.to_flt/1" do
     test "converts its argument to a float" do
-      assert String.str2flt("0.0") == {:ok, 0.0}
-      assert String.str2flt("-22.04") == {:ok, -22.04}
-      assert String.str2flt("101.9") == {:ok, 101.9}
+      assert String.to_flt("0.0") == {:ok, 0.0}
+      assert String.to_flt("-22.04") == {:ok, -22.04}
+      assert String.to_flt("101.9") == {:ok, 101.9}
     end
 
     test "errors for non-float strings" do
-      assert String.str2flt("") == :error
-      assert String.str2flt("8") == :error
-      assert String.str2flt("foo") == :error
-      assert String.str2flt("3..2") == :error
-      assert String.str2flt("4!6") == :error
+      assert String.to_flt("") == :error
+      assert String.to_flt("8") == :error
+      assert String.to_flt("foo") == :error
+      assert String.to_flt("3..2") == :error
+      assert String.to_flt("4!6") == :error
     end
   end
 end

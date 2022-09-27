@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Range do
   use Mc.Railway, [:modify]
 
   def modify(_buffer, args) do
-    case String.split(args) |> Enum.map(&Mc.String.str2int/1) do
+    case String.split(args) |> Enum.map(&Mc.String.to_int/1) do
       [{:ok, start}, {:ok, finish}] ->
         {:ok, rangeize(start, finish)}
 
