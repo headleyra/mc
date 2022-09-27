@@ -9,15 +9,6 @@ defmodule Mc.Modifier.WcountTest do
       assert Wcount.modify("not      for\nprofit", "n/a") == {:ok, "3"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Wcount, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Wcount.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Wcount#modify: switch parse error"}
-      assert Wcount.modify("", "-u") == {:error, "Mc.Modifier.Wcount#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Wcount.modify({:ok, "why not best\nof seven?"}, "n/a") == {:ok, "5"}
     end

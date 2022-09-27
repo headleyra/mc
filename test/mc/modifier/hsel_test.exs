@@ -29,7 +29,7 @@ defmodule Mc.Modifier.HselTest do
   end
 
   describe "Mc.Modifier.Hsel.modify/2" do
-    test "uses `args` as a CSS selector targeting HTML content in the `buffer`", do: true
+    test "parses `args` as a CSS selector and targets HTML tags in the `buffer`", do: true
 
     test "returns empty string when `buffer` is empty string" do
       assert Hsel.modify("", "") == {:ok, ""}
@@ -60,55 +60,6 @@ defmodule Mc.Modifier.HselTest do
     test "targets lists of elements", %{html: html} do
       assert Hsel.modify(html, ".item, .deets") ==
         {:ok, "<td class=\"item\">Book</td><p class=\"deets\">\n  John Doe\n</p>"}
-    end
-
-    test "returns content without tags ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "--content p") == {:ok, "Foo bar\nJohn Doe"}
-      assert Hsel.modify(html, "-c p") == {:ok, "Foo bar\nJohn Doe"}
-    end
-
-    test "returns empty string when `buffer` is empty string ('content' switch)" do
-      assert Hsel.modify("", "-c") == {:ok, ""}
-      assert Hsel.modify("", "-c p") == {:ok, ""}
-    end
-
-    test "targets embedded elements ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "-c table") == {:ok, "Lorem ipsum The quick fox\nBook A great read!"}
-    end
-
-    test "ignores elements that don't exist ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "-c tbody") == {:ok, ""}
-    end
-
-    test "targets elements ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "-c .item") == {:ok, "Book"}
-    end
-
-    test "targets nested elements ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "-c #second td.desc") == {:ok, "A great read!"}
-    end
-
-    test "targets lists of elements ('content' switch)", %{html: html} do
-      assert Hsel.modify(html, "-c .desc, .deets") == {:ok, "Foo bar\nA great read!\nJohn Doe"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Hsel, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Hsel.modify("", "--unknown") == {:error, "Mc.Modifier.Hsel#modify: switch parse error"}
-      assert Hsel.modify("", "-u") == {:error, "Mc.Modifier.Hsel#modify: switch parse error"}
-    end
-
-    test "works with ok tuples", %{html: html} do
-      assert Hsel.modify({:ok, html}, ".item") == {:ok, "<td class=\"item\">Book</td>"}
-      assert Hsel.modify({:ok, html}, "-c .item") == {:ok, "Book"}
-    end
-
-    test "allows error tuples to pass through" do
-      assert Hsel.modify({:error, "reason"}, "") == {:error, "reason"}
-      assert Hsel.modify({:error, "reason"}, "-c") == {:error, "reason"}
     end
   end
 end

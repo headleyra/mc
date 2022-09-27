@@ -1,41 +1,44 @@
 defmodule Mc.RailwayTest do
   use ExUnit.Case, async: true
 
-  defmodule Mymod do
-    use Mc.Railway, [:down, :up]
+  defmodule Modi do
+    use Mc.Railway, [:small, :big]
 
-    def down(buffer, _args), do: {:ok, String.downcase(buffer)}
-    def up(buffer, _args), do: {:ok, String.upcase(buffer)}
+    def small(buffer, _args), do: {:ok, String.downcase(buffer)}
+    def big(buffer, _args), do: {:ok, String.upcase(buffer)}
+  end
+
+  defmodule SomeMappings do
+    defstruct [
+      smallr: {Modi, :small},
+      bigr: {Modi, :big}
+    ]
+  end
+
+  setup do
+    start_supervised({Mc, mappings: %SomeMappings{}})
+    :ok
   end
 
   describe "Mc.Railway" do
     test "creates a function that, given an error tuple (as `buffer`), returns it unchanged" do
-      assert Mymod.down({:error, "boom"}, "n/a") == {:error, "boom"}
-      assert Mymod.up({:error, "oops"}, "dont matter") == {:error, "oops"}
+      assert Modi.small({:error, "boom"}, "n/a") == {:error, "boom"}
+      assert Modi.big({:error, "oops"}, "") == {:error, "oops"}
     end
 
     test "creates a function that, given an ok tuple (as `buffer`), delegates to the string equivalent" do
-      assert Mymod.down({:ok, "BoSh"}, "") == {:ok, "bosh"}
-      assert Mymod.up({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
+      assert Modi.small({:ok, "BoSh"}, "") == {:ok, "bosh"}
+      assert Modi.big({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
     end
 
     test "creates a 'name' function that returns the canonical modifier name" do
-      assert Mymod.name(:down) == "Mc.RailwayTest.Mymod#down"
-      assert Mymod.name(:up) == "Mc.RailwayTest.Mymod#up"
+      assert Modi.name(:small) == "Mc.RailwayTest.Modi#small"
+      assert Modi.name(:big) == "Mc.RailwayTest.Modi#big"
     end
 
-    test "creates a 'oops' function that returns an error tuple" do
-      assert Mymod.oops(:down, "kaboom") == {:error, "Mc.RailwayTest.Mymod#down: kaboom"}
-    end
-
-    test "creates a 'usage' function that returns an error tuple" do
-      assert Mymod.usage(:up, "<usage deets>") == {:error, "usage: Mc.RailwayTest.Mymod#up <usage deets>"}
-      assert Mymod.usage(:down, "<usage deets>") == {:error, "usage: Mc.RailwayTest.Mymod#down <usage deets>"}
-    end
-
-    test "creates a 'help' function that returns help text" do
-      assert Mymod.help(:up, "This is help\ntext") == {:ok, "Mc.RailwayTest.Mymod#up\n\nThis is help\ntext"}
-      assert Mymod.help(:up, nil) == {:ok, "TBA"}
+    test "creates a 'oops' function that generates an error for a known modifier" do
+      assert Modi.oops(:small, "kaboom") == {:error, "Mc.RailwayTest.Modi#small: kaboom"}
+      assert Modi.oops(:big, "splash") == {:error, "Mc.RailwayTest.Modi#big: splash"}
     end
   end
 end

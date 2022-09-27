@@ -86,15 +86,6 @@ defmodule Mc.Modifier.HtabTest do
       assert Htab.modify(html, "table tr td") == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Htab, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Htab.modify("", "--unknown") == {:error, "Mc.Modifier.Htab#modify: switch parse error"}
-      assert Htab.modify("", "-u") == {:error, "Mc.Modifier.Htab#modify: switch parse error"}
-    end
-
     test "works with ok tuples", %{html: html} do
       assert Htab.modify({:ok, html}, "tr:nth-of-type(2) td") == {:ok, "09:03\tMars [MRS]\tJupiter [JUP]\t09:26"}
     end

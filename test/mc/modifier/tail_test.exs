@@ -28,15 +28,6 @@ defmodule Mc.Modifier.TailTest do
       assert Tail.modify("nowt", "") == {:error, "Mc.Modifier.Tail#modify: negative or non-integer line count"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Tail, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Tail.modify("", "--unknown") == {:error, "Mc.Modifier.Tail#modify: switch parse error"}
-      assert Tail.modify("", "-u") == {:error, "Mc.Modifier.Tail#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Tail.modify({:ok, "some\nbuffer\ntext"}, "2") == {:ok, "buffer\ntext"}
     end

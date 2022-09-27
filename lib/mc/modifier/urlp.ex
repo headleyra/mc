@@ -2,16 +2,6 @@ defmodule Mc.Modifier.Urlp do
   use Agent
   use Mc.Railway, [:modify]
 
-  @help """
-  modifier <URL> {<param_name>:<key of payload> }
-  modifier -h
-
-  Sends an HTTP post request.
-
-  -h, --help
-    Show help
-  """
-
   def start_link(http_client: http_client) do
     Agent.start_link(fn -> http_client end, name: __MODULE__)
   end
@@ -21,23 +11,6 @@ defmodule Mc.Modifier.Urlp do
   end
 
   def modify(_buffer, args) do
-    case parse(args) do
-      {_, []} ->
-        http_post(args)
-
-      {_, [help: true]} ->
-        help(:modify, @help)
-
-      _error ->
-        oops(:modify, "switch parse error")
-    end
-  end
-
-  defp parse(args) do
-    Mc.Switch.parse(args, [{:help, :boolean, :h}])
-  end
-
-  defp http_post(args) do
     case build_url_with_params(args) do
       {:ok, url_with_params} ->
         apply(http_client(), :post, url_with_params)
@@ -47,7 +20,7 @@ defmodule Mc.Modifier.Urlp do
     end
   end
 
-  def build_url_with_params(args) do
+  defp build_url_with_params(args) do
     case String.split(args, ~r/\s+/, parts: 2) do
       [""] ->
         :error
@@ -73,7 +46,7 @@ defmodule Mc.Modifier.Urlp do
     end
   end
 
-  def build_params_list(params) do
+  defp build_params_list(params) do
     params
     |> split()
     |> validate()

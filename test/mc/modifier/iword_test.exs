@@ -33,15 +33,6 @@ defmodule Mc.Modifier.IwordTest do
       assert Iword.modify("123 5", "") == {:error, "Mc.Modifier.Iword#modify: no integer found"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Iword, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Iword.modify("", "--unknown") == {:error, "Mc.Modifier.Iword#modify: switch parse error"}
-      assert Iword.modify("", "-u") == {:error, "Mc.Modifier.Iword#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Iword.modify({:ok, "7"}, "") == {:ok, "seven"}
     end

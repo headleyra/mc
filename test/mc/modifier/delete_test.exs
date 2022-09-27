@@ -35,12 +35,7 @@ defmodule Mc.Modifier.DeleteTest do
     end
 
     test "errors when the regex is bad" do
-      assert Delete.modify("one\ntwo", "?") == {:error, "usage: Mc.Modifier.Delete#modify <regex>"}
-    end
-
-    test "errors with unknown switches" do
-      assert Delete.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Delete#modify: switch parse error"}
-      assert Delete.modify("", "-u") == {:error, "Mc.Modifier.Delete#modify: switch parse error"}
+      assert Delete.modify("one\ntwo", "?") == {:error, "Mc.Modifier.Delete#modify: bad regex"}
     end
 
     test "works with ok tuples" do

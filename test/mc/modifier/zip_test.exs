@@ -26,7 +26,7 @@ defmodule Mc.Modifier.ZipTest do
       assert Zip.modify("", "too.few.args") == {:error, "Mc.Modifier.Zip#modify: args parse error"}
     end
 
-    test "interprets the separator as a URI encoded string" do
+    test "interprets the separator as a URI-encoded string" do
       assert Zip.modify("one\ntwo", "%20 z1") == {:ok, "one forda money\ntwo forda show"}
       assert Zip.modify("one\ntwo", "%0a z1") == {:ok, "one\nforda money\ntwo\nforda show"}
       assert Zip.modify("one\ntwo", "%09 z1") == {:ok, "one\tforda money\ntwo\tforda show"}
@@ -40,15 +40,6 @@ defmodule Mc.Modifier.ZipTest do
     test "works when the `buffer` is empty" do
       assert Zip.modify("", "= z1") == {:ok, "=forda money"}
       assert Zip.modify("", ": nah") == {:ok, ":"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Zip, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Zip.modify("", "--unknown") == {:error, "Mc.Modifier.Zip#modify: switch parse error"}
-      assert Zip.modify("", "-u") == {:error, "Mc.Modifier.Zip#modify: switch parse error"}
     end
 
     test "works with ok tuples" do

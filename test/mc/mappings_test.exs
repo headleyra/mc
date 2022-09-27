@@ -4,6 +4,7 @@ defmodule Mc.MappingsTest do
   alias Mc.Client.Kv.Memory
   alias Mc.Modifier.Email
   alias Mc.Modifier.Find
+  alias Mc.Modifier.Findv
   alias Mc.Modifier.Get
   alias Mc.Modifier.Url
   alias Mc.Modifier.Urlp
@@ -25,6 +26,7 @@ defmodule Mc.MappingsTest do
     start_supervised({Get, kv_client: Memory})
     start_supervised({Set, kv_client: Memory})
     start_supervised({Find, kv_client: Memory})
+    start_supervised({Findv, kv_client: Memory})
     start_supervised({Url, http_client: Gopher})
     start_supervised({Urlp, http_client: Gopher})
     start_supervised({Email, mail_client: Postee})

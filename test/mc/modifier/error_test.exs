@@ -8,15 +8,6 @@ defmodule Mc.Modifier.ErrorTest do
       assert Error.modify("", "ka\nboom") == {:error, "ka\nboom"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Error, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Error.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Error#modify: switch parse error"}
-      assert Error.modify("", "-u") == {:error, "Mc.Modifier.Error#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Error.modify({:ok, "buffer"}, "blah") == {:error, "blah"}
     end

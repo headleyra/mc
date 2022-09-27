@@ -5,16 +5,8 @@ defmodule Mc.Modifier.InvertTest do
   describe "Mc.Modifier.Invert.modify/2" do
     test "inverts the `buffer`" do
       assert Invert.modify("ant\nbar\nzoo\n", "") == {:ok, "\nzoo\nbar\nant"}
-      assert Invert.modify("\n1st line\n2nd line, blah blah", "n/a") == {:ok, "2nd line, blah blah\n1st line\n"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Invert, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Invert.modify("", "--unknown") == {:error, "Mc.Modifier.Invert#modify: switch parse error"}
-      assert Invert.modify("", "-u") == {:error, "Mc.Modifier.Invert#modify: switch parse error"}
+      assert Invert.modify("one\ntwo\nthree", "") == {:ok, "three\ntwo\none"}
+      assert Invert.modify("\n\n1st line\n2nd line", "n/a") == {:ok, "2nd line\n1st line\n\n"}
     end
 
     test "works with ok tuples" do

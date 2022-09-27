@@ -37,15 +37,6 @@ defmodule Mc.Modifier.HeadTest do
       assert Head.modify(text, "") == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Head, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Head.modify("", "--unknown") == {:error, "Mc.Modifier.Head#modify: switch parse error"}
-      assert Head.modify("", "-u") == {:error, "Mc.Modifier.Head#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Head.modify({:ok, "some\nbuffer\ntext"}, "2") == {:ok, "some\nbuffer"}
     end

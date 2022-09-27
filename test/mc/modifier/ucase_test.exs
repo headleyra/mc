@@ -7,15 +7,6 @@ defmodule Mc.Modifier.UcaseTest do
       assert Ucase.modify("Apples aNd Pears", "n/a") == {:ok, "APPLES AND PEARS"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Ucase, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Ucase.modify("", "--unknown") == {:error, "Mc.Modifier.Ucase#modify: switch parse error"}
-      assert Ucase.modify("", "-u") == {:error, "Mc.Modifier.Ucase#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Ucase.modify({:ok, "one, two\n3"}, "") == {:ok, "ONE, TWO\n3"}
     end

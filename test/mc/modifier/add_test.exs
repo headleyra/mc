@@ -18,15 +18,6 @@ defmodule Mc.Modifier.AddTest do
       assert Add.modify("foo bar", "") == {:error, "Mc.Modifier.Add#modify: no numbers found"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Add, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Add.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Add#modify: switch parse error"}
-      assert Add.modify("", "-u") == {:error, "Mc.Modifier.Add#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Add.modify({:ok, "3\n4"}, "") == {:ok, "7"}
     end

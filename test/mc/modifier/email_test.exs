@@ -25,17 +25,8 @@ defmodule Mc.Modifier.EmailTest do
     end
 
     test "errors when subject and/or recipients are missing" do
-      assert Email.modify("hi", "subj") == {:error, "usage: Mc.Modifier.Email#modify <subject>, <email> ..."}
-      assert Email.modify("hi", "") == {:error, "usage: Mc.Modifier.Email#modify <subject>, <email> ..."}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Email, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Email.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Email#modify: switch parse error"}
-      assert Email.modify("", "-u") == {:error, "Mc.Modifier.Email#modify: switch parse error"}
+      assert Email.modify("hi", "subj") == {:error, "Mc.Modifier.Email#modify: missing subject and/or recipients"}
+      assert Email.modify("hi", "") == {:error, "Mc.Modifier.Email#modify: missing subject and/or recipients"}
     end
 
     test "works with ok tuples" do

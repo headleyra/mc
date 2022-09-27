@@ -22,15 +22,6 @@ defmodule Mc.Modifier.DivideTest do
       assert Divide.modify("foo bar", "") == {:error, "Mc.Modifier.Divide#modify: no numbers found"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Divide, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Divide.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Divide#modify: switch parse error"}
-      assert Divide.modify("", "-u") == {:error, "Mc.Modifier.Divide#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Divide.modify({:ok, "3\n4"}, "") == {:ok, "0.75"}
     end

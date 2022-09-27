@@ -2,16 +2,6 @@ defmodule Mc.Modifier.Url do
   use Agent
   use Mc.Railway, [:modify]
 
-  @help """
-  modifier <URL>
-  modifier -h
-
-  Fetches the HTML of <URL>.
-
-  -h, --help
-    Show help
-  """
-
   def start_link(http_client: http_client) do
     Agent.start_link(fn -> http_client end, name: __MODULE__)
   end
@@ -21,19 +11,6 @@ defmodule Mc.Modifier.Url do
   end
 
   def modify(_buffer, args) do
-    case parse(args) do
-      {_, []} ->
-        apply(http_client(), :get, [args])
-
-      {_, [help: true]} ->
-        help(:modify, @help)
-
-      _error ->
-        oops(:modify, "switch parse error")
-    end
-  end
-
-  defp parse(args) do
-    Mc.Switch.parse(args, [{:help, :boolean, :h}])
+    apply(http_client(), :get, [args])
   end
 end

@@ -3,18 +3,9 @@ defmodule Mc.Modifier.TrimTest do
   alias Mc.Modifier.Trim
 
   describe "Mc.Modifier.Trim.modify/2" do
-    test "trims white space on the `buffer`" do
+    test "trims whitespace on the `buffer`" do
       assert Trim.modify("\t\n\n  relevant stuff \n\n\n\n \t ", "n/a") == {:ok, "relevant stuff"}
       assert Trim.modify("already trim", "") == {:ok, "already trim"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Trim, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Trim.modify("", "--unknown") == {:error, "Mc.Modifier.Trim#modify: switch parse error"}
-      assert Trim.modify("", "-u") == {:error, "Mc.Modifier.Trim#modify: switch parse error"}
     end
 
     test "works with ok tuples" do

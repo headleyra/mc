@@ -19,15 +19,6 @@ defmodule Mc.Modifier.SetTest do
       assert Set.modify("stuff", "_x") == {:ok, "stuff"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Set, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Set.modify("", "--unknown") == {:error, "Mc.Modifier.Set#modify: switch parse error"}
-      assert Set.modify("", "-u") == {:error, "Mc.Modifier.Set#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Set.modify({:ok, "big tune"}, "yeah") == {:ok, "big tune"}
     end

@@ -41,54 +41,12 @@ defmodule Mc.Modifier.UrlpTest do
       assert Urlp.modify("", "url :bar") == {:error, "Mc.Modifier.Urlp#modify: parse error"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Urlp, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Urlp.modify("", "--unknown") == {:error, "Mc.Modifier.Urlp#modify: switch parse error"}
-      assert Urlp.modify("", "-u") == {:error, "Mc.Modifier.Urlp#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Urlp.modify({:ok, "n/a"}, "url db:big") == {:ok, {"url", [db: "data"]}}
     end
 
     test "allows error tuples to pass through" do
       assert Urlp.modify({:error, "reason"}, "url") == {:error, "reason"}
-    end
-  end
-
-  describe "Mc.Modifier.Urlp.build_url_with_params/1" do
-    test "returns a 'URL/params' list" do
-      assert Urlp.build_url_with_params("example.com") == {:ok, ["example.com", []]}
-      assert Urlp.build_url_with_params("url p1:big") == {:ok, ["url", [p1: "data"]]}
-      assert Urlp.build_url_with_params("url x:big y:x") == {:ok, ["url", [x: "data", y: "y\nz"]]}
-    end
-
-    test "errors with bad or missing URL/params" do
-      assert Urlp.build_url_with_params("") == :error
-      assert Urlp.build_url_with_params("    ") == :error
-      assert Urlp.build_url_with_params("example.com :") == :error
-      assert Urlp.build_url_with_params("url :nope") == :error
-      assert Urlp.build_url_with_params("url yeah:") == :error
-    end
-  end
-
-  describe "Mc.Modifier.Urlp.build_params_list/1" do
-    test "build a keyword list given a string containing colon separated param-name/kv-key pairs" do
-      assert Urlp.build_params_list("param_name_1:big") == {:ok, [param_name_1: "data"]}
-      assert Urlp.build_params_list("p1:big p2:x") == {:ok, [p1: "data", p2: "y\nz"]}
-      assert Urlp.build_params_list("x:big\t \t  y:x") == {:ok, [x: "data", y: "y\nz"]}
-      assert Urlp.build_params_list("one:big two:no-exist") == {:ok, [one: "data", two: ""]}
-      assert Urlp.build_params_list("") == {:ok, []}
-    end
-
-    test "errors with bad params" do
-      assert Urlp.build_params_list("param-name-only") == :error
-      assert Urlp.build_params_list(":") == :error
-      assert Urlp.build_params_list(":11pm") == :error
-      assert Urlp.build_params_list("delta:") == :error
     end
   end
 end

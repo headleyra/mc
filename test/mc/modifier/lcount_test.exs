@@ -9,15 +9,6 @@ defmodule Mc.Modifier.LcountTest do
       assert Lcount.modify("\tnot for\nprofit", "n/a") == {:ok, "2"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Lcount, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Lcount.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Lcount#modify: switch parse error"}
-      assert Lcount.modify("", "-u") == {:error, "Mc.Modifier.Lcount#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Lcount.modify({:ok, "one\ntwo"}, "n/a") == {:ok, "2"}
     end

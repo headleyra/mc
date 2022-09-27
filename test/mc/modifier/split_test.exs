@@ -23,15 +23,6 @@ defmodule Mc.Modifier.SplitTest do
       assert Split.modify("bish bosh", "[") == {:error, "Mc.Modifier.Split#modify: bad regex"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Split, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Split.modify("", "--unknown") == {:error, "Mc.Modifier.Split#modify: switch parse error"}
-      assert Split.modify("", "-u") == {:error, "Mc.Modifier.Split#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Split.modify({:ok, "best-of-3"}, "-") == {:ok, "best\nof\n3"}
     end

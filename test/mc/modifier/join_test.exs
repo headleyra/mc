@@ -4,8 +4,8 @@ defmodule Mc.Modifier.JoinTest do
 
   describe "Mc.Modifier.Join.modify/2" do
     test "joins lines in the buffer" do
-      assert Join.modify("un\n:deux\n:trois", "") == {:ok, "un:deux:trois"}
-      assert Join.modify("\t\tun\n:deux\n:trois\n\n\t", "") == {:ok, "\t\tun:deux:trois\t"}
+      assert Join.modify("un\ndeux\ntrois", "") == {:ok, "undeuxtrois"}
+      assert Join.modify("\t\tun\ndeux\ntrois\n\n\t", "") == {:ok, "\t\tundeuxtrois\t"}
       assert Join.modify("\n\n\n", "") == {:ok, ""}
     end
 
@@ -19,15 +19,6 @@ defmodule Mc.Modifier.JoinTest do
       assert Join.modify("once\nupona\ntime", "%20") == {:ok, "once upona time"}
       assert Join.modify("bish\nbosh", "%09") == {:ok, "bish\tbosh"}
       assert Join.modify("foo\nbar", "%") == {:ok, "foo%bar"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Join, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Join.modify("", "--unknown") == {:error, "Mc.Modifier.Join#modify: switch parse error"}
-      assert Join.modify("", "-u") == {:error, "Mc.Modifier.Join#modify: switch parse error"}
     end
 
     test "works with ok tuples" do

@@ -25,15 +25,6 @@ defmodule Mc.Modifier.UrlTest do
       assert Url.modify("n/a", "http://two.example.org") == {:ok, "http://two.example.org"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Url, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Url.modify("", "--unknown") == {:error, "Mc.Modifier.Url#modify: switch parse error"}
-      assert Url.modify("", "-u") == {:error, "Mc.Modifier.Url#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Url.modify({:ok, "n/a"}, "localhost:4000") == {:ok, "localhost:4000"}
     end

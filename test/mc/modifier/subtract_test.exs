@@ -17,15 +17,6 @@ defmodule Mc.Modifier.SubtractTest do
       assert Subtract.modify("foo bar", "") == {:error, "Mc.Modifier.Subtract#modify: no numbers found"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Subtract, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Subtract.modify("n/a", "--unknown") == {:error, "Mc.Modifier.Subtract#modify: switch parse error"}
-      assert Subtract.modify("", "-u") == {:error, "Mc.Modifier.Subtract#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Subtract.modify({:ok, "3\n4"}, "") == {:ok, "-1"}
     end

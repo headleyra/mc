@@ -25,15 +25,6 @@ defmodule Mc.Modifier.GetTest do
       assert Get.modify("", "key-no-exist") == {:ok, ""}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Get, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Get.modify("", "--unknown") == {:error, "Mc.Modifier.Get#modify: switch parse error"}
-      assert Get.modify("", "-u") == {:error, "Mc.Modifier.Get#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       Set.modify("dance", "funky")
       assert Get.modify({:ok, "n/a"}, "funky") == {:ok, "dance"}

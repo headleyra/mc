@@ -12,13 +12,14 @@ defmodule Mc.Modifier.RangeTest do
       assert Range.modify("", "0 0") == {:ok, "0"}
     end
 
-    test "assumes 1 for a missing limit" do
+    test "assumes 1 for a missing start limit" do
       assert Range.modify("", "3") == {:ok, "1\n2\n3"}
       assert Range.modify("", "-1") == {:ok, "1\n0\n-1"}
     end
 
     test "errors when there are zero or more than two range limits" do
       assert Range.modify("", "") == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "  ") == {:error, "Mc.Modifier.Range#modify: bad range"}
       assert Range.modify("", "1 2 3") == {:error, "Mc.Modifier.Range#modify: bad range"}
     end
 
@@ -28,17 +29,8 @@ defmodule Mc.Modifier.RangeTest do
       assert Range.modify("", "0 foo") == {:error, "Mc.Modifier.Range#modify: bad range"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Range, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Range.modify("", "--unknown") == {:error, "Mc.Modifier.Range#modify: switch parse error"}
-      assert Range.modify("", "-u") == {:error, "Mc.Modifier.Range#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
-      assert Range.modify({:ok, "n/a"}, "1 2") == {:ok, "1\n2"}
+      assert Range.modify({:ok, ""}, "1 2") == {:ok, "1\n2"}
     end
 
     test "allows error tuples to pass through" do

@@ -11,15 +11,6 @@ defmodule Mc.Modifier.VersionTest do
       assert Version.modify("", "") == {:ok, current_version()}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Version, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Version.modify("", "--unknown") == {:error, "Mc.Modifier.Version#modify: switch parse error"}
-      assert Version.modify("", "-u") == {:error, "Mc.Modifier.Version#modify: switch parse error"}
-    end
-
     test "works with ok tuples" do
       assert Version.modify({:ok, "BEST\nOF 3"}, "") == {:ok, current_version()}
     end

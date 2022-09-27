@@ -3,8 +3,8 @@ defmodule Mc.Modifier.ReplaceTest do
   alias Mc.Modifier.Replace
 
   describe "Mc.Modifier.Replace.modify/2" do
-    test "splits `args` (on the *first* space) into search and replace terms and returns `buffer`
-      with the replacement applied", do: assert true
+    test "splits `args` (on any amount of whitespace) into search and replace terms and returns `buffer`
+      with replacements applied", do: assert true
 
     test "works with simple replacements" do
       assert Replace.modify("stuff like this", "this THAT") == {:ok, "stuff like THAT"}
@@ -12,6 +12,8 @@ defmodule Mc.Modifier.ReplaceTest do
       assert Replace.modify("2x", "x is company") == {:ok, "2is company"}
       assert Replace.modify("one", "one two three") == {:ok, "two three"}
       assert Replace.modify("one", "one %20%202 leading spaces") == {:ok, "  2 leading spaces"}
+      assert Replace.modify("space man", "space   \t\n door") == {:ok, "door man"}
+      assert Replace.modify("bish", "bish      bosh") == {:ok, "bosh"}
 
       times = """
       \t11:16\t[ABC]
@@ -47,11 +49,6 @@ defmodule Mc.Modifier.ReplaceTest do
       assert Replace.modify("Foo bar foobar abc", "[Bb]ar Biz") == {:ok, "Foo Biz fooBiz abc"}
     end
 
-    test "uses the 'double dash' to terminate switch processing for args that look like switches" do
-      assert Replace.modify("one\ntwo", "-- ^ --switch%20") == {:ok, "--switch one\n--switch two"}
-      assert Replace.modify("--switch", "-- --switch to this") == {:ok, "to this"}
-    end
-
     test "errors when the replace term is missing" do
       assert Replace.modify("3s a crowd", "search") ==
         {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
@@ -68,15 +65,6 @@ defmodule Mc.Modifier.ReplaceTest do
 
       assert Replace.modify("(foo)", "(?=)) bar") ==
         {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
-    end
-
-    test "returns a help message" do
-      assert Check.has_help?(Replace, :modify)
-    end
-
-    test "errors with unknown switches" do
-      assert Replace.modify("", "--unknown") == {:error, "Mc.Modifier.Replace#modify: switch parse error"}
-      assert Replace.modify("", "-u") == {:error, "Mc.Modifier.Replace#modify: switch parse error"}
     end
 
     test "works with ok tuples" do

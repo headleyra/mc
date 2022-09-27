@@ -13,10 +13,6 @@ defmodule Mc.Modifier.SqueezeTest do
       assert Squeeze.modify("   \n  \n ", "") == {:ok, "\n\n"}
     end
 
-    test "returns a help message" do
-      assert Check.has_help?(Squeeze, :modify)
-    end
-
     test "works with ok tuples" do
       assert Squeeze.modify({:ok, " 1   2\n \t 3 \t"}, "n/a") == {:ok, "1 2\n3"}
     end
