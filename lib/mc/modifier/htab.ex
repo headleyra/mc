@@ -24,8 +24,8 @@ defmodule Mc.Modifier.Htab do
   defp parse_selectors(args) do
     with \
       [row, col] <- String.split(args),
-      {:ok, row_css} <- Mc.String.Inline.uri_decode(row),
-      {:ok, col_css} <- Mc.String.Inline.uri_decode(col)
+      {:ok, row_css} <- Mc.Uri.decode(row),
+      {:ok, col_css} <- Mc.Uri.decode(col)
     do
       {:ok, row_css, col_css}
     else

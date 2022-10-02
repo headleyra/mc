@@ -3,31 +3,31 @@ defmodule Mc.Modifier.Mapc do
 
   def modify(buffer, args) do
     with \
-      {{:ok, max_concurrency}, rest_of_args} when max_concurrency > 0 <- max_concurrency_with_args(args)
+      {{:ok, concurrency}, rest_of_args} when concurrency > 0 <- concurrency_with_args(args)
     do
-      run_concurrent(buffer, rest_of_args, max_concurrency)
+      run_concurrent(buffer, rest_of_args, concurrency)
     else
       _error ->
-        oops(:modify, "'max concurrency' should be a positive integer")
+        oops(:modify, "'concurrency' should be a positive integer")
     end
   end
 
-  defp max_concurrency_with_args(args) do
+  defp concurrency_with_args(args) do
     case String.trim(args) |> String.split(~r/\s+/, parts: 2) do
-      [max_concurrency, rest_of_args] ->
-        {Mc.String.to_int(max_concurrency), rest_of_args}
+      [concurrency, rest_of_args] ->
+        {Mc.String.to_int(concurrency), rest_of_args}
 
-      [max_concurrency] ->
-        {Mc.String.to_int(max_concurrency), ""}
+      [concurrency] ->
+        {Mc.String.to_int(concurrency), ""}
 
       _error ->
         :error
     end
   end
   
-  defp run_concurrent(buffer, args, max_concurrency) do
+  defp run_concurrent(buffer, args, concurrency) do
     String.split(buffer, "\n")
-    |> Task.async_stream(&Mc.modify(&1, args), ordered: true, max_concurrency: max_concurrency, timeout: :infinity)
+    |> Task.async_stream(&Mc.modify(&1, args), ordered: true, max_concurrency: concurrency, timeout: :infinity)
     |> report()
   end
 

@@ -13,7 +13,7 @@ defmodule Mc.Modifier.MapTest do
   end
 
   describe "Mc.Modifier.Map.modify/2" do
-    test "treats `args` as an 'inline string' and runs it against each line in the `buffer`" do
+    test "parses `args` as an 'inline string' and runs it against each line in the `buffer`" do
       assert Map.modify("ApplE JuicE", "lcase") == {:ok, "apple juice"}
       assert Map.modify("1\n2", "map buffer `getb`: `getb; iword`") == {:ok, "1: one\n2: two"}
       assert Map.modify("\nbing\n\nbingle\n", "r bing bong") == {:ok, "\nbong\n\nbongle\n"}
@@ -22,7 +22,7 @@ defmodule Mc.Modifier.MapTest do
       assert Map.modify("\n\n", "buffer this") == {:ok, "this\nthis\nthis"}
     end
 
-    test "returns the `buffer` when the script is whitespace or empty" do
+    test "returns `buffer` when the script is whitespace or empty" do
       assert Map.modify("bing", "") == {:ok, "bing"}
       assert Map.modify("same", "  ") == {:ok, "same"}
       assert Map.modify("", "\n\n   \t") == {:ok, ""}

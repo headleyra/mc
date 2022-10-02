@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Zip do
         {:ok, zipee} = Mc.modify("", "get #{key}")
         buffer_list = String.split(buffer, "\n")
         zipee_list = String.split(zipee, "\n")
-        {:ok, decoded_separator} = Mc.String.Inline.uri_decode(separator)
+        {:ok, decoded_separator} = Mc.Uri.decode(separator)
 
         {:ok,
           Enum.zip(buffer_list, zipee_list)

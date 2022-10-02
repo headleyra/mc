@@ -16,7 +16,7 @@ defmodule Mc.Modifier.Replace do
     with \
       [search, replace] <- String.split(args, ~r/\s+/, parts: 2),
       {:ok, search_regex} <- Regex.compile(search, "sm"),
-      {:ok, uri_decoded_replace} <- Mc.String.Inline.uri_decode(replace)
+      {:ok, uri_decoded_replace} <- Mc.Uri.decode(replace)
     do
       {:ok, search_regex, uri_decoded_replace}
     else

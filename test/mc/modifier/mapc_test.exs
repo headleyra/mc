@@ -28,9 +28,9 @@ defmodule Mc.Modifier.MapcTest do
       assert Mapc.modify("", "4\t \n") == {:ok, ""}
     end
     
-    @errmsg "Mc.Modifier.Mapc#modify: 'max concurrency' should be a positive integer"
+    @errmsg "Mc.Modifier.Mapc#modify: 'concurrency' should be a positive integer"
 
-    test "errors when `args` doesn't contain a valid 'concurrency' (a.k.a. max. 'cores to use' hint (integer > 0))" do
+    test "errors when `args` can't be parsed as a positive (max. 'cores to use' hint)" do
       assert Mapc.modify("", "") == {:error, @errmsg}
       assert Mapc.modify("", "not-an-integer") == {:error, @errmsg}
       assert Mapc.modify("", "1.2") == {:error, @errmsg}
