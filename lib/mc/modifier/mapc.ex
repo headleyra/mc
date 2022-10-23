@@ -3,19 +3,19 @@ defmodule Mc.Modifier.Mapc do
 
   def modify(buffer, args) do
     with \
-      {{:ok, concurrency}, rest_of_args} when concurrency > 0 <- concurrency_with_args(args)
+      {{:ok, concurrency}, script} when concurrency > 0 <- concurrency_with_args(args)
     do
-      run_concurrent(buffer, rest_of_args, concurrency)
+      run_concurrent(buffer, script, concurrency)
     else
-      _error ->
+      _bad_concurrency ->
         oops(:modify, "'concurrency' should be a positive integer")
     end
   end
 
   defp concurrency_with_args(args) do
     case String.trim(args) |> String.split(~r/\s+/, parts: 2) do
-      [concurrency, rest_of_args] ->
-        {Mc.String.to_int(concurrency), rest_of_args}
+      [concurrency, script] ->
+        {Mc.String.to_int(concurrency), script}
 
       [concurrency] ->
         {Mc.String.to_int(concurrency), ""}
@@ -25,9 +25,9 @@ defmodule Mc.Modifier.Mapc do
     end
   end
   
-  defp run_concurrent(buffer, args, concurrency) do
+  defp run_concurrent(buffer, script, concurrency) do
     String.split(buffer, "\n")
-    |> Task.async_stream(&Mc.modify(&1, args), ordered: true, max_concurrency: concurrency, timeout: :infinity)
+    |> Task.async_stream(&Mc.modify(&1, script), ordered: true, max_concurrency: concurrency, timeout: :infinity)
     |> report()
   end
 

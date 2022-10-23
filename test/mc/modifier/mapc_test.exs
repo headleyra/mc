@@ -13,24 +13,16 @@ defmodule Mc.Modifier.MapcTest do
   end
 
   describe "Mc.Modifier.Mapc.modify/2" do
-    test "parses `args` as a 'concurrency' and 'inline string' and runs it against each line in `buffer`" do
-      assert Mapc.modify("ApplE JuicE", "1 lcase") == {:ok, "apple juice"}
-      assert Mapc.modify("1\n2", "2 map buffer `getb`: `getb; iword`") == {:ok, "1: one\n2: two"}
-      assert Mapc.modify("\nbing\n\nbingle\n", "4 replace bing bong") == {:ok, "\nbong\n\nbongle\n"}
-      assert Mapc.modify("FOO BAR\nfour four tWo", "8 b `lcase; r two 2`") == {:ok, "foo bar\nfour four 2"}
-      assert Mapc.modify("1\n2", "16 buffer foo %%09") == {:ok, "foo %\t\nfoo %\t"}
-      assert Mapc.modify("\n\n", "32 buffer this") == {:ok, "this\nthis\nthis"}
+    test "parses `args` as a 'concurrency' and script and runs it against each line in `buffer`" do
+      assert Mapc.modify("ApplE  JuicE", "1 lcase") == {:ok, "apple  juice"}
+      assert Mapc.modify("ApplE\nJuicE", "2 lcase") == {:ok, "apple\njuice"}
+      assert Mapc.modify("1\n2", "3 b `getb`: `getb; iword`") == {:ok, "1: one\n2: two"}
+      assert Mapc.modify("1\n2", "5 b `iword; append %20x`") == {:ok, "one x\ntwo x"}
     end
 
-    test "returns the `buffer` when the script is whitespace or empty" do
-      assert Mapc.modify("bing", "1") == {:ok, "bing"}
-      assert Mapc.modify("same", "2      ") == {:ok, "same"}
-      assert Mapc.modify("", "4\t \n") == {:ok, ""}
-    end
-    
     @errmsg "Mc.Modifier.Mapc#modify: 'concurrency' should be a positive integer"
 
-    test "errors when `args` can't be parsed as a positive (max. 'cores to use' hint)" do
+    test "errors when `args` can't be parsed as a positive integer (max. 'cores to use' hint)" do
       assert Mapc.modify("", "") == {:error, @errmsg}
       assert Mapc.modify("", "not-an-integer") == {:error, @errmsg}
       assert Mapc.modify("", "1.2") == {:error, @errmsg}
