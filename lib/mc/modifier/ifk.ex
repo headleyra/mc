@@ -1,13 +1,11 @@
-defmodule Mc.Modifier.If do
+defmodule Mc.Modifier.Ifk do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
     case String.split(args) do
-      [value, true_value, false_value] ->
-        compare({:ok, buffer} == Mc.Uri.decode(value), true_value, false_value)
-
-      [true_value, false_value] ->
-        compare(buffer == "", true_value, false_value)
+      [compare_key, true_value, false_value] ->
+        {:ok, compare_value} = Mc.modify("", "get #{compare_key}")
+        compare(buffer == compare_value, true_value, false_value)
 
       _parse_error ->
         oops(:modify, "parse error")

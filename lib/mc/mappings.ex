@@ -24,6 +24,7 @@ defmodule Mc.Mappings do
     hselc: {Mc.Modifier.Hselc, :modify},
     htab: {Mc.Modifier.Htab, :modify},
     if: {Mc.Modifier.If, :modify},
+    ifk: {Mc.Modifier.Ifk, :modify},
     invert: {Mc.Modifier.Invert, :modify},
     iword: {Mc.Modifier.Iword, :modify},
     join: {Mc.Modifier.Join, :modify},
