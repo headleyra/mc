@@ -13,9 +13,11 @@ defmodule Mc.Modifier.IfTest do
       assert If.modify("123", "123-not true-value false%25value") == {:ok, "false%value"}
     end
 
-    test "compares with empty string when no compare value is given" do
-      assert If.modify("", "true:value false:value") == {:ok, "true:value"}
-      assert If.modify("not empty", "true:value false:value") == {:ok, "false:value"}
+    test "compares as whitespace (or empty string) when no compare value is given" do
+      assert If.modify("", "true false") == {:ok, "true"}
+      assert If.modify("   ", "true false") == {:ok, "true"}
+      assert If.modify("\t\n", "true false") == {:ok, "true"}
+      assert If.modify(".  ", "true false") == {:ok, "false"}
     end
 
     @errmsg "Mc.Modifier.If#modify: parse error"

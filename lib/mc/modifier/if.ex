@@ -3,11 +3,11 @@ defmodule Mc.Modifier.If do
 
   def modify(buffer, args) do
     case String.split(args) do
-      [value, true_value, false_value] ->
-        compare({:ok, buffer} == Mc.Uri.decode(value), true_value, false_value)
+      [compare_value, true_value, false_value] ->
+        compare({:ok, buffer} == Mc.Uri.decode(compare_value), true_value, false_value)
 
       [true_value, false_value] ->
-        compare(buffer == "", true_value, false_value)
+        compare(String.match?(buffer, ~r/^\s*$/), true_value, false_value)
 
       _parse_error ->
         oops(:modify, "parse error")
