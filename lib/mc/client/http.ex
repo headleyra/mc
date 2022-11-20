@@ -6,22 +6,22 @@ defmodule Mc.Client.Http do
   @impl true
   def get(url) do
     HTTPoison.get(url, ["User-Agent": @user_agent], @http_options)
-    |> reply_for(url)
+    |> reply_for()
   end
 
   @impl true
   def post(url, params_list) do
     HTTPoison.post(url, {:form, params_list}, post_header(@user_agent), @http_options)
-    |> reply_for(url)
+    |> reply_for()
   end
 
-  defp reply_for(response, url) do
+  defp reply_for(response) do
     case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "#{url} (404)"}
+        {:error, "404"}
 
       {:ok, %HTTPoison.Response{body: body}} ->
         {:error, body}
