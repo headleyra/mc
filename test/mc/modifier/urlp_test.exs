@@ -12,8 +12,8 @@ defmodule Mc.Modifier.UrlpTest do
   end
 
   setup do
-    start_supervised({Memory, map: %{"big" => "data", "x" => "y\nz"}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({Memory, map: %{"big" => "data", "x" => "y\nz"}, name: :mem})
+    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
     start_supervised({Urlp, http_client: Gopher})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok

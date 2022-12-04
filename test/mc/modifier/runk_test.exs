@@ -10,8 +10,8 @@ defmodule Mc.Modifier.RunkTest do
       "s1" => "replace FOO RADIO\nlcase",
       "s2" => "lcase\nr bass treble\nr one two",
       "s3" => ""
-    }})
-    start_supervised({Get, kv_client: Memory})
+    }, name: :mem})
+    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

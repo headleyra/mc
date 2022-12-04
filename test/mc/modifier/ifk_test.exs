@@ -10,8 +10,8 @@ defmodule Mc.Modifier.IfkTest do
       "compare-key" => "this",
       "empty-string" => "",
       "nah" => "that"
-    }})
-    start_supervised({Get, kv_client: Memory})
+    }, name: :mem})
+    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

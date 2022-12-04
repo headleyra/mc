@@ -6,8 +6,8 @@ defmodule Mc.Modifier.AppendkTest do
   alias Mc.Modifier.Appendk
 
   setup do
-    start_supervised({Memory, map: %{"star" => "light", "thing" => "bar"}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({Memory, map: %{"star" => "light", "thing" => "bar"}, name: :dosh})
+    start_supervised({Get, kv_client: Memory, kv_pid: :dosh})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

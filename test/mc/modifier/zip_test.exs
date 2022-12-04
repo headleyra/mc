@@ -6,8 +6,8 @@ defmodule Mc.Modifier.ZipTest do
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({Memory, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({Memory, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}, name: :mem})
+    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

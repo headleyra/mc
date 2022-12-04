@@ -4,14 +4,18 @@ defmodule Mc.Modifier.SetTest do
   alias Mc.Modifier.Set
 
   setup do
-    start_supervised({Memory, map: %{}})
-    start_supervised({Set, kv_client: Memory})
+    start_supervised({Memory, map: %{}, name: :mem})
+    start_supervised({Set, kv_client: Memory, kv_pid: :mem})
     :ok
   end
 
   describe "Mc.Modifier.Set.modify/2" do
     test "returns the KV client implementation" do
       assert Set.kv_client() == Memory
+    end
+
+    test "returns the KV client pid" do
+      assert Set.kv_pid() == :mem
     end
 
     test "stores `buffer` under the given key and returns `buffer`" do

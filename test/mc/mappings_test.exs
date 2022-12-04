@@ -22,11 +22,11 @@ defmodule Mc.MappingsTest do
   end
 
   setup do
-    start_supervised({Memory, map: %{}})
-    start_supervised({Get, kv_client: Memory})
-    start_supervised({Set, kv_client: Memory})
-    start_supervised({Find, kv_client: Memory})
-    start_supervised({Findv, kv_client: Memory})
+    start_supervised({Memory, map: %{}, name: :cache})
+    start_supervised({Get, kv_client: Memory, kv_pid: :cache})
+    start_supervised({Set, kv_client: Memory, kv_pid: :cache})
+    start_supervised({Find, kv_client: Memory, kv_pid: :cache})
+    start_supervised({Findv, kv_client: Memory, kv_pid: :cache})
     start_supervised({Url, http_client: Gopher})
     start_supervised({Urlp, http_client: Gopher})
     start_supervised({Email, mail_client: Postee})

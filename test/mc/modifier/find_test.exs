@@ -4,14 +4,20 @@ defmodule Mc.Modifier.FindTest do
   alias Mc.Modifier.Find
 
   setup do
-    start_supervised({Memory, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}})
-    start_supervised({Find, kv_client: Memory})
+    start_supervised({Memory, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}, name: :mem})
+    start_supervised({Find, kv_client: Memory, kv_pid: :mem})
     :ok
   end
 
   describe "Mc.Modifier.Find.kv_client/0" do
     test "returns the KV client implementation" do
       assert Find.kv_client() == Memory
+    end
+  end
+
+  describe "Mc.Modifier.Find.kv_pid/0" do
+    test "returns the KV client pid" do
+      assert Find.kv_pid() == :mem
     end
   end
 

@@ -6,8 +6,8 @@ defmodule Mc.Modifier.PrependkTest do
   alias Mc.Modifier.Prependk
 
   setup do
-    start_supervised({Memory, map: %{"star" => "light", "thing" => "ready"}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({Memory, map: %{"star" => "light", "thing" => "ready"}, name: :mem})
+    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
