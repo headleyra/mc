@@ -3,7 +3,7 @@ defmodule Mc.Modifier.Zip do
 
   def modify(buffer, args) do
     case String.split(args) do
-      [separator, key] ->
+      [key, separator] ->
         {:ok, zipee} = Mc.modify("", "get #{key}")
         buffer_list = String.split(buffer, "\n")
         zipee_list = String.split(zipee, "\n")
@@ -16,7 +16,7 @@ defmodule Mc.Modifier.Zip do
         }
 
       _bad_args ->
-        oops(:modify, "args parse error")
+        oops(:modify, "parse error")
     end
   end
 end
