@@ -2,7 +2,7 @@ defmodule Mc.Modifier.WcountTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Wcount
 
-  describe "Mc.Modifier.Wcount.modify/2" do
+  describe "modify/2" do
     test "returns the number of words in the `buffer`" do
       assert Wcount.modify("un deux trois", "n/a") == {:ok, "3"}
       assert Wcount.modify("\t\tfoobar\nbiz\n\n", "n/a") == {:ok, "2"}

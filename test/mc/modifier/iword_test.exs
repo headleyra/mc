@@ -2,7 +2,7 @@ defmodule Mc.Modifier.IwordTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Iword
 
-  describe "Mc.Modifier.Iword.modify/2" do
+  describe "modify/2" do
     test "parses the `buffer` as an integer and converts it into its word equivalent" do
       assert Iword.modify("0", "n/a") == {:ok, "zero"}
       assert Iword.modify("1", "") == {:ok, "one"}

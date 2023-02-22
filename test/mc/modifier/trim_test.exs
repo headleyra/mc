@@ -2,7 +2,7 @@ defmodule Mc.Modifier.TrimTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Trim
 
-  describe "Mc.Modifier.Trim.modify/2" do
+  describe "modify/2" do
     test "trims whitespace on the `buffer`" do
       assert Trim.modify("\t\n\n  relevant stuff \n\n\n\n \t ", "n/a") == {:ok, "relevant stuff"}
       assert Trim.modify("already trim", "") == {:ok, "already trim"}

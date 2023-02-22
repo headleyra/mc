@@ -2,7 +2,7 @@ defmodule Mc.Modifier.LcaseTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Lcase
 
-  describe "Mc.Modifier.Lcase.modify/2" do
+  describe "modify/2" do
     test "lowercases the `buffer`" do
       assert Lcase.modify("FOO Bar", "") == {:ok, "foo bar"}
     end

@@ -14,7 +14,7 @@ defmodule Mc.Modifier.GrepvTest do
     }
   end
 
-  describe "Mc.Modifier.Grepv.modify/2" do
+  describe "modify/2" do
     test "filters lines in `buffer` that don't match the regex given as `args`", %{text: text} do
       assert Grepv.modify(text, "[Oo]ne") == {:ok, "two\n\nTwo\n"}
       assert Grepv.modify(text, "two") == {:ok, "One\none\n\nTwo\n"}

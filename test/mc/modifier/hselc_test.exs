@@ -28,7 +28,7 @@ defmodule Mc.Modifier.HselcTest do
     }
   end
 
-  describe "Mc.Modifier.Hselc.modify/2" do
+  describe "modify/2" do
     test "parses `args` as a CSS selector and targets HTML *content* in the `buffer`", do: true
     
     test "returns empty string when `buffer` is empty string" do

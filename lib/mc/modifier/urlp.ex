@@ -1,19 +1,10 @@
 defmodule Mc.Modifier.Urlp do
-  use Agent
   use Mc.Railway, [:modify]
-
-  def start_link(http_client: http_client) do
-    Agent.start_link(fn -> http_client end, name: __MODULE__)
-  end
-
-  def http_client do
-    Agent.get(__MODULE__, & &1)
-  end
 
   def modify(_buffer, args) do
     case build_url_with_params(args) do
       {:ok, url_with_params} ->
-        apply(http_client(), :post, url_with_params)
+        apply(http_adapter(), :post, url_with_params)
 
       _error ->
         oops(:modify, "parse error")
@@ -63,7 +54,6 @@ defmodule Mc.Modifier.Urlp do
   end
 
   defp listify(false), do: :error
-
   defp listify(params_list) do
     {:ok,
       params_list
@@ -71,5 +61,9 @@ defmodule Mc.Modifier.Urlp do
       |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.modify("", "get #{key}")} end)
       |> Keyword.new(fn {param_name_atom, {:ok, value}} -> {param_name_atom, value} end)
     }
+  end
+
+  defp http_adapter do
+    Application.get_env(:mc, :http_adapter)
   end
 end

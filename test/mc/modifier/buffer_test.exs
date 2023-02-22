@@ -7,7 +7,7 @@ defmodule Mc.Modifier.BufferTest do
     :ok
   end
 
-  describe "Mc.Modifier.Buffer.modify/2" do
+  describe "modify/2" do
     test "returns `args`" do
       assert Buffer.modify("n/a", "these are some args") == {:ok, "these are some args"}
       assert Buffer.modify("", "NWO\nIMF\nWHO\nWTO") == {:ok, "NWO\nIMF\nWHO\nWTO"}

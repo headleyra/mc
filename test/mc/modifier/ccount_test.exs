@@ -2,7 +2,7 @@ defmodule Mc.Modifier.CcountTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Ccount
 
-  describe "Mc.Modifier.Ccount.modify/2" do
+  describe "modify/2" do
     test "returns the number of characters in the `buffer`" do
       assert Ccount.modify("123", "") == {:ok, "3"}
       assert Ccount.modify("123\n", "") == {:ok, "4"}

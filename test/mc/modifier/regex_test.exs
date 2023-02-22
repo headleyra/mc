@@ -16,7 +16,7 @@ defmodule Mc.Modifier.RegexTest do
     }
   end
 
-  describe "Mc.Modifier.Regex.modify/2" do
+  describe "modify/2" do
     test "runs the regular expression on the `buffer` and returns anything that matches", %{text: text} do
       assert Regex.modify(text, "17.*3") == {:ok, "17 times 3"}
     end

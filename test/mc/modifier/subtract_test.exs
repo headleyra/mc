@@ -2,7 +2,7 @@ defmodule Mc.Modifier.SubtractTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Subtract
 
-  describe "Mc.Modifier.Subtract.modify/2" do
+  describe "modify/2" do
     test "subtracts the `buffer`" do
       assert Subtract.modify("17\n3", "") == {:ok, "14"}
       assert Subtract.modify("3", "") == {:ok, "3"}

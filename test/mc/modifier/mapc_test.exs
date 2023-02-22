@@ -1,18 +1,18 @@
 defmodule Mc.Modifier.MapcTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Mapc
 
   setup do
-    start_supervised({Memory, map: %{}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({KvMemory, map: %{}})
+    start_supervised({Get, kv_client: KvMemory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "Mc.Modifier.Mapc.modify/2" do
+  describe "modify/2" do
     test "parses `args` as a 'concurrency' and script and runs it against each line in `buffer`" do
       assert Mapc.modify("ApplE  JuicE", "1 lcase") == {:ok, "apple  juice"}
       assert Mapc.modify("ApplE\nJuicE", "2 lcase") == {:ok, "apple\njuice"}

@@ -2,7 +2,7 @@ defmodule Mc.Modifier.RangeTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Range
 
-  describe "Mc.Modifier.Range.modify/2" do
+  describe "modify/2" do
     test "generates a range" do
       assert Range.modify("n/a", "1 3") == {:ok, "1\n2\n3"}
       assert Range.modify("", "2 1") == {:ok, "2\n1"}

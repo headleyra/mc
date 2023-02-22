@@ -2,7 +2,7 @@ defmodule Mc.Modifier.JsonaTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Jsona
 
-  describe "Mc.Modifier.Jsona.modify/2" do
+  describe "modify/2" do
     test "parses `buffer` as a JSON array and returns a series of newline-separated strings" do
       assert Jsona.modify(~s/["one", 25]/, "") == {:ok, ~s/"one"\n25/}
       assert Jsona.modify(~s/[{"a":1,"b":[2,"two"]}, 2, 3.1]/, "") == {:ok, ~s/{"a":1,"b":[2,"two"]}\n2\n3.1/}

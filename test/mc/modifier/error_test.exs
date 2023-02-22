@@ -2,7 +2,7 @@ defmodule Mc.Modifier.ErrorTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Error
 
-  describe "Mc.Modifier.Error.modify/2" do
+  describe "modify/2" do
     test "returns an error tuple" do
       assert Error.modify("n/a", "message") == {:error, "message"}
       assert Error.modify("", "ka\nboom") == {:error, "ka\nboom"}

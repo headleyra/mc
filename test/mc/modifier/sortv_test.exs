@@ -2,7 +2,7 @@ defmodule Mc.Modifier.SortvTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Sortv
 
-  describe "Mc.Modifier.Sortv.modify/2" do
+  describe "modify/2" do
     test "sorts the `buffer` in descending order" do
       assert Sortv.modify("a\nc\nb", "") == {:ok, "c\nb\na"}
       assert Sortv.modify("10\nten\ndix", "") == {:ok, "ten\ndix\n10"}

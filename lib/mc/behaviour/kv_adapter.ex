@@ -1,4 +1,4 @@
-defmodule Mc.Behaviour.KvClient do
+defmodule Mc.Behaviour.KvAdapter do
   @type key :: String.t
   @type value :: String.t
   @type regex :: String.t

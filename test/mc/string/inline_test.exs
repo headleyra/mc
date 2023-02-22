@@ -2,7 +2,7 @@ defmodule Mc.String.InlineTest do
   use ExUnit.Case, async: true
   alias Mc.String.Inline
 
-  describe "Mc.String.Inline.decode/1" do
+  describe "decode/1" do
     test "echoes 'normal' text" do
       assert Inline.decode("foo") == {:ok, "foo"}
       assert Inline.decode("bish\nbosh") == {:ok, "bish\nbosh"}

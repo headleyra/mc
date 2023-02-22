@@ -13,7 +13,7 @@ defmodule Mc.Mappings do
     delete: {Mc.Modifier.Delete, :modify},
     email: {Mc.Modifier.Email, :modify},
     error: {Mc.Modifier.Error, :modify},
-    find: {Mc.Modifier.Find, :modify},
+    find: {Mc.Modifier.Findk, :modify},
     findv: {Mc.Modifier.Findv, :modify},
     get: {Mc.Modifier.Get, :modify},
     getb: {Mc.Modifier.Getb, :modify},

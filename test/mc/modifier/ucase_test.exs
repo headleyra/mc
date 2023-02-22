@@ -2,7 +2,7 @@ defmodule Mc.Modifier.UcaseTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Ucase
 
-  describe "Mc.Modifier.Ucase.modify/2" do
+  describe "modify/2" do
     test "uppercases the `buffer`" do
       assert Ucase.modify("Apples aNd Pears", "n/a") == {:ok, "APPLES AND PEARS"}
     end

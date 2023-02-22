@@ -1,18 +1,19 @@
 defmodule Mc.Modifier.ZipTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Zip
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({Memory, map: %{"z1" => "forda money\nforda show", "z2" => "bar"}, name: :mem})
-    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
+    map = %{"z1" => "forda money\nforda show", "z2" => "bar"}
+    start_supervised({KvMemory, map: map, name: :mem})
+    start_supervised({Get, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "Mc.Modifier.Zip.modify/2" do
+  describe "modify/2" do
     test "zips together the `buffer` and a KV value using a 'separator'" do
       assert Zip.modify("one\ntwo", "z1 *") == {:ok, "one*forda money\ntwo*forda show"}
       assert Zip.modify("bish\nbosh", "z2 |") == {:ok, "bish|bar"}

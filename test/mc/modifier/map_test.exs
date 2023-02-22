@@ -1,18 +1,18 @@
 defmodule Mc.Modifier.MapTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Map
 
   setup do
-    start_supervised({Memory, map: %{}})
-    start_supervised({Get, kv_client: Memory})
+    start_supervised({KvMemory, map: %{}})
+    start_supervised({Get, kv_client: KvMemory})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "Mc.Modifier.Map.modify/2" do
+  describe "modify/2" do
     test "parses `args` as a script and runs it against each line in `buffer`" do
       assert Map.modify("ApplE  JuicE", "lcase") == {:ok, "apple  juice"}
       assert Map.modify("ApplE\nJuicE", "lcase") == {:ok, "apple\njuice"}

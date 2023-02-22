@@ -13,7 +13,7 @@ defmodule Mc.Modifier.HeadTest do
     }
   end
 
-  describe "Mc.Modifier.Head.modify/2" do
+  describe "modify/2" do
     test "parses `args` as an integer and returns that many lines from the start of `buffer`", %{text: text} do
       assert Head.modify(text, "1") == {:ok, "line one"}
       assert Head.modify(text, "2") == {:ok, "line one\nline 2"}

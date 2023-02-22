@@ -2,7 +2,7 @@ defmodule Mc.Modifier.PrependTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Prepend
 
-  describe "Mc.Modifier.Prepend.modify/2" do
+  describe "modify/2" do
     test "parses `args` as an 'inline string' and prepends it to `buffer`" do
       assert Prepend.modify("23", "1") == {:ok, "123"}
       assert Prepend.modify("\nbar", "foo") == {:ok, "foo\nbar"}

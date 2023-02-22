@@ -2,7 +2,7 @@ defmodule Mc.Modifier.DivideTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Divide
 
-  describe "Mc.Modifier.Divide.modify/2" do
+  describe "modify/2" do
     test "divides the `buffer`" do
       assert Divide.modify("21\n3", "") == {:ok, "7.0"}
       assert Divide.modify("0   7", "") == {:ok, "0.0"}

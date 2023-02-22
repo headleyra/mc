@@ -4,8 +4,9 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.60.0",
+      version: "0.61.0",
       elixir: "~> 1.13",
+      elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -18,6 +19,10 @@ defmodule Mc.MixProject do
       mod: {Mc.Application, []}
     ]
   end
+
+  # Specifies which paths to compile per environment.
+  defp elixirc_paths(env) when env in [:test], do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do

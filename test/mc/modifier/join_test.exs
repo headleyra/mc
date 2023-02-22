@@ -2,7 +2,7 @@ defmodule Mc.Modifier.JoinTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Join
 
-  describe "Mc.Modifier.Join.modify/2" do
+  describe "modify/2" do
     test "joins lines in the buffer" do
       assert Join.modify("un\ndeux\ntrois", "") == {:ok, "undeuxtrois"}
       assert Join.modify("\t\tun\ndeux\ntrois\n\n\t", "") == {:ok, "\t\tundeuxtrois\t"}

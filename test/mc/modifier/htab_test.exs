@@ -56,7 +56,7 @@ defmodule Mc.Modifier.HtabTest do
     }
   end
 
-  describe "Mc.Modifier.Htab.modify/2" do
+  describe "modify/2" do
     test "tabulates `buffer` (expected to be HTML) given two (URI encoded) CSS selectors", do: assert true
 
     test "returns a table", %{html: html} do

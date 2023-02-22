@@ -1,18 +1,19 @@
 defmodule Mc.Modifier.PrependkTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Prependk
 
   setup do
-    start_supervised({Memory, map: %{"star" => "light", "thing" => "ready"}, name: :mem})
-    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
+    map = %{"star" => "light", "thing" => "ready"}
+    start_supervised({KvMemory, map: map, name: :mem})
+    start_supervised({Get, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "Mc.Modifier.Prependk.modify/2" do
+  describe "modify/2" do
     test "prepends the 'value' associated with the 'key' to the `buffer`" do
       assert Prependk.modify(" steady go!", "thing") == {:ok, "ready steady go!"}
       assert Prependk.modify(" switch", "star") == {:ok, "light switch"}

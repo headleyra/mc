@@ -2,7 +2,7 @@ defmodule Mc.StringTest do
   use ExUnit.Case, async: true
   alias Mc.String
 
-  describe "Mc.String.numberize/1" do
+  describe "numberize/1" do
     test "converts its input into a list of numbers" do
       assert String.numberize("1") == {:ok, [1]}
       assert String.numberize("no numbers") == {:ok, []}
@@ -14,7 +14,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.is_comment?/1" do
+  describe "is_comment?/1" do
     test "returns true if `string` is a comment" do
       assert String.is_comment?("# this is a comment")
       assert String.is_comment?(" \t # so is this")
@@ -29,7 +29,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.grep/3" do
+  describe "grep/3" do
     test "filters lines in `string` that match `regex_str`" do
       assert String.grep("one\ntwo\nthree", "o", match: true) == {:ok, "one\ntwo"}
       assert String.grep("one\ntwo\nthree", "nomatch", match: true) == {:ok, ""}
@@ -52,7 +52,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.sort/2" do
+  describe "sort/2" do
     test "sorts the lines in `string` (ascending)" do
       assert String.sort("book\natom\ncar", ascending: true) == {:ok, "atom\nbook\ncar"}
     end
@@ -62,7 +62,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.to_num/1" do
+  describe "to_num/1" do
     test "converts its argument to an integer" do
       assert String.to_num("0") == {:ok, 0}
       assert String.to_num("-2") == {:ok, -2}
@@ -83,7 +83,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.to_int/1" do
+  describe "to_int/1" do
     test "converts its argument to an integer" do
       assert String.to_int("0") == {:ok, 0}
       assert String.to_int("-81") == {:ok, -81}
@@ -98,7 +98,7 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "Mc.String.to_flt/1" do
+  describe "to_flt/1" do
     test "converts its argument to a float" do
       assert String.to_flt("0.0") == {:ok, 0.0}
       assert String.to_flt("-22.04") == {:ok, -22.04}

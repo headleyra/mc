@@ -2,7 +2,7 @@ defmodule Mc.Modifier.MultiplyTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Multiply
 
-  describe "Mc.Modifier.Multiply.modify/2" do
+  describe "modify/2" do
     test "is able to 'multiply' the `buffer`" do
       assert Multiply.modify("3\n17", "") == {:ok, "51"}
       assert Multiply.modify("0", "") == {:ok, "0"}

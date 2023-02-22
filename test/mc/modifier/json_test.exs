@@ -2,7 +2,7 @@ defmodule Mc.Modifier.JsonTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Json
 
-  describe "Mc.Modifier.Json.modify/2" do
+  describe "modify/2" do
     test "parses `buffer` as JSON and uses `args` to access it (returning a JSON array result)" do
       assert Json.modify(~s/{"x":201}/, "x") == {:ok, "[201]"}
       assert Json.modify(~s/{"a":1, "b":2, "c":{"d":"four"}}/, "a c") == {:ok, ~s/[1,{"d":"four"}]/}

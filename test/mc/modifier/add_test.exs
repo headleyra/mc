@@ -2,7 +2,7 @@ defmodule Mc.Modifier.AddTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Add
 
-  describe "Mc.Modifier.Add.modify/2" do
+  describe "modify/2" do
     test "sums the `buffer`" do
       assert Add.modify("1\n7", "") == {:ok, "8"}
       assert Add.modify("1", "") == {:ok, "1"}

@@ -2,7 +2,7 @@ defmodule Mc.Modifier.GetbTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Getb
 
-  describe "Mc.Modifier.Getb.modify/2" do
+  describe "modify/2" do
     test "returns the `buffer`" do
       assert Getb.modify("just the\nbuffer", "") == {:ok, "just the\nbuffer"}
       assert Getb.modify("", "") == {:ok, ""}

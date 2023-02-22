@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Get do
+defmodule Mc.Modifier.Findk do
   use Agent
   use Mc.Railway, [:modify]
 
@@ -7,8 +7,12 @@ defmodule Mc.Modifier.Get do
   end
 
   def modify(_buffer, args) do
-    kv_adapter().get(kv_pid(), args)
+    kv_adapter().findk(kv_pid(), args)
+    |> wrap_errors()
   end
+
+  defp wrap_errors({:error, reason}), do: oops(:modify, reason)
+  defp wrap_errors({:ok, result}), do: {:ok, result}
 
   defp kv_adapter do
     Application.get_env(:mc, :kv_adapter)

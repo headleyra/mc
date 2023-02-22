@@ -7,7 +7,7 @@ defmodule Mc.Modifier.RunTest do
     :ok
   end
 
-  describe "Mc.Modifier.Run.modify/2" do
+  describe "modify/2" do
     test "treats `buffer` as a script and 'runs' it" do
       assert Run.modify("buffer FOO\nlcase", "") == {:ok, "foo"}
       assert Run.modify("buffer BAR\nlcase", "n/a") == {:ok, "bar"}

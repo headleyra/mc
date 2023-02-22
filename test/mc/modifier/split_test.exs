@@ -2,7 +2,7 @@ defmodule Mc.Modifier.SplitTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Split
 
-  describe "Mc.Modifier.Split.modify/2" do
+  describe "modify/2" do
     test "splits the buffer on `args`" do
       assert Split.modify("one-two-three", "-") == {:ok, "one\ntwo\nthree"}
       assert Split.modify("= double == equals =", "=") == {:ok, "\n double \n\n equals \n"}

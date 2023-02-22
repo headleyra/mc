@@ -16,13 +16,13 @@ defmodule McTest do
     :ok
   end
 
-  describe "Mc.mappings/0" do
+  describe "mappings/0" do
     test "returns the mappings" do
       assert Mc.mappings() == %TestMappings{}
     end
   end
 
-  describe "Mc.modify/2" do
+  describe "modify/2" do
     test "returns a modified `buffer`" do
       assert Mc.modify("ON THE RADIO\n", "lcase") == {:ok, "on the radio\n"}
       assert Mc.modify("hurry, offer ends SOON!", "ccount") == {:ok, "23"}
@@ -71,7 +71,7 @@ defmodule McTest do
     end
   end
 
-  describe "Mc.tripleize/2" do
+  describe "tripleize/2" do
     test "converts a modifier 'double' into a 'triple'" do
       assert Mc.tripleize({:buffer, "arg1 arg2"}, %Mc.Mappings{}) == {Mc.Modifier.Buffer, :modify, "arg1 arg2"}
       assert Mc.tripleize({:lcase, nil}, %Mc.Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
@@ -82,7 +82,7 @@ defmodule McTest do
     end
   end
 
-  describe "Mc.listize/1" do
+  describe "listize/1" do
     test "converts `script` into a list of modifier 'doubles'" do
       assert Mc.listize("\nbuffer arg\n\n") == [{:buffer, "arg"}]
       assert Mc.listize("GO 1") == [{:GO, "1"}]
@@ -114,7 +114,7 @@ defmodule McTest do
     end
   end
 
-  describe "Mc.doubleize/1" do
+  describe "doubleize/1" do
     test "creates a modifier 'double' given a 'modify instruction'" do
       assert Mc.doubleize("modifier_name arg1") == {:modifier_name, "arg1"}
       assert Mc.doubleize("myModName_ Team") == {:myModName_, "Team"}

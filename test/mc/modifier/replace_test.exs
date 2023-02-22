@@ -2,11 +2,8 @@ defmodule Mc.Modifier.ReplaceTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Replace
 
-  describe "Mc.Modifier.Replace.modify/2" do
-    test "splits `args` (on any amount of whitespace) into search and replace terms and returns `buffer`
-      with replacements applied", do: assert true
-
-    test "works with simple replacements" do
+  describe "modify/2" do
+    test "splits `args` into 'search' and 'replace' terms and returns `buffer` with replacements applied" do
       assert Replace.modify("stuff like this", "this THAT") == {:ok, "stuff like THAT"}
       assert Replace.modify("one four", "one four 2") == {:ok, "four 2 four"}
       assert Replace.modify("2x", "x is company") == {:ok, "2is company"}

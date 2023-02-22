@@ -2,7 +2,7 @@ defmodule Mc.Modifier.SqueezeTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Squeeze
 
-  describe "Mc.Modifier.Squeeze.modify/2" do
+  describe "modify/2" do
     test "sqeezes and trims 'non newline' whitespace" do
       assert Squeeze.modify("one   four   three", "n/a") == {:ok, "one four three"}
       assert Squeeze.modify(" cash \n  money  ", "") == {:ok, "cash\nmoney"}

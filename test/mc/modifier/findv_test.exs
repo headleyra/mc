@@ -1,27 +1,16 @@
 defmodule Mc.Modifier.FindvTest do
   use ExUnit.Case, async: false
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Findv
 
   setup do
-    start_supervised({Memory, map: %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}, name: :mem})
-    start_supervised({Findv, kv_client: Memory, kv_pid: :mem})
+    map = %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}
+    start_supervised({KvMemory, map: map, name: :mem})
+    start_supervised({Findv, kv_pid: :mem})
     :ok
   end
 
-  describe "Mc.Modifier.Findv.kv_client/0" do
-    test "returns the KV client implementation" do
-      assert Findv.kv_client() == Memory
-    end
-  end
-
-  describe "Mc.Modifier.Findv.kv_pid/0" do
-    test "returns the KV client pid" do
-      assert Findv.kv_pid() == :mem
-    end
-  end
-
-  describe "Mc.Modifier.Findv.modify/2" do
+  describe "modify/2" do
     test "finds keys with values matching the given regex" do
       assert Findv.modify("n/a", "os") == {:ok, "3rd"}
       assert Findv.modify("", "foo") == {:ok, "1st\n2nd"}

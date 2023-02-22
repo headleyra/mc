@@ -2,7 +2,7 @@ defmodule Mc.Modifier.SortTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Sort
 
-  describe "Mc.Modifier.Sort.modify/2" do
+  describe "modify/2" do
     test "sorts the `buffer` in ascending order" do
       assert Sort.modify("a\nc\nb", "") == {:ok, "a\nb\nc"}
       assert Sort.modify("apple\nzoom\n0-rated\nbanana", "") == {:ok, "0-rated\napple\nbanana\nzoom"}

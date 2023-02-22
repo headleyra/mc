@@ -2,27 +2,10 @@ defmodule Mc.Modifier.UrlTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Url
 
-  defmodule Gopher do
-    @behaviour Mc.Behaviour.HttpClient
-    def get(url), do: {:ok, url}
-    def post(_url, _params), do: :not_used
-  end
-
-  setup do
-    start_supervised({Url, http_client: Gopher})
-    :ok
-  end
-
-  describe "Mc.Modifier.Url.http_client/0" do
-    test "returns the HTTP client implementation" do
-      assert Url.http_client() == Gopher
-    end
-  end
-
-  describe "Mc.Modifier.Url.modify/2" do
-    test "delegates to the HTTP client implementation" do
+  describe "modify/2" do
+    test "calls `get` on its HTTP adapter" do
+      assert Url.modify("n/a", "http://example.org") == {:ok, "http://example.org"}
       assert Url.modify("", "http://example.net") == {:ok, "http://example.net"}
-      assert Url.modify("n/a", "http://two.example.org") == {:ok, "http://two.example.org"}
     end
 
     test "works with ok tuples" do

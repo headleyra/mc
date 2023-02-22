@@ -2,7 +2,7 @@ defmodule Mc.Modifier.TailTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Tail
 
-  describe "Mc.Modifier.Tail.modify/2" do
+  describe "modify/2" do
     test "parses `args` as an integer and returns that many lines from the end of `buffer`" do
       assert Tail.modify("one\ntwo\nthree", "1") == {:ok, "three"}
       assert Tail.modify("one\ntwo\nthree", "2") == {:ok, "two\nthree"}

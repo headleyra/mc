@@ -2,7 +2,7 @@ defmodule Mc.Modifier.IfTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.If
 
-  describe "Mc.Modifier.If.modify/2" do
+  describe "modify/2" do
     test "compares `buffer` and 'a-value'; returns 'true-value' if equal, 'false-value' if not" do
       assert If.modify("a-value", "a-value true-value false-value") == {:ok, "true-value"}
       assert If.modify("nope", "nah true-value false-value") == {:ok, "false-value"}

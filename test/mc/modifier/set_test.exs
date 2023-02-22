@@ -1,23 +1,15 @@
 defmodule Mc.Modifier.SetTest do
-  use ExUnit.Case, async: false
-  alias Mc.Client.Kv.Memory
+  use ExUnit.Case, async: true
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Set
 
   setup do
-    start_supervised({Memory, map: %{}, name: :mem})
-    start_supervised({Set, kv_client: Memory, kv_pid: :mem})
+    start_supervised({KvMemory, map: %{}, name: :mem})
+    start_supervised({Set, kv_pid: :mem})
     :ok
   end
 
-  describe "Mc.Modifier.Set.modify/2" do
-    test "returns the KV client implementation" do
-      assert Set.kv_client() == Memory
-    end
-
-    test "returns the KV client pid" do
-      assert Set.kv_pid() == :mem
-    end
-
+  describe "modify/2" do
     test "stores `buffer` under the given key and returns `buffer`" do
       assert Set.modify("random data", "rand") == {:ok, "random data"}
       assert Set.modify("stuff", "_x") == {:ok, "stuff"}

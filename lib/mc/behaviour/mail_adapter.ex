@@ -1,4 +1,4 @@
-defmodule Mc.Behaviour.MailClient do
+defmodule Mc.Behaviour.MailAdapter do
   @type subject :: String.t
   @type message :: String.t
   @type email :: String.t

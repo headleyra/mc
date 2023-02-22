@@ -2,7 +2,7 @@ defmodule Mc.Modifier.InvertTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Invert
 
-  describe "Mc.Modifier.Invert.modify/2" do
+  describe "modify/2" do
     test "inverts the `buffer`" do
       assert Invert.modify("ant\nbar\nzoo\n", "") == {:ok, "\nzoo\nbar\nant"}
       assert Invert.modify("one\ntwo\nthree", "") == {:ok, "three\ntwo\none"}

@@ -6,7 +6,7 @@ defmodule Mc.Modifier.VersionTest do
     Mc.MixProject.project()[:version]
   end
 
-  describe "Mc.Modifier.Version.modify/2" do
+  describe "modify/2" do
     test "returns the system version" do
       assert Version.modify("", "") == {:ok, current_version()}
     end

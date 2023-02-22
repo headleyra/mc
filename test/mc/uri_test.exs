@@ -2,7 +2,7 @@ defmodule Mc.UriTest do
   use ExUnit.Case, async: true
   alias Mc.Uri
 
-  describe "Mc.Uri.decode/1" do
+  describe "decode/1" do
     test "URI-decodes its input" do
       assert Uri.decode("%0a") == {:ok, "\n"}
       assert Uri.decode("%20") == {:ok, " "}

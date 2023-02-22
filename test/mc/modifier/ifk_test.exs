@@ -1,22 +1,19 @@
 defmodule Mc.Modifier.IfkTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Client.Kv.Memory
+  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Get
   alias Mc.Modifier.Ifk
 
   setup do
-    start_supervised({Memory, map: %{
-      "compare-key" => "this",
-      "empty-string" => "",
-      "nah" => "that"
-    }, name: :mem})
-    start_supervised({Get, kv_client: Memory, kv_pid: :mem})
+    map = %{"compare-key" => "this", "empty-string" => "", "nah" => "that"}
+    start_supervised({KvMemory, map: map, name: :mem})
+    start_supervised({Get, kv_pid: :mem})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "Mc.Modifier.Ifk.modify/2" do
+  describe "modify/2" do
     test "compares `buffer` and 'compare-key' (value); returns 'true-value' if equal, 'false-value' if not" do
       assert Ifk.modify("this", "compare-key true-value false-value") == {:ok, "true-value"}
       assert Ifk.modify("other", "nah true-say nope!") == {:ok, "nope!"}

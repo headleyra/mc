@@ -2,7 +2,7 @@ defmodule Mc.Modifier.DeleteTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Delete
 
-  describe "Mc.Modifier.Delete.modify/2" do
+  describe "modify/2" do
     test "interprets `args` as a regex and returns the `buffer` with matching terms deleted" do
       assert Delete.modify("", "foo") == {:ok, ""}
       assert Delete.modify("something", "foo") == {:ok, "something"}
