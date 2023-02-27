@@ -2,13 +2,11 @@ defmodule Mc.Modifier.IfkTest do
   use ExUnit.Case, async: false
 
   alias Mc.Adapter.KvMemory
-  alias Mc.Modifier.Get
   alias Mc.Modifier.Ifk
 
   setup do
     map = %{"compare-key" => "this", "empty-string" => "", "nah" => "that"}
-    start_supervised({KvMemory, map: map, name: :mem})
-    start_supervised({Get, kv_pid: :mem})
+    start_supervised({KvMemory, map: map})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

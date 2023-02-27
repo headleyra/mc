@@ -2,30 +2,30 @@ defmodule Mc.Adapter.KvMemory do
   use Agent
   @behaviour Mc.Behaviour.KvAdapter
 
-  def start_link(map: map, name: name) do
-    Agent.start_link(fn -> map end, name: name)
+  def start_link(map: map) do
+    Agent.start_link(fn -> map end, name: __MODULE__)
   end
 
   @impl true
-  def set(pid, key, value) do
-    Agent.update(pid, &Map.put(&1, key, value))
+  def set(key, value) do
+    Agent.update(__MODULE__, &Map.put(&1, key, value))
     {:ok, value}
   end
 
   @impl true
-  def get(pid, key) do
-    value = Agent.get(pid, &Map.get(&1, key, ""))
+  def get(key) do
+    value = Agent.get(__MODULE__, &Map.get(&1, key, ""))
     {:ok, value}
   end
 
   @impl true
-  def findk(pid, regex_str) do
-    Agent.get(pid, &finder(&1, regex_str, :key))
+  def findk(regex_str) do
+    Agent.get(__MODULE__, &finder(&1, regex_str, :key))
   end
 
   @impl true
-  def findv(pid, regex_str) do
-    Agent.get(pid, &finder(&1, regex_str, :value))
+  def findv(regex_str) do
+    Agent.get(__MODULE__, &finder(&1, regex_str, :value))
   end
 
   defp finder(map, regx_str, by) do

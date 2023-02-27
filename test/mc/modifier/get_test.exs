@@ -5,9 +5,7 @@ defmodule Mc.Modifier.GetTest do
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({KvMemory, map: %{}, name: :cache})
-    start_supervised({Set, kv_pid: :cache})
-    start_supervised({Get, kv_pid: :cache})
+    start_supervised({KvMemory, map: %{}})
     :ok
   end
 

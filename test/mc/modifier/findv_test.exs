@@ -5,8 +5,7 @@ defmodule Mc.Modifier.FindvTest do
 
   setup do
     map = %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}
-    start_supervised({KvMemory, map: map, name: :mem})
-    start_supervised({Findv, kv_pid: :mem})
+    start_supervised({KvMemory, map: map})
     :ok
   end
 

@@ -3,12 +3,10 @@ defmodule Mc.Modifier.ZipTest do
 
   alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Zip
-  alias Mc.Modifier.Get
 
   setup do
     map = %{"z1" => "forda money\nforda show", "z2" => "bar"}
-    start_supervised({KvMemory, map: map, name: :mem})
-    start_supervised({Get, kv_pid: :mem})
+    start_supervised({KvMemory, map: map})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

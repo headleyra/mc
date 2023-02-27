@@ -2,7 +2,6 @@ defmodule Mc.Modifier.RunkTest do
   use ExUnit.Case, async: false
 
   alias Mc.Adapter.KvMemory
-  alias Mc.Modifier.Get
   alias Mc.Modifier.Runk
 
   setup do
@@ -13,8 +12,7 @@ defmodule Mc.Modifier.RunkTest do
         "s3" => ""
       }
 
-    start_supervised({KvMemory, map: map, name: :mem})
-    start_supervised({Get, kv_pid: :mem})
+    start_supervised({KvMemory, map: map})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end

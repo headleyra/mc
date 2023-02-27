@@ -4,8 +4,7 @@ defmodule Mc.Modifier.SetTest do
   alias Mc.Modifier.Set
 
   setup do
-    start_supervised({KvMemory, map: %{}, name: :mem})
-    start_supervised({Set, kv_pid: :mem})
+    start_supervised({KvMemory, map: %{}})
     :ok
   end
 

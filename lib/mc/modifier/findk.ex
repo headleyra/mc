@@ -1,13 +1,8 @@
 defmodule Mc.Modifier.Findk do
-  use Agent
   use Mc.Railway, [:modify]
 
-  def start_link(kv_pid: kv_pid) do
-    Agent.start_link(fn -> kv_pid end, name: __MODULE__)
-  end
-
   def modify(_buffer, args) do
-    kv_adapter().findk(kv_pid(), args)
+    kv_adapter().findk(args)
     |> wrap_errors()
   end
 
@@ -16,9 +11,5 @@ defmodule Mc.Modifier.Findk do
 
   defp kv_adapter do
     Application.get_env(:mc, :kv_adapter)
-  end
-
-  defp kv_pid do
-    Agent.get(__MODULE__, &(&1))
   end
 end

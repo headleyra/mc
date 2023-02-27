@@ -2,7 +2,6 @@ defmodule Mc.AppTest do
   use ExUnit.Case, async: false
 
   alias Mc.Adapter.KvMemory
-  alias Mc.Modifier.Get
   alias Mc.App
 
   setup do
@@ -15,9 +14,8 @@ defmodule Mc.AppTest do
       "script3" => "r a ::1",
       "script5" => "r b ::2",
       "script7" => "b 1 => ::1, 2 => ::2, all => :::"
-    }, name: :cash})
+    }})
 
-    start_supervised({Get, kv_pid: :cash})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
