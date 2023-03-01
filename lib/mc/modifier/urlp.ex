@@ -4,7 +4,7 @@ defmodule Mc.Modifier.Urlp do
   def modify(_buffer, args) do
     case build_url_with_params(args) do
       {:ok, url_with_params} ->
-        apply(http_adapter(), :post, url_with_params)
+        apply(adapter(), :post, url_with_params)
 
       _error ->
         oops(:modify, "parse error")
@@ -63,7 +63,7 @@ defmodule Mc.Modifier.Urlp do
     }
   end
 
-  defp http_adapter do
+  defp adapter do
     Application.get_env(:mc, :http_adapter)
   end
 end

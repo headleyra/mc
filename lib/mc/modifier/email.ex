@@ -5,14 +5,14 @@ defmodule Mc.Modifier.Email do
     case String.split(args, ", ", parts: 2) do
       [subject, recipients] ->
         recipient_list = String.split(recipients)
-        apply(mail_adapter(), :deliver, [subject, buffer, recipient_list])
+        adapter().deliver(subject, buffer, recipient_list)
 
       _bad_args ->
         oops(:modify, "missing subject and/or recipients")
     end
   end
 
-  defp mail_adapter do
+  defp adapter do
     Application.get_env(:mc, :mail_adapter)
   end
 end
