@@ -9,7 +9,7 @@ A *ModifyChain Script* lists a 'chain' of 'modifiers' (functions) that, one by o
 
 All modifiers declare two arguments.  The first argument receives the modified buffer from the previous
 modifier (in the chain) and the second argument receives the arguments for the modifier itself.  All
-modifiers return either `{:ok, result}` or `{:error, reason}` (where 'result' and 'reason' are strings).
+modifiers return either `{:ok, result}` or `{:error, reason}`.
 
 Let's say we have the following modifiers:
 
