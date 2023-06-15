@@ -3,7 +3,7 @@
 **ModifyChain. Code like Lego(tm)**
 
 A *ModifyChain Script* lists a 'chain' of 'modifiers' (functions) that, one by one, modify a
-'buffer' (a string), eventually producing a result.
+'buffer', eventually producing a result.
 
 ## Modifiers
 
