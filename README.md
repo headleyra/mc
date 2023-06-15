@@ -2,7 +2,7 @@
 
 **ModifyChain. Code like Lego(tm)**
 
-A *ModifyChain Script* lists a 'chain' of 'modifiers' (functions) that, one by one, modify a
+A *ModifyChain Script* lists a 'chain' of 'modifiers' that, one by one, modify a
 'buffer', eventually producing a result.
 
 ## Modifiers
