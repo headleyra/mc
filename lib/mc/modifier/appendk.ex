@@ -2,7 +2,12 @@ defmodule Mc.Modifier.Appendk do
   use Mc.Railway, [:modify]
 
   def modify(buffer, args) do
-    {:ok, data} = Mc.modify("", "get #{args}")
-    {:ok, buffer <> data}
+    case Mc.modify("", "get #{args}") do
+      {:ok, data} ->
+        {:ok, buffer <> data}
+
+      {:error, "not found"} ->
+        {:ok, buffer}
+    end
   end
 end

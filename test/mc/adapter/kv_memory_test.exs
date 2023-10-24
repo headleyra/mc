@@ -30,8 +30,8 @@ defmodule Mc.Adapter.KvMemoryTest do
       assert KvMemory.get("3rd") == {:ok, "dosh"}
     end
 
-    test "returns empty string when the `key` doesn't exist" do
-      assert KvMemory.get("key-no-exist") == {:ok, ""}
+    test "returns 'not found' when the `key` doesn't exist" do
+      assert KvMemory.get("key-no-exist") == {:error, "not found"}
     end
   end
 

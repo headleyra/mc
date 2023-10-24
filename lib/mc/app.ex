@@ -28,7 +28,14 @@ defmodule Mc.App do
   end
 
   defp script_from(key) do
-    {:ok, sub_keys} = Mc.modify("", "get #{key}")
+    sub_keys =
+      case Mc.modify("", "get #{key}") do
+        {:ok, keys} ->
+          keys
+
+        {:error, "not found"} ->
+          ""
+      end
 
     {:ok,
       String.split(sub_keys)

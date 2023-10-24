@@ -59,9 +59,12 @@ defmodule Mc.Modifier.Urlp do
       params_list
       |> Enum.map(fn params_pair -> String.split(params_pair, ":") end)
       |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.modify("", "get #{key}")} end)
-      |> Keyword.new(fn {param_name_atom, {:ok, value}} -> {param_name_atom, value} end)
+      |> Keyword.new(&build_keyword_list/1)
     }
   end
+
+  defp build_keyword_list({atom, {:ok, value}}), do: {atom, value}
+  defp build_keyword_list({atom, {:error, "not found"}}), do: {atom, ""}
 
   defp adapter do
     Application.get_env(:mc, :http_adapter)

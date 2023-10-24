@@ -14,8 +14,8 @@ defmodule Mc.Adapter.KvMemory do
 
   @impl true
   def get(key) do
-    value = Agent.get(__MODULE__, &Map.get(&1, key, ""))
-    {:ok, value}
+    value = Agent.get(__MODULE__, &Map.get(&1, key, :not_found))
+    if value == :not_found, do: {:error, "not found"}, else: {:ok, value}
   end
 
   @impl true

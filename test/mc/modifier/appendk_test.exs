@@ -14,7 +14,8 @@ defmodule Mc.Modifier.AppendkTest do
   describe "modify/2" do
     test "parses `args` as a 'key' and appends its value to the `buffer`" do
       assert Appendk.modify("raise the ", "thing") == {:ok, "raise the bar"}
-      assert Appendk.modify("same same", "no.exist") == {:ok, "same same"}
+      assert Appendk.modify("same", "key.no.exist") == {:ok, "same"}
+      assert Appendk.modify("same", "") == {:ok, "same"}
     end
 
     test "works with ok tuples" do

@@ -15,14 +15,14 @@ defmodule Mc.Modifier.GetTest do
       assert Get.modify("", "a-key") == {:ok, "some buffer\ndata"}
     end
 
-    test "returns empty string when the key doesn't exist" do
-      assert Get.modify("", "key-no-exist") == {:ok, ""}
+    test "returns 'not found' string when the key doesn't exist" do
+      assert Get.modify("", "key-no-exist") == {:error, "not found"}
     end
 
     test "works with ok tuples" do
       Set.modify("dance", "funky")
       assert Get.modify({:ok, "n/a"}, "funky") == {:ok, "dance"}
-      assert Get.modify({:ok, ""}, "bop") == {:ok, ""}
+      assert Get.modify({:ok, ""}, "bop") == {:error, "not found"}
     end
 
     test "allows error tuples to pass through" do

@@ -5,7 +5,7 @@ defmodule Mc.Modifier.ZipTest do
   alias Mc.Modifier.Zip
 
   setup do
-    map = %{"z1" => "forda money\nforda show", "z2" => "bar"}
+    map = %{"z1" => "forda money\nforda show", "z2" => "bar\ntonic"}
     start_supervised({KvMemory, map: map})
     start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
@@ -14,8 +14,8 @@ defmodule Mc.Modifier.ZipTest do
   describe "modify/2" do
     test "zips together the `buffer` and a KV value using a 'separator'" do
       assert Zip.modify("one\ntwo", "z1 *") == {:ok, "one*forda money\ntwo*forda show"}
-      assert Zip.modify("bish\nbosh", "z2 |") == {:ok, "bish|bar"}
-      assert Zip.modify("million\t", "z1 |") == {:ok, "million\t|forda money"}
+      assert Zip.modify("wine\ngin", "z2 |") == {:ok, "wine|bar\ngin|tonic"}
+      assert Zip.modify("million\t", "z1 -") == {:ok, "million\t-forda money"}
     end
 
     @errmsg "Mc.Modifier.Zip#modify: parse error"
@@ -33,7 +33,7 @@ defmodule Mc.Modifier.ZipTest do
     end
 
     test "works when the key doesn't exist" do
-      assert Zip.modify("one\ntwo", "nope *") == {:ok, "one*"}
+      assert Zip.modify("one\ntwo", "key-no-exist *") == {:ok, "one*"}
     end
 
     test "works when the `buffer` is empty" do
