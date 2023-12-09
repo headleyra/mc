@@ -1,18 +1,8 @@
 defmodule Mc do
-  use Agent
-
-  def start_link(mappings: mappings) do
-    Agent.start_link(fn -> mappings end, name: __MODULE__)
-  end
-
-  def mappings do
-    Agent.get(__MODULE__, & &1)
-  end
-
-  def modify(buffer, script) do
+  def modify(buffer, script, mappings) do
     listize(script)
-    |> Enum.map(fn double -> tripleize(double, mappings()) end)
-    |> Enum.reduce(buffer, fn {module, name, args}, acc -> apply(module, name, [acc, args]) end)
+    |> Enum.map(fn double -> tripleize(double, mappings) end)
+    |> Enum.reduce(buffer, fn {module, name, args}, acc -> apply(module, name, [acc, args, mappings]) end)
     |> tupleize()
   end
 

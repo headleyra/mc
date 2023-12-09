@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Regex do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     case Regex.compile(args, "s") do
       {:ok, regx} ->
         case Regex.run(regx, buffer, capture: :all) do

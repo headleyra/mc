@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.If do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     case String.split(args) do
       [compare_value, true_value, false_value] ->
         compare({:ok, buffer} == Mc.Uri.decode(compare_value), true_value, false_value)

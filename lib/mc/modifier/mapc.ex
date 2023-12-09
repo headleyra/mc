@@ -1,11 +1,11 @@
 defmodule Mc.Modifier.Mapc do
   use Mc.Railway, [:modify] 
 
-  def modify(buffer, args) do
+  def modify(buffer, args, mappings) do
     with \
       {{:ok, concurrency}, script} when concurrency > 0 <- concurrency_with_args(args)
     do
-      run_concurrent(buffer, script, concurrency)
+      run_concurrent(buffer, script, concurrency, mappings)
     else
       _bad_concurrency ->
         oops(:modify, "'concurrency' should be a positive integer")
@@ -25,9 +25,9 @@ defmodule Mc.Modifier.Mapc do
     end
   end
   
-  defp run_concurrent(buffer, script, concurrency) do
+  defp run_concurrent(buffer, script, concurrency, mappings) do
     String.split(buffer, "\n")
-    |> Task.async_stream(&Mc.modify(&1, script), ordered: true, max_concurrency: concurrency, timeout: :infinity)
+    |> Task.async_stream(&Mc.modify(&1, script, mappings), ordered: true, max_concurrency: concurrency, timeout: :infinity)
     |> report()
   end
 

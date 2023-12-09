@@ -56,42 +56,42 @@ defmodule Mc.Modifier.HtabTest do
     }
   end
 
-  describe "modify/2" do
+  describe "modify/3" do
     test "tabulates `buffer` (expected to be HTML) given two (URI encoded) CSS selectors", do: assert true
 
     test "returns a table", %{html: html} do
-      assert Htab.modify(html, "tr.alt td") ==
+      assert Htab.modify(html, "tr.alt td", %{}) ==
         {:ok, "08:44\tEarth [ERT]\tMars [MRS]\t08:53\n09:43\tJupiter [JUP]\tNeptune [NEP]\t11:04"}
 
-      assert Htab.modify(html, "tr th") == {:ok, "Leaving\tFrom\tTo\tArriving"}
-      assert Htab.modify(html, "tr abbr") == {:ok, "ERT\tMRS\nMRS\tJUP\nJUP\tNEP"}
+      assert Htab.modify(html, "tr th", %{}) == {:ok, "Leaving\tFrom\tTo\tArriving"}
+      assert Htab.modify(html, "tr abbr", %{}) == {:ok, "ERT\tMRS\nMRS\tJUP\nJUP\tNEP"}
     end
 
     test "returns a table (given URI encoded CSS selectors)", %{html: html} do
-      assert Htab.modify(html, "table%20tbody%20tr td.origin%20abbr") == {:ok, "ERT\nMRS\nJUP"}
+      assert Htab.modify(html, "table%20tbody%20tr td.origin%20abbr", %{}) == {:ok, "ERT\nMRS\nJUP"}
     end
 
     test "returns a table (where the CSS selectors target lists of elements)", %{html: html} do
-      assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th") ==
+      assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th", %{}) ==
         {:ok, "Leaving\tFrom\tTo\tArriving\nEarth [ERT]\tMars [MRS]\nNeptune [NEP]"}
     end
 
     test "returns a table after removing whitespace around content", %{html_whitespace: html_whitespace} do
-      assert Htab.modify(html_whitespace, "#one,#two p") == {:ok, "p1\tp2\np3\tp4"}
+      assert Htab.modify(html_whitespace, "#one,#two p", %{}) == {:ok, "p1\tp2\np3\tp4"}
     end
 
     test "errors unless there are exactly 2 selectors", %{html: html} do
-      assert Htab.modify(html, "") == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
-      assert Htab.modify(html, "p") == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
-      assert Htab.modify(html, "table tr td") == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
+      assert Htab.modify(html, "", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
+      assert Htab.modify(html, "p", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
+      assert Htab.modify(html, "table tr td", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
     end
 
     test "works with ok tuples", %{html: html} do
-      assert Htab.modify({:ok, html}, "tr:nth-of-type(2) td") == {:ok, "09:03\tMars [MRS]\tJupiter [JUP]\t09:26"}
+      assert Htab.modify({:ok, html}, "tr:nth-of-type(2) td", %{}) == {:ok, "09:03\tMars [MRS]\tJupiter [JUP]\t09:26"}
     end
 
     test "allows error tuples to pass through" do
-      assert Htab.modify({:error, "some reason"}, "") == {:error, "some reason"}
+      assert Htab.modify({:error, "some reason"}, "", %{}) == {:error, "some reason"}
     end
   end
 end

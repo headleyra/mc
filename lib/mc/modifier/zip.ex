@@ -1,22 +1,22 @@
 defmodule Mc.Modifier.Zip do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, mappings) do
     with \
       [key, separator] <- String.split(args) 
     do
-      zip(buffer, key, separator)
+      zip(buffer, key, separator, mappings)
     else
       _bad_args ->
         oops(:modify, "parse error")
     end
   end
 
-  defp zip(buffer, key, separator) do
+  defp zip(buffer, key, separator, mappings) do
     buffer_list = String.split(buffer, "\n")
 
     value_list =
-      case Mc.modify("", "get #{key}") do
+      case Mc.modify("", "get #{key}", mappings) do
         {:ok, value} ->
           String.split(value, "\n")
 

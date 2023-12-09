@@ -1,10 +1,10 @@
 defmodule Mc.Modifier.Runk do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
-    case Mc.modify("", "get #{args}") do
+  def modify(buffer, args, mappings) do
+    case Mc.modify("", "get #{args}", mappings) do
       {:ok, script} ->
-        Mc.modify(buffer, script)
+        Mc.modify(buffer, script, mappings)
 
       {:error, "not found"} ->
         {:ok, buffer}

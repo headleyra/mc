@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Divide do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
+  def modify(buffer, _args, _mappings) do
     try do
       divide(buffer)
     rescue

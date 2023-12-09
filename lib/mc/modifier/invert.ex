@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Invert do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
+  def modify(buffer, _args, _mappings) do
     {:ok,
       buffer
       |> String.split("\n")

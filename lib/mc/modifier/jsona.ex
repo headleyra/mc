@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Jsona do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
+  def modify(buffer, _args, _mappings) do
     parse_list(buffer)
   end
 

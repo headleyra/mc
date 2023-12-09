@@ -4,6 +4,12 @@ defmodule Mc.AppTest do
   alias Mc.Adapter.KvMemory
   alias Mc.App
 
+  defmodule Mappings do
+    defstruct [
+      get: {Mc.Modifier.Get, :modify}
+    ]
+  end
+
   setup do
     start_supervised({KvMemory, map: %{
       "app1" => "script1",
@@ -16,29 +22,28 @@ defmodule Mc.AppTest do
       "script7" => "b 1 => ::1, 2 => ::2, all => :::"
     }})
 
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
-  describe "script/1" do
-    test "builds an 'app script' given an 'app key'" do
-      assert App.script("app1") == {:ok, "lcase"}
-      assert App.script("app3") == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("app5") == {:ok, "r a ::1"}
-      assert App.script("app7") == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
-      assert App.script("") == {:ok, ""}
+  describe "script/2" do
+    test "builds an 'app script' given an 'app key' and mappings" do
+      assert App.script("app1", %Mappings{}) == {:ok, "lcase"}
+      assert App.script("app3", %Mappings{}) == {:ok, "r a ::1\nr b ::2"}
+      assert App.script("app5", %Mappings{}) == {:ok, "r a ::1"}
+      assert App.script("app7", %Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
+      assert App.script("", %Mappings{}) == {:ok, ""}
     end
 
     test "builds an 'app script' given an 'app key' and placeholder replacements" do
-      assert App.script("app3 one two") == {:ok, "r a one\nr b two"}
-      assert App.script("app5 bbb ignored") == {:ok, "r a bbb"}
-      assert App.script("app7 foo bar roo") == {:ok, "b 1 => foo, 2 => bar, all => foo bar roo"}
+      assert App.script("app3 one two", %Mappings{}) == {:ok, "r a one\nr b two"}
+      assert App.script("app5 bbb ignored", %Mappings{}) == {:ok, "r a bbb"}
+      assert App.script("app7 foo bar roo", %Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar roo"}
     end
 
     test "ignores leading, internal and trailing whitespace" do
-      assert App.script("   app1") == {:ok, "lcase"}
-      assert App.script("   app3 \t  ") == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("   app3  \t   one \t   two   ") == {:ok, "r a one\nr b two"}
+      assert App.script("   app1", %Mappings{}) == {:ok, "lcase"}
+      assert App.script("   app3 \t  ", %Mappings{}) == {:ok, "r a ::1\nr b ::2"}
+      assert App.script("   app3  \t   one \t   two   ", %Mappings{}) == {:ok, "r a one\nr b two"}
     end
   end
 

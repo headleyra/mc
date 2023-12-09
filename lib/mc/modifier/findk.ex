@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Findk do
   use Mc.Railway, [:modify]
 
-  def modify(_buffer, args) do
+  def modify(_buffer, args, _mappings) do
     adapter().findk(args)
     |> wrap_errors()
   end

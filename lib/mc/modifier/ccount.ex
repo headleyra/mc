@@ -1,10 +1,10 @@
 defmodule Mc.Modifier.Ccount do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
+  def modify(buffer, _args, _mappings) do
     {:ok, 
       String.length(buffer)
-      |> Integer.to_string()
+      |> to_string()
     }
   end
 end

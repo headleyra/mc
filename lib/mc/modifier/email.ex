@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Email do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     case String.split(args, ", ", parts: 2) do
       [subject, recipients] ->
         recipient_list = String.split(recipients)

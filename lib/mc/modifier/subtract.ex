@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Subtract do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, _args) do
+  def modify(buffer, _args, _mappings) do
     case Mc.String.numberize(buffer) do
       {:ok, []} ->
         oops(:modify, "no numbers found")

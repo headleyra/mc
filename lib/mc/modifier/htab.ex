@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Htab do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     case parse_selectors(args) do
       {:ok, row_css, col_css} ->
         {:ok, html} = Floki.parse_fragment(buffer)

@@ -4,31 +4,19 @@ defmodule Mc.RailwayTest do
   defmodule Modi do
     use Mc.Railway, [:small, :big]
 
-    def small(buffer, _args), do: {:ok, String.downcase(buffer)}
-    def big(buffer, _args), do: {:ok, String.upcase(buffer)}
-  end
-
-  defmodule SomeMappings do
-    defstruct [
-      smallr: {Modi, :small},
-      bigr: {Modi, :big}
-    ]
-  end
-
-  setup do
-    start_supervised({Mc, mappings: %SomeMappings{}})
-    :ok
+    def small(buffer, _args, _mappings), do: {:ok, String.downcase(buffer)}
+    def big(buffer, _args, _mappings), do: {:ok, String.upcase(buffer)}
   end
 
   describe "Mc.Railway" do
     test "creates a function that, given an error tuple (as `buffer`), returns it unchanged" do
-      assert Modi.small({:error, "boom"}, "n/a") == {:error, "boom"}
-      assert Modi.big({:error, "oops"}, "") == {:error, "oops"}
+      assert Modi.small({:error, "boom"}, "n/a", %{}) == {:error, "boom"}
+      assert Modi.big({:error, "oops"}, "", %{}) == {:error, "oops"}
     end
 
     test "creates a function that, given an ok tuple (as `buffer`), delegates to the string equivalent" do
-      assert Modi.small({:ok, "BoSh"}, "") == {:ok, "bosh"}
-      assert Modi.big({:ok, "dar\nordar"}, "") == {:ok, "DAR\nORDAR"}
+      assert Modi.small({:ok, "BoSh"}, "", %{}) == {:ok, "bosh"}
+      assert Modi.big({:ok, "dar\nordar"}, "", %{}) == {:ok, "DAR\nORDAR"}
     end
 
     test "creates a 'name' function that returns the canonical modifier name" do

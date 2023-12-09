@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Apps do
   use Mc.Railway, [:modify]
 
-  def modify(_buffer, args) do
-    Mc.App.script(args)
+  def modify(_buffer, args, mappings) do
+    Mc.App.script(args, mappings)
   end
 end

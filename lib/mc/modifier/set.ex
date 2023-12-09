@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Set do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     adapter().set(args, buffer)
   end
 

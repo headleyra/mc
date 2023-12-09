@@ -2,17 +2,17 @@ defmodule Mc.App do
   @arg_prefix "::"
   @arg_all_specifier ":"
 
-  def script(key_with_optional_replacements) do
+  def script(key_with_optional_replacements, mappings) do
     case String.split(key_with_optional_replacements, " ", parts: 2, trim: true) do
       [key] ->
-        script_from(key)
+        script_(key, mappings)
 
       [key, replacements] ->
-        {:ok, script} = script_from(key)
+        {:ok, script} = script_(key, mappings)
         expand(script, String.split(replacements))
 
       [] ->
-        script_from("")
+        script_("", mappings)
     end
   end
 
@@ -27,9 +27,9 @@ defmodule Mc.App do
     }
   end
 
-  defp script_from(key) do
+  defp script_(key, mappings) do
     sub_keys =
-      case Mc.modify("", "get #{key}") do
+      case Mc.modify("", "get #{key}", mappings) do
         {:ok, keys} ->
           keys
 
@@ -39,7 +39,7 @@ defmodule Mc.App do
 
     {:ok,
       String.split(sub_keys)
-      |> Enum.map(&Mc.modify("", "get #{&1}"))
+      |> Enum.map(&Mc.modify("", "get #{&1}", mappings))
       |> Enum.map(fn {:ok, script} -> script end)
       |> Enum.reject(&(&1 == ""))
       |> Enum.join("\n")

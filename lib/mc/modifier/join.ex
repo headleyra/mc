@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Join do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     {:ok, seperator} =  Mc.Uri.decode(args)
 
     {:ok,

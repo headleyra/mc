@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Head do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, _mappings) do
     case Mc.String.to_int(args) do
       {:ok, count} when count >= 0 ->
         first(buffer, count)

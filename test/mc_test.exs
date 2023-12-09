@@ -1,7 +1,7 @@
 defmodule McTest do
   use ExUnit.Case, async: true
 
-  defmodule TestMappings do
+  defmodule Mappings do
     defstruct [
       lcase: {Mc.Modifier.Lcase, :modify},
       ccount: {Mc.Modifier.Ccount, :modify},
@@ -11,70 +11,59 @@ defmodule McTest do
     ]
   end
 
-  setup do
-    start_supervised({Mc, mappings: %TestMappings{}})
-    :ok
-  end
-
-  describe "mappings/0" do
-    test "returns the mappings" do
-      assert Mc.mappings() == %TestMappings{}
-    end
-  end
-
-  describe "modify/2" do
+  describe "modify/3" do
     test "returns a modified `buffer`" do
-      assert Mc.modify("ON THE RADIO\n", "lcase") == {:ok, "on the radio\n"}
-      assert Mc.modify("hurry, offer ends SOON!", "ccount") == {:ok, "23"}
+      assert Mc.modify("ON THE RADIO\n", "lcase", %Mappings{}) == {:ok, "on the radio\n"}
+      assert Mc.modify("hurry, offer ends SOON!", "ccount", %Mappings{}) == {:ok, "23"}
     end
 
     test "ignores leading whitespace in script lines" do
-      assert Mc.modify("one\ntwo", "    lcount") == {:ok, "2"}
-      assert Mc.modify("ZONE", " \t lcase\n      replace z t") == {:ok, "tone"}
+      assert Mc.modify("one\ntwo", "    lcount", %Mappings{}) == {:ok, "2"}
+      assert Mc.modify("ZONE", " \t lcase\n      replace z t", %Mappings{}) == {:ok, "tone"}
     end
 
     test "returns `buffer` when `script` is whitespace or empty" do
-      assert Mc.modify("foo", " ") == {:ok, "foo"}
-      assert Mc.modify("", "\t \n") == {:ok, ""}
-      assert Mc.modify("", "\t \n\n  ") == {:ok, ""}
-      assert Mc.modify("\n\n", "     ") == {:ok, "\n\n"}
-      assert Mc.modify("foobar", "") == {:ok, "foobar"}
-      assert Mc.modify("", "") == {:ok, ""}
+      assert Mc.modify("foo", " ", %Mappings{}) == {:ok, "foo"}
+      assert Mc.modify("", "\t \n", %Mappings{}) == {:ok, ""}
+      assert Mc.modify("", "\t \n\n  ", %Mappings{}) == {:ok, ""}
+      assert Mc.modify("\n\n", "     ", %Mappings{}) == {:ok, "\n\n"}
+      assert Mc.modify("foobar", "", %Mappings{}) == {:ok, "foobar"}
+      assert Mc.modify("", "", %Mappings{}) == {:ok, ""}
     end
 
     test "ignores blank lines in `script`" do
-      assert Mc.modify("SOME STUFF", "\n\n\nlcase\n\nreplace some nuff") == {:ok, "nuff stuff"}
+      assert Mc.modify("SOME STUFF", "\n\n\nlcase\n\nreplace some nuff", %Mappings{}) == {:ok, "nuff stuff"}
     end
 
     test "ignores comments in `script`" do
-      assert Mc.modify("SOME STUFF", "lcase\n# a random comment") == {:ok, "some stuff"}
-      assert Mc.modify("four 4 3", "replace four 4\n  \t # leading whitespace is cool") == {:ok, "4 4 3"}
+      assert Mc.modify("SOME STUFF", "lcase\n# a random comment", %Mappings{}) == {:ok, "some stuff"}
+      assert Mc.modify("four4", "replace four 4\n \t #another comment", %Mappings{}) == {:ok, "44"}
     end
 
     test "accepts an ok tuple as `buffer`" do
-      assert Mc.modify({:ok, "BIG"}, "lcase") == {:ok, "big"}
+      assert Mc.modify({:ok, "BIG"}, "lcase", %Mappings{}) == {:ok, "big"}
+    end
+
+    test "accepts an error tuple as `buffer`" do
+      assert Mc.modify({:error, "buffer error"}, "n/a", %Mappings{}) == {:error, "buffer error"}
+      assert Mc.modify({:error, "foobar"}, "", %Mappings{}) == {:error, "foobar"}
     end
 
     test "errors for the first modifier in the 'chain' that produces an error" do
-      assert Mc.modify("", "error an error message") == {:error, "an error message"}
-      assert Mc.modify("FOOBAR", "lcase\nerror 1st error\nerror 2nd error") == {:error, "1st error"}
-    end
-
-    test "echoes `buffer` errors" do
-      assert Mc.modify({:error, "buffer error"}, "n/a") == {:error, "buffer error"}
-      assert Mc.modify({:error, "foobar"}, "") == {:error, "foobar"}
+      assert Mc.modify("", "error an error message", %Mappings{}) == {:error, "an error message"}
+      assert Mc.modify("FOOBAR", "lcase\nerror 1st error\nerror 2nd error", %Mappings{}) == {:error, "1st error"}
     end
 
     test "errors when a modifier doesn't exist" do
-      assert Mc.modify("n/a", "nope") == {:error, "modifier not found: nope"}
-      assert Mc.modify("", "foo") == {:error, "modifier not found: foo"}
+      assert Mc.modify("n/a", "nope", %Mappings{}) == {:error, "modifier not found: nope"}
+      assert Mc.modify("", "foo", %Mappings{}) == {:error, "modifier not found: foo"}
     end
   end
 
   describe "tripleize/2" do
     test "converts a modifier 'double' into a 'triple'" do
-      assert Mc.tripleize({:buffer, "arg1 arg2"}, %Mc.Mappings{}) == {Mc.Modifier.Buffer, :modify, "arg1 arg2"}
-      assert Mc.tripleize({:lcase, nil}, %Mc.Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
+      assert Mc.tripleize({:replace, "arg1 arg2"}, %Mappings{}) == {Mc.Modifier.Replace, :modify, "arg1 arg2"}
+      assert Mc.tripleize({:lcase, nil}, %Mappings{}) == {Mc.Modifier.Lcase, :modify, nil}
     end
 
     test "returns the error modifier 'triple' when the modifier doesn't exist in the mappings" do
@@ -100,6 +89,7 @@ defmodule McTest do
         foo ARG
       bar Arg1 arg2
       """
+
       assert Mc.listize(script) == [{:Biz, ""}, {:foo, "ARG"}, {:bar, "Arg1 arg2"}]
     end
 
@@ -110,6 +100,7 @@ defmodule McTest do
       Foo arg
       ##n/a
       """
+
       assert Mc.listize(script) == [{:biz, ""}, {:Foo, "arg"}]
     end
   end

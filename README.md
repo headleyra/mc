@@ -7,30 +7,40 @@ A *ModifyChain Script* lists a 'chain' of 'modifiers' that, one by one, modify a
 
 ## Modifiers
 
-All modifiers declare two arguments.  The first argument receives the modified buffer from the previous
-modifier (in the chain) and the second argument receives the arguments for the modifier itself.  All
-modifiers return either `{:ok, result}` or `{:error, reason}`.
+Modifiers are functions that declare three arguments.  The first is the modified buffer from the previous
+modifier (in the chain), the second contains the arguments for the modifier itself and the third
+is a `Map` ('the mappings').  All modifiers should return either `{:ok, result}` or
+`{:error, reason}`.
 
 Let's say we have the following modifiers:
 
 ```elixir
 defmodule Foo.Big do
   use Mc.Railway, [:capify]
-  def capify(buffer, _args), do: {:ok, String.upcase(buffer)}
+
+  def capify(buffer, _args, _mappings) do
+    {:ok, String.upcase(buffer)}
+  end
 end
 
 defmodule Bar.Replace do
   use Mc.Railway, [:edit]
-  def edit(buffer, args), do: {:ok, String.replace(buffer, "bar", args)}
+
+  def edit(buffer, args, _mappings) do
+    {:ok, String.replace(buffer, "bar", args)}
+  end
 end
 
-defmodule Biz.Boom do
+defmodule Boom do
   use Mc.Railway, [:crash]
-  def crash(_buffer, _args), do: {:error, "boom!"}
+
+  def crash(_buffer, _args, _mappings) do
+    {:error, "boom!"}
+  end
 end
 ```
 
-In order to use them we create a `Map` ('the mappings') that defines their names and specifies their
+In order to use them we create a `Map` (the mappings) that defines their names and specifies their
 locations.  One such map might look like this:
 
 ```elixir
@@ -38,30 +48,28 @@ mappings =
   %{
     capify: {Foo.Big, :capify},
     change: {Bar.Replace, :edit},
-    boom: {Biz.Boom, :crash}
+    boom: {Boom, :crash}
   }
 ```
 
 We've assigned the name 'capify' to the first modifier; 'change' to the second; 'boom' to the third.
-Next we start the ModifyChain server and pass it the mappings:
-
-```elixir
-Mc.start_link(mappings: mappings)
-```
 
 ## Now we can modify stuff
 
 ```elixir
-Mc.modify("wine bar", "change glass")
+Mc.modify("wine bar", "change glass", mappings)
   #=> {:ok, "wine glass"}
 ```
 
-The first argument is the *initial* buffer and the second argument is the ModifyChain Script.  The
-result is obtained by transforming the initial buffer with the named modifier and its arguments.
+The first argument is the *initial* buffer and the second argument is the ModifyChain Script.  We pass
+the mappings as the third argument and they are made available to any modifier (in the chain) that has an
+interest in using them.
+
+The result is obtained by transforming the initial buffer with the named modifier and its arguments.
 Effectively we ran the following code:
 
 ```elixir
-Bar.Replace.edit("wine bar", "glass")
+Bar.Replace.edit("wine bar", "glass", mappings)
   #=> {:ok, "wine glass"}
 ```
 
@@ -73,22 +81,22 @@ change bottle
 capify
 """
 
-Mc.modify("wine bar", script)
+Mc.modify("wine bar", script, mappings)
   #=> {:ok, "WINE BOTTLE"}
 ```
 
 This effectively runs the following code:
 
 ```elixir
-{:ok, new_buffer} = Bar.Replace.edit("wine bar", "bottle")
-Foo.Big.capify(new_buffer, "")
+{:ok, modified_buffer} = Bar.Replace.edit("wine bar", "bottle", mappings)
+Foo.Big.capify(modified_buffer, "", mappings)
   #=> {:ok, "WINE BOTTLE"}
 ```
 
 So, the output of one modifier is the input to the next, and so on.
 
 If at any point a modifier returns an error tuple the next modifier simply passes it on down the chain,
-unchanged.  This is the default behaviour for all of the 'standard modifiers'.  For example:
+unchanged.  For example:
 
 ```elixir
 script = """
@@ -97,21 +105,18 @@ boom
 capify
 """
 
-Mc.modify("bar chart", script)
+Mc.modify("bar chart", script, mappings)
   #=> {:error, "boom!"}
 ```
 
+This is the default behaviour for the 'standard modifiers' but modifiers you create can behave
+however they like.
+
 ## Standard modifiers
 
-The `%Mc.Mappings{}` struct defines the standard mappings which reference basic (concept-prover) standard
+The `%Mc.Mappings{}` struct defines standard mappings which reference basic (concept-prover) 
 modifiers.  Feel free to use your own custom mappings or (perhaps) create a tweaked version of
 `%Mc.Mappings{}`.
 
 The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It creates functions that
 implement the 'error short-circuiting' behaviour mentioned above (along with some simple utility functions).
-
-<!--
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/mc](https://hexdocs.pm/mc).
--->

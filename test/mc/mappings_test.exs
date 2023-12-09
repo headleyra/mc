@@ -4,7 +4,6 @@ defmodule Mc.MappingsTest do
 
   setup do
     start_supervised({KvMemory, map: %{}})
-    start_supervised({Mc, mappings: %Mc.Mappings{}})
     :ok
   end
 
@@ -14,7 +13,7 @@ defmodule Mc.MappingsTest do
       |> Map.from_struct()
       |> Map.keys()
       |> Enum.map(fn key -> Map.get(%Mc.Mappings{}, key) end)
-      |> Enum.each(fn {mod, func} -> apply(mod, func, ["", ""]) end)
+      |> Enum.each(fn {module, func_name} -> apply(module, func_name, ["", "", %Mc.Mappings{}]) end)
     end
   end
 end

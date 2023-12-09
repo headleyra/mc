@@ -1,8 +1,8 @@
 defmodule Mc.Modifier.Urlp do
   use Mc.Railway, [:modify]
 
-  def modify(_buffer, args) do
-    case build_url_with_params(args) do
+  def modify(_buffer, args, mappings) do
+    case build_url_with_params(args, mappings) do
       {:ok, url_with_params} ->
         apply(adapter(), :post, url_with_params)
 
@@ -11,7 +11,7 @@ defmodule Mc.Modifier.Urlp do
     end
   end
 
-  defp build_url_with_params(args) do
+  defp build_url_with_params(args, mappings) do
     case String.split(args, ~r/\s+/, parts: 2) do
       [""] ->
         :error
@@ -23,12 +23,12 @@ defmodule Mc.Modifier.Urlp do
         {:ok, [url, []]}
 
       [url, params] ->
-        argsify(url, params)
+        argsify(url, params, mappings)
     end
   end
 
-  defp argsify(url, params) do
-    case build_params_list(params) do
+  defp argsify(url, params, mappings) do
+    case build_params_list(params, mappings) do
       {:ok, params_list} ->
         {:ok, [url, params_list]}
 
@@ -37,11 +37,11 @@ defmodule Mc.Modifier.Urlp do
     end
   end
 
-  defp build_params_list(params) do
+  defp build_params_list(params, mappings) do
     params
     |> split()
     |> validate()
-    |> listify()
+    |> listify(mappings)
   end
 
   defp validate(params_list) do
@@ -53,12 +53,12 @@ defmodule Mc.Modifier.Urlp do
     String.split(params)
   end
 
-  defp listify(false), do: :error
-  defp listify(params_list) do
+  defp listify(false, _mappings), do: :error
+  defp listify(params_list, mappings) do
     {:ok,
       params_list
       |> Enum.map(fn params_pair -> String.split(params_pair, ":") end)
-      |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.modify("", "get #{key}")} end)
+      |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.modify("", "get #{key}", mappings)} end)
       |> Keyword.new(&build_keyword_list/1)
     }
   end

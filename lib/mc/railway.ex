@@ -9,8 +9,8 @@ defmodule Mc.Railway do
     delegate_funcs =
       Enum.map(func_list, fn func_name ->
         quote do
-          def unquote(func_name)({:error, reason}, _args), do: {:error, reason}
-          def unquote(func_name)({:ok, buffer}, args), do: unquote(func_name)(buffer, args)
+          def unquote(func_name)({:error, reason}, _args, _mappings), do: {:error, reason}
+          def unquote(func_name)({:ok, buffer}, args, mappings), do: unquote(func_name)(buffer, args, mappings)
         end
       end)
 

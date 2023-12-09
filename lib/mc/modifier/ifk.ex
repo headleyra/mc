@@ -1,10 +1,10 @@
 defmodule Mc.Modifier.Ifk do
   use Mc.Railway, [:modify]
 
-  def modify(buffer, args) do
+  def modify(buffer, args, mappings) do
     case String.split(args) do
       [compare_key, true_value, false_value] ->
-        {:ok, compare_value} = Mc.modify("", "get #{compare_key}")
+        {:ok, compare_value} = Mc.modify("", "get #{compare_key}", mappings)
         compare(buffer == compare_value, true_value, false_value)
 
       _parse_error ->
