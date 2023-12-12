@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Prependk do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     case Mc.modify("", "get #{args}", mappings) do

@@ -14,8 +14,8 @@ defmodule Mc.Modifier.MultiplyTest do
     end
 
     test "errors when no numbers are found" do
-      assert Multiply.modify("", "", %{}) == {:error, "Mc.Modifier.Multiply#modify: no numbers found"}
-      assert Multiply.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Multiply#modify: no numbers found"}
+      assert Multiply.modify("", "", %{}) == {:error, "Mc.Modifier.Multiply: no numbers found"}
+      assert Multiply.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Multiply: no numbers found"}
     end
 
     test "works with ok tuples" do

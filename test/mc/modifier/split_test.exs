@@ -20,7 +20,7 @@ defmodule Mc.Modifier.SplitTest do
     end
 
     test "errors with a bad regular expression" do
-      assert Split.modify("bish bosh", "[", %{}) == {:error, "Mc.Modifier.Split#modify: bad regex"}
+      assert Split.modify("bish bosh", "[", %{}) == {:error, "Mc.Modifier.Split: bad regex"}
     end
 
     test "works with ok tuples" do

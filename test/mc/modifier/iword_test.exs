@@ -22,15 +22,15 @@ defmodule Mc.Modifier.IwordTest do
     end
 
     test "errors when `buffer` is empty" do
-      assert Iword.modify("", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
-      assert Iword.modify(" ", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
-      assert Iword.modify("\n\t", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify("", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
+      assert Iword.modify(" ", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
+      assert Iword.modify("\n\t", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
     end
 
     test "errors when `buffer` is not an integer" do
-      assert Iword.modify("random string", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
-      assert Iword.modify("3.142", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
-      assert Iword.modify("123 5", "", %{}) == {:error, "Mc.Modifier.Iword#modify: no integer found"}
+      assert Iword.modify("random string", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
+      assert Iword.modify("3.142", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
+      assert Iword.modify("123 5", "", %{}) == {:error, "Mc.Modifier.Iword: no integer found"}
     end
 
     test "works with ok tuples" do

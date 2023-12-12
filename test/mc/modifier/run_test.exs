@@ -4,9 +4,9 @@ defmodule Mc.Modifier.RunTest do
 
   defmodule Mappings do
     defstruct [
-      buffer: {Mc.Modifier.Buffer, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      replace: {Mc.Modifier.Replace, :modify}
+      buffer: Mc.Modifier.Buffer,
+      lcase: Mc.Modifier.Lcase,
+      replace: Mc.Modifier.Replace
     ]
   end
 

@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Json do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     parse_object(buffer, args)
@@ -17,7 +17,7 @@ defmodule Mc.Modifier.Json do
         {:ok, ""}
 
       {:error, _reason} ->
-        oops(:modify, "bad JSON")
+        oops("bad JSON")
     end
   end
 
@@ -34,7 +34,7 @@ defmodule Mc.Modifier.Json do
         {:ok, Enum.at(list, i) |> Jason.encode!()}
 
       _bad_integer ->
-        oops(:modify, "array index should be >= 0")
+        oops("array index should be >= 0")
     end
   end
 end

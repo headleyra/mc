@@ -45,7 +45,7 @@ defmodule Mc.Modifier.RegexTest do
     end
 
     test "errors when the regex is bad" do
-      assert Regex.modify("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Regex#modify: bad regex"}
+      assert Regex.modify("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Regex: bad regex"}
     end
 
     test "works with ok tuples" do

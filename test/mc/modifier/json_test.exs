@@ -26,16 +26,16 @@ defmodule Mc.Modifier.JsonTest do
     end
 
     test "errors when an array 'index' is not an integer (>= 0)" do
-      assert Json.modify("[1, 2]", "one", %{}) == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
-      assert Json.modify("[1, 2]", "-1", %{}) == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
-      assert Json.modify("[1, 2]", "3.142", %{}) == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
-      assert Json.modify("[1, 2]", "!", %{}) == {:error, "Mc.Modifier.Json#modify: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "one", %{}) == {:error, "Mc.Modifier.Json: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "-1", %{}) == {:error, "Mc.Modifier.Json: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "3.142", %{}) == {:error, "Mc.Modifier.Json: array index should be >= 0"}
+      assert Json.modify("[1, 2]", "!", %{}) == {:error, "Mc.Modifier.Json: array index should be >= 0"}
     end
 
     test "errors when the JSON is bad" do
-      assert Mc.Modifier.Json.modify(~s/oops!\"]/, "0", %{}) == {:error, "Mc.Modifier.Json#modify: bad JSON"}
-      assert Mc.Modifier.Json.modify(" \t ", "", %{}) == {:error, "Mc.Modifier.Json#modify: bad JSON"}
-      assert Mc.Modifier.Json.modify("", "", %{}) == {:error, "Mc.Modifier.Json#modify: bad JSON"}
+      assert Mc.Modifier.Json.modify(~s/oops!\"]/, "0", %{}) == {:error, "Mc.Modifier.Json: bad JSON"}
+      assert Mc.Modifier.Json.modify(" \t ", "", %{}) == {:error, "Mc.Modifier.Json: bad JSON"}
+      assert Mc.Modifier.Json.modify("", "", %{}) == {:error, "Mc.Modifier.Json: bad JSON"}
     end
     
     test "works with ok tuples" do

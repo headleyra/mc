@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Htab do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case parse_selectors(args) do
@@ -17,7 +17,7 @@ defmodule Mc.Modifier.Htab do
         }
 
       _error ->
-        oops(:modify, "CSS selector parse error")
+        oops("CSS selector parse error")
     end
   end
 

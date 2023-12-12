@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Get do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(_buffer, args, _mappings) do
     adapter().get(args)

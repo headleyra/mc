@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Invert do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     {:ok,

@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Jsona do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     parse_list(buffer)
@@ -18,7 +18,7 @@ defmodule Mc.Modifier.Jsona do
         {:ok, ""}
 
       {:error, _} ->
-        oops(:modify, "bad JSON")
+        oops("bad JSON")
     end
   end
 end

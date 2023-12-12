@@ -6,9 +6,9 @@ defmodule Mc.Modifier.RunkTest do
 
   defmodule Mappings do
     defstruct [
-      get: {Mc.Modifier.Get, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      replace: {Mc.Modifier.Replace, :modify}
+      get: Mc.Modifier.Get,
+      lcase: Mc.Modifier.Lcase,
+      replace: Mc.Modifier.Replace
     ]
   end
 

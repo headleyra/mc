@@ -18,15 +18,15 @@ defmodule Mc.Modifier.RangeTest do
     end
 
     test "errors when there are zero or more than two range limits" do
-      assert Range.modify("", "", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
-      assert Range.modify("", "  ", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
-      assert Range.modify("", "1 2 3", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "", %{}) == {:error, "Mc.Modifier.Range: bad range"}
+      assert Range.modify("", "  ", %{}) == {:error, "Mc.Modifier.Range: bad range"}
+      assert Range.modify("", "1 2 3", %{}) == {:error, "Mc.Modifier.Range: bad range"}
     end
 
     test "errors when `args` aren't integers" do
-      assert Range.modify("", "zero 7", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
-      assert Range.modify("", "x y", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
-      assert Range.modify("", "0 foo", %{}) == {:error, "Mc.Modifier.Range#modify: bad range"}
+      assert Range.modify("", "zero 7", %{}) == {:error, "Mc.Modifier.Range: bad range"}
+      assert Range.modify("", "x y", %{}) == {:error, "Mc.Modifier.Range: bad range"}
+      assert Range.modify("", "0 foo", %{}) == {:error, "Mc.Modifier.Range: bad range"}
     end
 
     test "works with ok tuples" do

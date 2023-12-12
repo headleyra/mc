@@ -11,9 +11,8 @@ defmodule Mc.MappingsTest do
     test "defines modifiers that exist" do
       %Mc.Mappings{}
       |> Map.from_struct()
-      |> Map.keys()
-      |> Enum.map(fn key -> Map.get(%Mc.Mappings{}, key) end)
-      |> Enum.each(fn {module, func_name} -> apply(module, func_name, ["", "", %Mc.Mappings{}]) end)
+      |> Map.values()
+      |> Enum.each(fn module -> apply(module, :modify, ["", "", %Mc.Mappings{}]) end)
     end
   end
 end

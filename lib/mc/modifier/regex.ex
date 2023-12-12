@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Regex do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case Regex.compile(args, "s") do
@@ -16,7 +16,7 @@ defmodule Mc.Modifier.Regex do
         end
 
       {:error, _} ->
-        oops(:modify, "bad regex")
+        oops("bad regex")
     end
   end
 end

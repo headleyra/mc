@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Range do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(_buffer, args, _mappings) do
     case range(args) do
@@ -10,7 +10,7 @@ defmodule Mc.Modifier.Range do
         {:ok, rangeize(1, finish)}
 
       _bad_args ->
-        oops(:modify, "bad range")
+        oops("bad range")
     end
   end
 

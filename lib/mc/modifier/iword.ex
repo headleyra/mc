@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Iword do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     case String.trim(buffer) |> Mc.String.to_int() do
@@ -10,7 +10,7 @@ defmodule Mc.Modifier.Iword do
         {:ok, Mc.NumberToWord.say(int)}
 
       :error ->
-        {:error, "Mc.Modifier.Iword#modify: no integer found"}
+        oops("no integer found")
     end
   end
 end

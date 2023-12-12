@@ -2,7 +2,7 @@ defmodule Mc do
   def modify(buffer, script, mappings) do
     listize(script)
     |> Enum.map(fn double -> tripleize(double, mappings) end)
-    |> Enum.reduce(buffer, fn {module, name, args}, acc -> apply(module, name, [acc, args, mappings]) end)
+    |> Enum.reduce(buffer, fn {mod, func_name, args}, acc -> apply(mod, func_name, [acc, args, mappings]) end)
     |> tupleize()
   end
 
@@ -27,11 +27,11 @@ defmodule Mc do
 
   def tripleize({modifier_name, args}, mappings) do
     case Map.get(mappings, modifier_name) do
-      {module, name} ->
-        {module, name, args}
-
       nil ->
         {Mc.Modifier.Error, :modify, "modifier not found: #{modifier_name}"}
+
+      module ->
+        {module, :modify, args}
     end
   end
 

@@ -7,52 +7,53 @@ A *ModifyChain Script* lists a 'chain' of 'modifiers' that, one by one, modify a
 
 ## Modifiers
 
-Modifiers are functions that declare three arguments.  The first is the modified buffer from the previous
-modifier (in the chain), the second contains the arguments for the modifier itself and the third
-is a `Map` ('the mappings').  All modifiers should return either `{:ok, result}` or
-`{:error, reason}`.
+Modifiers are functions that declare three arguments.  The first argument is the modified buffer from the
+previous modifier (in the chain), the second argument contains the argument string for the modifier itself and the third
+argument is a `Map` ('the mappings').  All modifiers must return either `{:ok, result}` or `{:error, reason}` and
+must be called `modify`.
 
 Let's say we have the following modifiers:
 
 ```elixir
 defmodule Foo.Big do
-  use Mc.Railway, [:capify]
+  use Mc.Modifier
 
-  def capify(buffer, _args, _mappings) do
+  def modify(buffer, _args, _mappings) do
     {:ok, String.upcase(buffer)}
   end
 end
 
 defmodule Bar.Replace do
-  use Mc.Railway, [:edit]
+  use Mc.Modifier
 
-  def edit(buffer, args, _mappings) do
+  def modify(buffer, args, _mappings) do
     {:ok, String.replace(buffer, "bar", args)}
   end
 end
 
 defmodule Boom do
-  use Mc.Railway, [:crash]
+  use Mc.Modifier
 
-  def crash(_buffer, _args, _mappings) do
+  def modify(_buffer, _args, _mappings) do
     {:error, "boom!"}
   end
 end
 ```
 
-In order to use them we create a `Map` (the mappings) that defines their names and specifies their
-locations.  One such map might look like this:
+In order to make use of them we create a mappings `Map` that specifies modifier names and modules.  One
+such map might look like this:
 
 ```elixir
 mappings =
   %{
-    capify: {Foo.Big, :capify},
-    change: {Bar.Replace, :edit},
-    boom: {Boom, :crash}
+    capify: Foo.Big,
+    change: Bar.Replace,
+    boom: Boom
   }
 ```
 
-We've assigned the name 'capify' to the first modifier; 'change' to the second; 'boom' to the third.
+We've assigned the name 'capify' to the first modifier, 'change' to the second modifier and 'boom' to
+the third modifier.
 
 ## Now we can modify stuff
 
@@ -62,14 +63,13 @@ Mc.modify("wine bar", "change glass", mappings)
 ```
 
 The first argument is the *initial* buffer and the second argument is the ModifyChain Script.  We pass
-the mappings as the third argument and they are made available to any modifier (in the chain) that has an
-interest in using them.
+the mappings as the third argument and they are made available to all modifiers (in the chain).
 
 The result is obtained by transforming the initial buffer with the named modifier and its arguments.
 Effectively we ran the following code:
 
 ```elixir
-Bar.Replace.edit("wine bar", "glass", mappings)
+Bar.Replace.modify("wine bar", "glass", mappings)
   #=> {:ok, "wine glass"}
 ```
 
@@ -88,8 +88,8 @@ Mc.modify("wine bar", script, mappings)
 This effectively runs the following code:
 
 ```elixir
-{:ok, modified_buffer} = Bar.Replace.edit("wine bar", "bottle", mappings)
-Foo.Big.capify(modified_buffer, "", mappings)
+{:ok, modified_buffer} = Bar.Replace.modify("wine bar", "bottle", mappings)
+Foo.Big.modify(modified_buffer, "", mappings)
   #=> {:ok, "WINE BOTTLE"}
 ```
 
@@ -112,11 +112,10 @@ Mc.modify("bar chart", script, mappings)
 This is the default behaviour for the 'standard modifiers' but modifiers you create can behave
 however they like.
 
-## Standard modifiers
+## Standard mappings and modifiers
 
 The `%Mc.Mappings{}` struct defines standard mappings which reference basic (concept-prover) 
-modifiers.  Feel free to use your own custom mappings or (perhaps) create a tweaked version of
-`%Mc.Mappings{}`.
+modifiers.  Feel free to create your own custom mappings and modifiers or mix and match as needed.
 
-The snippet `use Mc.Railway` appears at the top of all standard modifiers.  It creates functions that
+The snippet `use Mc.Modifier` appears at the top of all standard modifiers.  It creates functions that
 implement the 'error short-circuiting' behaviour mentioned above (along with some simple utility functions).

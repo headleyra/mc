@@ -3,11 +3,11 @@ defmodule McTest do
 
   defmodule Mappings do
     defstruct [
-      lcase: {Mc.Modifier.Lcase, :modify},
-      ccount: {Mc.Modifier.Ccount, :modify},
-      lcount: {Mc.Modifier.Lcount, :modify},
-      error: {Mc.Modifier.Error, :modify},
-      replace: {Mc.Modifier.Replace, :modify}
+      lcase: Mc.Modifier.Lcase,
+      ccount: Mc.Modifier.Ccount,
+      lcount: Mc.Modifier.Lcount,
+      error: Mc.Modifier.Error,
+      replace: Mc.Modifier.Replace
     ]
   end
 
@@ -67,7 +67,7 @@ defmodule McTest do
     end
 
     test "returns the error modifier 'triple' when the modifier doesn't exist in the mappings" do
-      assert Mc.tripleize({:nah, "arg"}, %Mc.Mappings{}) == {Mc.Modifier.Error, :modify, "modifier not found: nah"}
+      assert Mc.tripleize({:nah, "arg"}, %Mappings{}) == {Mc.Modifier.Error, :modify, "modifier not found: nah"}
     end
   end
 

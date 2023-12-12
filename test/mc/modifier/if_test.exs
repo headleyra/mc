@@ -20,7 +20,7 @@ defmodule Mc.Modifier.IfTest do
       assert If.modify(".  ", "true false", %{}) == {:ok, "false"}
     end
 
-    @errmsg "Mc.Modifier.If#modify: parse error"
+    @errmsg "Mc.Modifier.If: parse error"
 
     test "errors without exactly 2 or 3 values" do
       assert If.modify("n/a", "just-one", %{}) == {:error, @errmsg}

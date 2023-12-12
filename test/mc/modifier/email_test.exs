@@ -10,10 +10,10 @@ defmodule Mc.Modifier.EmailTest do
 
     test "errors when subject and/or recipients are missing" do
       assert Email.modify("hi", "subj", %{}) ==
-        {:error, "Mc.Modifier.Email#modify: missing subject and/or recipients"}
+        {:error, "Mc.Modifier.Email: missing subject and/or recipients"}
 
       assert Email.modify("hi", "", %{}) ==
-        {:error, "Mc.Modifier.Email#modify: missing subject and/or recipients"}
+        {:error, "Mc.Modifier.Email: missing subject and/or recipients"}
     end
 
     test "works with ok tuples" do

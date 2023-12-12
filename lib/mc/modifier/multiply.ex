@@ -1,10 +1,10 @@
 defmodule Mc.Modifier.Multiply do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     case Mc.String.numberize(buffer) do
       {:ok, []} ->
-        oops(:modify, "no numbers found")
+        oops("no numbers found")
 
       {:ok, numbers} ->
         {:ok,

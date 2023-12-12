@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Hselc do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     {:ok, html_parsed} = Floki.parse_fragment(buffer)

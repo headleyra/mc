@@ -6,10 +6,10 @@ defmodule Mc.Modifier.AppTest do
 
   defmodule Mappings do
     defstruct [
-      buffer: {Mc.Modifier.Buffer, :modify},
-      get: {Mc.Modifier.Get, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      replace: {Mc.Modifier.Replace, :modify}
+      buffer: Mc.Modifier.Buffer,
+      get: Mc.Modifier.Get,
+      lcase: Mc.Modifier.Lcase,
+      replace: Mc.Modifier.Replace
     ]
   end
 

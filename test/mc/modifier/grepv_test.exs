@@ -21,7 +21,7 @@ defmodule Mc.Modifier.GrepvTest do
     end
     
     test "errors with bad regex" do
-      assert Grepv.modify("two", "*", %{}) == {:error, "Mc.Modifier.Grepv#modify: bad regex"}
+      assert Grepv.modify("two", "*", %{}) == {:error, "Mc.Modifier.Grepv: bad regex"}
     end
 
     test "works with ok tuples" do

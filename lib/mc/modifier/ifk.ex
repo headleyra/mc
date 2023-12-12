@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Ifk do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     case String.split(args) do
@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Ifk do
         compare(buffer == compare_value, true_value, false_value)
 
       _parse_error ->
-        oops(:modify, "parse error")
+        oops("parse error")
     end
   end
 

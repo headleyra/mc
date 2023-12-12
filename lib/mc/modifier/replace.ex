@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Replace do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case parse_replace(args) do
@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Replace do
         {:ok, result}
 
       _error ->
-        oops(:modify, "bad search/replace or search regex")
+        oops("bad search/replace or search regex")
     end
   end
 

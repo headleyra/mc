@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Buffer do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     with \

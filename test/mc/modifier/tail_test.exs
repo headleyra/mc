@@ -22,10 +22,10 @@ defmodule Mc.Modifier.TailTest do
     end
 
     test "errors when `args` isn't a positive integer" do
-      assert Tail.modify("123", "-1", %{}) == {:error, "Mc.Modifier.Tail#modify: negative or non-integer line count"}
-      assert Tail.modify("", "3.1", %{}) == {:error, "Mc.Modifier.Tail#modify: negative or non-integer line count"}
-      assert Tail.modify("oops", "hi", %{}) == {:error, "Mc.Modifier.Tail#modify: negative or non-integer line count"}
-      assert Tail.modify("nowt", "", %{}) == {:error, "Mc.Modifier.Tail#modify: negative or non-integer line count"}
+      assert Tail.modify("123", "-1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.modify("", "3.1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.modify("oops", "hi", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.modify("nowt", "", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
     end
 
     test "works with ok tuples" do

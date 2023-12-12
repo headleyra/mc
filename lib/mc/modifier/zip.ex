@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Zip do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     with \
@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Zip do
       zip(buffer, key, separator, mappings)
     else
       _bad_args ->
-        oops(:modify, "parse error")
+        oops("parse error")
     end
   end
 

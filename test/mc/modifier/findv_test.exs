@@ -17,7 +17,7 @@ defmodule Mc.Modifier.FindvTest do
     end
 
     test "errors when the regex is bad" do
-      assert Findv.modify("", "*", %{}) == {:error, "Mc.Modifier.Findv#modify: bad regex"}
+      assert Findv.modify("", "*", %{}) == {:error, "Mc.Modifier.Findv: bad regex"}
     end
 
     test "works with ok tuples" do

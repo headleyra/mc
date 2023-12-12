@@ -81,9 +81,9 @@ defmodule Mc.Modifier.HtabTest do
     end
 
     test "errors unless there are exactly 2 selectors", %{html: html} do
-      assert Htab.modify(html, "", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
-      assert Htab.modify(html, "p", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
-      assert Htab.modify(html, "table tr td", %{}) == {:error, "Mc.Modifier.Htab#modify: CSS selector parse error"}
+      assert Htab.modify(html, "", %{}) == {:error, "Mc.Modifier.Htab: CSS selector parse error"}
+      assert Htab.modify(html, "p", %{}) == {:error, "Mc.Modifier.Htab: CSS selector parse error"}
+      assert Htab.modify(html, "table tr td", %{}) == {:error, "Mc.Modifier.Htab: CSS selector parse error"}
     end
 
     test "works with ok tuples", %{html: html} do

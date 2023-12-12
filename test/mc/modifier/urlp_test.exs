@@ -6,7 +6,7 @@ defmodule Mc.Modifier.UrlpTest do
 
   defmodule Mappings do
     defstruct [
-      get: {Mc.Modifier.Get, :modify}
+      get: Mc.Modifier.Get
     ]
   end
 
@@ -29,11 +29,11 @@ defmodule Mc.Modifier.UrlpTest do
     end
 
     test "errors given bad args" do
-      assert Urlp.modify("", "", %Mappings{}) == {:error, "Mc.Modifier.Urlp#modify: parse error"}
-      assert Urlp.modify("", "url param-name-only", %Mappings{}) == {:error, "Mc.Modifier.Urlp#modify: parse error"}
-      assert Urlp.modify("", "url :", %Mappings{}) == {:error, "Mc.Modifier.Urlp#modify: parse error"}
-      assert Urlp.modify("", "url foo:", %Mappings{}) == {:error, "Mc.Modifier.Urlp#modify: parse error"}
-      assert Urlp.modify("", "url :bar", %Mappings{}) == {:error, "Mc.Modifier.Urlp#modify: parse error"}
+      assert Urlp.modify("", "", %Mappings{}) == {:error, "Mc.Modifier.Urlp: parse error"}
+      assert Urlp.modify("", "url param-name-only", %Mappings{}) == {:error, "Mc.Modifier.Urlp: parse error"}
+      assert Urlp.modify("", "url :", %Mappings{}) == {:error, "Mc.Modifier.Urlp: parse error"}
+      assert Urlp.modify("", "url foo:", %Mappings{}) == {:error, "Mc.Modifier.Urlp: parse error"}
+      assert Urlp.modify("", "url :bar", %Mappings{}) == {:error, "Mc.Modifier.Urlp: parse error"}
     end
 
     test "works with ok tuples" do

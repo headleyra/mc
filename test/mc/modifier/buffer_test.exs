@@ -4,12 +4,12 @@ defmodule Mc.Modifier.BufferTest do
 
   defmodule Mappings do
     defstruct [
-      buffer: {Mc.Modifier.Buffer, :modify},
-      error: {Mc.Modifier.Error, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      replace: {Mc.Modifier.Replace, :modify},
-      range: {Mc.Modifier.Range, :modify},
-      ucase: {Mc.Modifier.Ucase, :modify}
+      buffer: Mc.Modifier.Buffer,
+      error: Mc.Modifier.Error,
+      lcase: Mc.Modifier.Lcase,
+      replace: Mc.Modifier.Replace,
+      range: Mc.Modifier.Range,
+      ucase: Mc.Modifier.Ucase
     ]
   end
 

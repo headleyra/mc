@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Split do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, "", _mappings), do: {:ok, String.split(buffer) |> Enum.join("\n")}
 
@@ -9,7 +9,7 @@ defmodule Mc.Modifier.Split do
         {:ok, String.split(buffer, regex) |> Enum.join("\n")}
 
       {:error, _} ->
-        oops(:modify, "bad regex")
+        oops("bad regex")
     end
   end
 end

@@ -14,8 +14,8 @@ defmodule Mc.Modifier.AddTest do
     end
 
     test "errors when no numbers are found" do
-      assert Add.modify("", "", %{}) == {:error, "Mc.Modifier.Add#modify: no numbers found"}
-      assert Add.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Add#modify: no numbers found"}
+      assert Add.modify("", "", %{}) == {:error, "Mc.Modifier.Add: no numbers found"}
+      assert Add.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Add: no numbers found"}
     end
 
     test "works with ok tuples" do

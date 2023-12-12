@@ -6,7 +6,7 @@ defmodule Mc.Modifier.ZipTest do
 
   defmodule Mappings do
     defstruct [
-      get: {Mc.Modifier.Get, :modify}
+      get: Mc.Modifier.Get
     ]
   end
 
@@ -23,7 +23,7 @@ defmodule Mc.Modifier.ZipTest do
       assert Zip.modify("million\t", "z1 -", %Mappings{}) == {:ok, "million\t-forda money"}
     end
 
-    @errmsg "Mc.Modifier.Zip#modify: parse error"
+    @errmsg "Mc.Modifier.Zip: parse error"
 
     test "errors when `args` can't be parsed" do
       assert Zip.modify("n/a", "too many args", %Mappings{}) == {:error, @errmsg}

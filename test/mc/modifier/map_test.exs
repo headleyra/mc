@@ -6,13 +6,13 @@ defmodule Mc.Modifier.MapTest do
 
   defmodule Mappings do
     defstruct [
-      append: {Mc.Modifier.Append, :modify},
-      b: {Mc.Modifier.Buffer, :modify},
-      error: {Mc.Modifier.Error, :modify},
-      getb: {Mc.Modifier.Getb, :modify},
-      iword: {Mc.Modifier.Iword, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      ucase: {Mc.Modifier.Ucase, :modify}
+      append: Mc.Modifier.Append,
+      b: Mc.Modifier.Buffer,
+      error: Mc.Modifier.Error,
+      getb: Mc.Modifier.Getb,
+      iword: Mc.Modifier.Iword,
+      lcase: Mc.Modifier.Lcase,
+      ucase: Mc.Modifier.Ucase
     ]
   end
 

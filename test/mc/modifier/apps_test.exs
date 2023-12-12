@@ -6,7 +6,7 @@ defmodule Mc.Modifier.AppsTest do
 
   defmodule Mappings do
     defstruct [
-      get: {Mc.Modifier.Get, :modify}
+      get: Mc.Modifier.Get
     ]
   end
 

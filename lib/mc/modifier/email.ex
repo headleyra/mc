@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Email do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case String.split(args, ", ", parts: 2) do
@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Email do
         adapter().deliver(subject, buffer, recipient_list)
 
       _bad_args ->
-        oops(:modify, "missing subject and/or recipients")
+        oops("missing subject and/or recipients")
     end
   end
 

@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Squeeze do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     {:ok,

@@ -31,10 +31,10 @@ defmodule Mc.Modifier.HeadTest do
     end
 
     test "errors when `args` isn't an integer or is negative", %{text: text} do
-      assert Head.modify(text, "-1", %{}) == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
-      assert Head.modify(text, "hi", %{}) == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
-      assert Head.modify(text, "2.7", %{}) == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
-      assert Head.modify(text, "", %{}) == {:error, "Mc.Modifier.Head#modify: negative or non-integer line count"}
+      assert Head.modify(text, "-1", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
+      assert Head.modify(text, "hi", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
+      assert Head.modify(text, "2.7", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
+      assert Head.modify(text, "", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
     end
 
     test "works with ok tuples" do

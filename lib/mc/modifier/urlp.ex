@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Urlp do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(_buffer, args, mappings) do
     case build_url_with_params(args, mappings) do
@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Urlp do
         apply(adapter(), :post, url_with_params)
 
       _error ->
-        oops(:modify, "parse error")
+        oops("parse error")
     end
   end
 

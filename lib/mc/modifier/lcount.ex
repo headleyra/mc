@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Lcount do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     {:ok,

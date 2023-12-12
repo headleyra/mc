@@ -13,13 +13,13 @@ defmodule Mc.Modifier.DivideTest do
     end
 
     test "errors on divide-by-zero" do
-      assert Divide.modify("5\n0", "", %{}) == {:error, "Mc.Modifier.Divide#modify: divide-by-zero attempt"}
-      assert Divide.modify("1\n0.0", "", %{}) == {:error, "Mc.Modifier.Divide#modify: divide-by-zero attempt"}
+      assert Divide.modify("5\n0", "", %{}) == {:error, "Mc.Modifier.Divide: divide-by-zero attempt"}
+      assert Divide.modify("1\n0.0", "", %{}) == {:error, "Mc.Modifier.Divide: divide-by-zero attempt"}
     end
 
     test "errors when no numbers are found" do
-      assert Divide.modify("", "", %{}) == {:error, "Mc.Modifier.Divide#modify: no numbers found"}
-      assert Divide.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Divide#modify: no numbers found"}
+      assert Divide.modify("", "", %{}) == {:error, "Mc.Modifier.Divide: no numbers found"}
+      assert Divide.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Divide: no numbers found"}
     end
 
     test "works with ok tuples" do

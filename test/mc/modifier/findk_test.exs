@@ -18,7 +18,7 @@ defmodule Mc.Modifier.FindkTest do
     end
 
     test "errors when the regex is bad" do
-      assert Findk.modify("", "?", %{}) == {:error, "Mc.Modifier.Findk#modify: bad regex"}
+      assert Findk.modify("", "?", %{}) == {:error, "Mc.Modifier.Findk: bad regex"}
     end
 
     test "works with ok tuples" do

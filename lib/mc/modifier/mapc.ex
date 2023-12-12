@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Mapc do
-  use Mc.Railway, [:modify] 
+  use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     with \
@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Mapc do
       run_concurrent(buffer, script, concurrency, mappings)
     else
       _bad_concurrency ->
-        oops(:modify, "'concurrency' should be a positive integer")
+        oops("'concurrency' should be a positive integer")
     end
   end
 

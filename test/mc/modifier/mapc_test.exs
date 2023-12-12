@@ -6,13 +6,13 @@ defmodule Mc.Modifier.MapcTest do
 
   defmodule Mappings do
     defstruct [
-      append: {Mc.Modifier.Append, :modify},
-      b: {Mc.Modifier.Buffer, :modify},
-      error: {Mc.Modifier.Error, :modify},
-      getb: {Mc.Modifier.Getb, :modify},
-      iword: {Mc.Modifier.Iword, :modify},
-      lcase: {Mc.Modifier.Lcase, :modify},
-      ucase: {Mc.Modifier.Ucase, :modify}
+      append: Mc.Modifier.Append,
+      b: Mc.Modifier.Buffer,
+      error: Mc.Modifier.Error,
+      getb: Mc.Modifier.Getb,
+      iword: Mc.Modifier.Iword,
+      lcase: Mc.Modifier.Lcase,
+      ucase: Mc.Modifier.Ucase
     ]
   end
 
@@ -29,7 +29,7 @@ defmodule Mc.Modifier.MapcTest do
       assert Mapc.modify("1\n2", "5 b `iword; append %20x`", %Mappings{}) == {:ok, "one x\ntwo x"}
     end
 
-    @errmsg "Mc.Modifier.Mapc#modify: 'concurrency' should be a positive integer"
+    @errmsg "Mc.Modifier.Mapc: 'concurrency' should be a positive integer"
 
     test "errors when `args` can't be parsed as a positive integer (max. 'cores to use' hint)" do
       assert Mapc.modify("", "", %Mappings{}) == {:error, @errmsg}

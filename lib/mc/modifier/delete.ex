@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Delete do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case Regex.compile(args, "sm") do
@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Delete do
         {:ok, String.replace(buffer, regex, "")}
 
       {:error, _} ->
-        oops(:modify, "bad regex")
+        oops("bad regex")
     end
   end
 end

@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.If do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case String.split(args) do
@@ -10,7 +10,7 @@ defmodule Mc.Modifier.If do
         compare(String.match?(buffer, ~r/^\s*$/), true_value, false_value)
 
       _parse_error ->
-        oops(:modify, "parse error")
+        oops("parse error")
     end
   end
 

@@ -13,8 +13,8 @@ defmodule Mc.Modifier.SubtractTest do
     end
 
     test "errors when no numbers are found" do
-      assert Subtract.modify("", "", %{}) == {:error, "Mc.Modifier.Subtract#modify: no numbers found"}
-      assert Subtract.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Subtract#modify: no numbers found"}
+      assert Subtract.modify("", "", %{}) == {:error, "Mc.Modifier.Subtract: no numbers found"}
+      assert Subtract.modify("foo bar", "", %{}) == {:error, "Mc.Modifier.Subtract: no numbers found"}
     end
 
     test "works with ok tuples" do

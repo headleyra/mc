@@ -50,20 +50,20 @@ defmodule Mc.Modifier.ReplaceTest do
 
     test "errors when the replace term is missing" do
       assert Replace.modify("3s a crowd", "search", %{}) ==
-        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+        {:error, "Mc.Modifier.Replace: bad search/replace or search regex"}
     end
 
     test "errors when the search and replace terms are missing" do
       assert Replace.modify("bish bosh", "", %{}) ==
-        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+        {:error, "Mc.Modifier.Replace: bad search/replace or search regex"}
     end
 
     test "errors when the search regex is bad" do
       assert Replace.modify("n/a", ") foo", %{}) ==
-        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+        {:error, "Mc.Modifier.Replace: bad search/replace or search regex"}
 
       assert Replace.modify("(foo)", "(?=)) bar", %{}) ==
-        {:error, "Mc.Modifier.Replace#modify: bad search/replace or search regex"}
+        {:error, "Mc.Modifier.Replace: bad search/replace or search regex"}
     end
 
     test "works with ok tuples" do

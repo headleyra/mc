@@ -1,5 +1,5 @@
 defmodule Mc.Modifier.Tail do
-  use Mc.Railway, [:modify]
+  use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
     case Mc.String.to_int(args) do
@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Tail do
         last(buffer, count)
 
       _bad_args ->
-        oops(:modify, "negative or non-integer line count")
+        oops("negative or non-integer line count")
     end
   end
 

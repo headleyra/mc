@@ -15,7 +15,7 @@ defmodule Mc.Modifier.JsonaTest do
     end
 
     test "errors when the JSON is invalid ('array' switch)" do
-      assert Jsona.modify(~s/boom!"]/, "", %{}) == {:error, "Mc.Modifier.Jsona#modify: bad JSON"}
+      assert Jsona.modify(~s/boom!"]/, "", %{}) == {:error, "Mc.Modifier.Jsona: bad JSON"}
     end
 
     test "works with ok tuples" do

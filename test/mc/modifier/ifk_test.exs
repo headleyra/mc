@@ -6,7 +6,7 @@ defmodule Mc.Modifier.IfkTest do
 
   defmodule Mappings do
     defstruct [
-      get: {Mc.Modifier.Get, :modify}
+      get: Mc.Modifier.Get
     ]
   end
 
@@ -29,7 +29,7 @@ defmodule Mc.Modifier.IfkTest do
       assert Ifk.modify("1234", "nah true-value false%25value", %Mappings{}) == {:ok, "false%value"}
     end
 
-    @errmsg "Mc.Modifier.Ifk#modify: parse error"
+    @errmsg "Mc.Modifier.Ifk: parse error"
 
     test "errors without exactly 3 parse items" do
       assert Ifk.modify("n/a", "just-one", %Mappings{}) == {:error, @errmsg}
