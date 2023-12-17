@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Mapc do
+defmodule Mc.Modifier.MapC do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do

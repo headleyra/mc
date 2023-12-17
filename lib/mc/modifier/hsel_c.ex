@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Hselc do
+defmodule Mc.Modifier.HselC do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do

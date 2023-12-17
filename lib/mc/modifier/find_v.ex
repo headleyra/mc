@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Findv do
+defmodule Mc.Modifier.FindV do
   use Mc.Modifier
 
   def modify(_buffer, args, _mappings) do

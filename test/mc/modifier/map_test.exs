@@ -9,7 +9,7 @@ defmodule Mc.Modifier.MapTest do
       append: Mc.Modifier.Append,
       b: Mc.Modifier.Buffer,
       error: Mc.Modifier.Error,
-      getb: Mc.Modifier.Getb,
+      getb: Mc.Modifier.GetB,
       iword: Mc.Modifier.Iword,
       lcase: Mc.Modifier.Lcase,
       ucase: Mc.Modifier.Ucase

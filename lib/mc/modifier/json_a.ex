@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Jsona do
+defmodule Mc.Modifier.JsonA do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do

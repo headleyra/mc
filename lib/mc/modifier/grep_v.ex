@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Grepv do
+defmodule Mc.Modifier.GrepV do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do

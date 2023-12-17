@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Sortv do
+defmodule Mc.Modifier.SortV do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do

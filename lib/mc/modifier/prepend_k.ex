@@ -1,10 +1,10 @@
-defmodule Mc.Modifier.Runk do
+defmodule Mc.Modifier.PrependK do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     case Mc.modify("", "get #{args}", mappings) do
-      {:ok, script} ->
-        Mc.modify(buffer, script, mappings)
+      {:ok, data} ->
+        {:ok, data <> buffer}
 
       {:error, "not found"} ->
         {:ok, buffer}

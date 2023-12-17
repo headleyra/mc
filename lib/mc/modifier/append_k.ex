@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Appendk do
+defmodule Mc.Modifier.AppendK do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do

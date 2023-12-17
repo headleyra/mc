@@ -1,8 +1,8 @@
-defmodule Mc.Modifier.RunkTest do
+defmodule Mc.Modifier.RunKTest do
   use ExUnit.Case, async: false
 
   alias Mc.Adapter.KvMemory
-  alias Mc.Modifier.Runk
+  alias Mc.Modifier.RunK
 
   defmodule Mappings do
     defstruct [
@@ -26,22 +26,22 @@ defmodule Mc.Modifier.RunkTest do
 
   describe "modify/3" do
     test "'runs' the script referenced by 'key' on the `buffer`" do
-      assert Runk.modify("stay in FOO contact", "s1", %Mappings{}) == {:ok, "stay in radio contact"}
-      assert Runk.modify("one 4 da BASS", "s3", %Mappings{}) == {:ok, "one 4 da BASS"}
-      assert Runk.modify("one 4 da BASS", "s2", %Mappings{}) == {:ok, "two 4 da treble"}
+      assert RunK.modify("stay in FOO contact", "s1", %Mappings{}) == {:ok, "stay in radio contact"}
+      assert RunK.modify("one 4 da BASS", "s3", %Mappings{}) == {:ok, "one 4 da BASS"}
+      assert RunK.modify("one 4 da BASS", "s2", %Mappings{}) == {:ok, "two 4 da treble"}
     end
 
     test "returns `buffer` when 'key' references a script that doesn't exist" do
-      assert Runk.modify("still the same", "nope", %Mappings{}) == {:ok, "still the same"}
-      assert Runk.modify("abc", "", %Mappings{}) == {:ok, "abc"}
+      assert RunK.modify("still the same", "nope", %Mappings{}) == {:ok, "still the same"}
+      assert RunK.modify("abc", "", %Mappings{}) == {:ok, "abc"}
     end
 
     test "works with ok tuples" do
-      assert Runk.modify({:ok, "FOO"}, "s1", %Mappings{}) == {:ok, "radio"}
+      assert RunK.modify({:ok, "FOO"}, "s1", %Mappings{}) == {:ok, "radio"}
     end
 
     test "allows error tuples to pass through" do
-      assert Runk.modify({:error, "reason"}, "s2", %Mappings{}) == {:error, "reason"}
+      assert RunK.modify({:error, "reason"}, "s2", %Mappings{}) == {:error, "reason"}
     end
   end
 end

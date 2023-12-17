@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Ifk do
+defmodule Mc.Modifier.IfK do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do

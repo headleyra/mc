@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Urlp do
+defmodule Mc.Modifier.UrlP do
   use Mc.Modifier
 
   def modify(_buffer, args, mappings) do
