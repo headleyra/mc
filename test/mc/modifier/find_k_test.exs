@@ -1,11 +1,10 @@
 defmodule Mc.Modifier.FindKTest do
   use ExUnit.Case, async: false
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.FindK
 
   setup do
     map = %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 
@@ -15,6 +14,10 @@ defmodule Mc.Modifier.FindKTest do
       assert FindK.modify("", "d", %{}) == {:ok, "2nd\n3rd"}
       assert FindK.modify("", ".", %{}) == {:ok, "1st\n2nd\n3rd"}
       assert FindK.modify("", "", %{}) == {:ok, "1st\n2nd\n3rd"}
+    end
+
+    test "returns emtpy string when key is not found" do
+      assert FindK.modify("", "this-key-wont-be-found", %{}) == {:ok, ""}
     end
 
     test "errors when the regex is bad" do

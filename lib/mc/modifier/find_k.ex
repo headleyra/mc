@@ -2,12 +2,14 @@ defmodule Mc.Modifier.FindK do
   use Mc.Modifier
 
   def modify(_buffer, args, _mappings) do
-    adapter().findk(args)
-    |> wrap_errors()
-  end
+    case adapter().findk(args) do
+      {:ok, result} ->
+        {:ok, result}
 
-  defp wrap_errors({:error, reason}), do: oops(reason)
-  defp wrap_errors({:ok, result}), do: {:ok, result}
+      {:error, reason} ->
+        oops(reason)
+    end
+  end
 
   defp adapter do
     Application.get_env(:mc, :kv_adapter)

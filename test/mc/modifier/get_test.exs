@@ -1,11 +1,10 @@
 defmodule Mc.Modifier.GetTest do
   use ExUnit.Case, async: false
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Set
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({KvMemory, map: %{}})
+    start_supervised({Mc.Adapter.KvMemory, map: %{}})
     :ok
   end
 
@@ -15,7 +14,7 @@ defmodule Mc.Modifier.GetTest do
       assert Get.modify("", "a-key", %{}) == {:ok, "some buffer\ndata"}
     end
 
-    test "returns 'not found' string when the key doesn't exist" do
+    test "errors when the key doesn't exist" do
       assert Get.modify("", "key-no-exist", %{}) == {:error, "not found"}
     end
 

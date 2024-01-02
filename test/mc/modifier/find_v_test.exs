@@ -1,11 +1,15 @@
 defmodule Mc.Modifier.FindVTest do
   use ExUnit.Case, async: false
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.FindV
 
   setup do
-    map = %{"1st" => "foo", "2nd" => "foobar", "3rd" => "dosh"}
-    start_supervised({KvMemory, map: map})
+    map = %{
+      "1st" => "foo",
+      "2nd" => "foobar",
+      "3rd" => "dosh"
+    }
+
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 
@@ -14,6 +18,10 @@ defmodule Mc.Modifier.FindVTest do
       assert FindV.modify("n/a", "os", %{}) == {:ok, "3rd"}
       assert FindV.modify("", "foo", %{}) == {:ok, "1st\n2nd"}
       assert FindV.modify("", "", %{}) == {:ok, "1st\n2nd\n3rd"}
+    end
+
+    test "returns empty string when searches are unsuccessful" do
+      assert FindV.modify("", "this-wont-be-found", %{}) == {:ok, ""}
     end
 
     test "errors when the regex is bad" do

@@ -14,8 +14,13 @@ defmodule Mc.Adapter.KvMemory do
 
   @impl true
   def get(key) do
-    value = Agent.get(__MODULE__, &Map.get(&1, key, :not_found))
-    if value == :not_found, do: {:error, "not found"}, else: {:ok, value}
+    case Agent.get(__MODULE__, &Map.fetch(&1, key)) do
+      {:ok, value} ->
+        {:ok, value}
+
+      :error ->
+        {:error, "not found"}
+    end
   end
 
   @impl true
@@ -40,6 +45,7 @@ defmodule Mc.Adapter.KvMemory do
 
   defp filter(map, regex, :value), do: filter(map, fn {_key, value} -> Regex.match?(regex, value) end)
   defp filter(map, regex, :key), do: filter(map, fn {key, _value} -> Regex.match?(regex, key) end)
+
   defp filter(map, func) do
     {:ok,
       map
