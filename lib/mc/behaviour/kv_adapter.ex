@@ -5,7 +5,7 @@ defmodule Mc.Behaviour.KvAdapter do
   @type result :: String.t
   @type reason :: String.t
 
-  @callback get(key) :: {:ok, result} | {:error, reason}
+  @callback get(key) :: {:ok, result} | {:error, reason} | {:error, :not_found}
   @callback set(key, value) :: {:ok, result} | {:error, reason}
   @callback findk(regex) :: {:ok, result} | {:error, reason}
   @callback findv(regex) :: {:ok, result} | {:error, reason}

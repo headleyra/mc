@@ -1,5 +1,5 @@
 defmodule Mc.Adapter.KvMemoryTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
   alias Mc.Adapter.KvMemory
 
   setup do
@@ -15,28 +15,27 @@ defmodule Mc.Adapter.KvMemoryTest do
   end
 
   describe "set/2" do
-    test "requests `value` is stored under `key` (returns value)" do
+    test "requests `value` is stored under `key` and returns `value`" do
       assert KvMemory.set("rand", "random\ndata") == {:ok, "random\ndata"}
       assert KvMemory.set("_x", "stuff") == {:ok, "stuff"}
     end
   end
 
   describe "get/1" do
-    test "retrieves the value stored under `key`" do
+    test "returns the value stored under `key`" do
       KvMemory.set("a-key", "some buffer\ndata")
-
       assert KvMemory.get("a-key") == {:ok, "some buffer\ndata"}
       assert KvMemory.get("1st") == {:ok, "foo"}
       assert KvMemory.get("3rd") == {:ok, "dosh"}
     end
 
-    test "returns 'not found' when the `key` doesn't exist" do
-      assert KvMemory.get("key-no-exist") == {:error, "not found"}
+    test "errors with 'not found' when the `key` doesn't exist" do
+      assert KvMemory.get("key-no-exist") == {:error, :not_found}
     end
   end
 
   describe "findk/1" do
-    test "finds keys matching its regex input" do
+    test "finds keys matching `regex`" do
       assert KvMemory.findk("rd") == {:ok, "3rd"}
       assert KvMemory.findk("d") == {:ok, "2nd\n3rd"}
       assert KvMemory.findk("2") == {:ok, "2nd"}

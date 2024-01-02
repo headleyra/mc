@@ -19,7 +19,7 @@ defmodule Mc.Adapter.KvMemory do
         {:ok, value}
 
       :error ->
-        {:error, "not found"}
+        {:error, :not_found}
     end
   end
 

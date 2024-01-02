@@ -11,7 +11,7 @@ defmodule Mc.AppTest do
   end
 
   setup do
-    start_supervised({KvMemory, map: %{
+    map = %{
       "app1" => "script1",
       "app3" => "script3\nscript5",
       "app5" => "script3",
@@ -20,8 +20,9 @@ defmodule Mc.AppTest do
       "script3" => "r a ::1",
       "script5" => "r b ::2",
       "script7" => "b 1 => ::1, 2 => ::2, all => :::"
-    }})
+    }
 
+    start_supervised({KvMemory, map: map})
     :ok
   end
 
