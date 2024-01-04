@@ -22,7 +22,7 @@ defmodule Mc.Modifier.MapTest do
   end
 
   describe "modify/3" do
-    test "parses `args` as a script and runs it against each line in `buffer`" do
+    test "parses `args` as a script and runs it against each line in `buffer` (synchronously)" do
       assert Map.modify("ApplE  JuicE", "lcase", %Mappings{}) == {:ok, "apple  juice"}
       assert Map.modify("ApplE\nJuicE", "lcase", %Mappings{}) == {:ok, "apple\njuice"}
       assert Map.modify("1\n2", "b `getb`: `getb; iword`", %Mappings{}) == {:ok, "1: one\n2: two"}
@@ -31,7 +31,9 @@ defmodule Mc.Modifier.MapTest do
 
     test "reports errors" do
       assert Map.modify("FOO\nBAR", "error oops", %Mappings{}) == {:ok, "ERROR: oops\nERROR: oops"}
-      assert Map.modify("1\n2", "ex", %Mappings{}) == {:ok, "ERROR: modifier not found: ex\nERROR: modifier not found: ex"}
+
+      assert Map.modify("1\n2", "ex", %Mappings{}) ==
+        {:ok, "ERROR: modifier not found: ex\nERROR: modifier not found: ex"}
     end
 
     test "works with ok tuples" do

@@ -25,17 +25,18 @@ defmodule Mc.Modifier.MapC do
     end
   end
   
-  defp run_concurrent(buffer, script, concurrency, mappings) do
-    String.split(buffer, "\n")
-    |> Task.async_stream(&Mc.modify(&1, script, mappings), ordered: true, max_concurrency: concurrency, timeout: :infinity)
-    |> report()
-  end
-
-  defp report(results) do
+  defp run_concurrent(buffer, script, maxc, mappings) do
     {:ok,
-      Stream.map(results, &detuple/1)
+      String.split(buffer, "\n")
+      |> task_stream(script, maxc, mappings)
+      |> Stream.map(&detuple/1)
       |> Enum.join("\n")
     }
+  end
+
+  defp task_stream(buffers, script, maxc, mappings) do
+    buffers
+    |> Task.async_stream(&Mc.modify(&1, script, mappings), ordered: true, max_concurrency: maxc, timeout: :infinity)
   end
 
   defp detuple({:ok, {:ok, result}}), do: result
