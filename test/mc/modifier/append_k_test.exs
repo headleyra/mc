@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.AppendKTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.AppendK
 
   defmodule Mappings do
@@ -12,7 +11,7 @@ defmodule Mc.Modifier.AppendKTest do
 
   setup do
     map = %{"star" => "light", "thing" => "bar"}
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 

@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.ZipTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.Zip
 
   defmodule Mappings do
@@ -12,7 +11,7 @@ defmodule Mc.Modifier.ZipTest do
 
   setup do
     map = %{"z1" => "forda money\nforda show", "z2" => "bar\ntonic"}
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 

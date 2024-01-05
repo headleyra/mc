@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.RunKTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.RunK
 
   defmodule Mappings do
@@ -20,7 +19,7 @@ defmodule Mc.Modifier.RunKTest do
         "s3" => ""
       }
 
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 

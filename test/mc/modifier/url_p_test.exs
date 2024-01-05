@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.UrlPTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.UrlP
 
   defmodule Mappings do
@@ -12,7 +11,7 @@ defmodule Mc.Modifier.UrlPTest do
 
   setup do
     map = %{"big" => "data", "x" => "y\nz"}
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 

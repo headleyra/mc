@@ -1,7 +1,5 @@
 defmodule Mc.Modifier.AppTest do
   use ExUnit.Case, async: false
-
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.App
 
   defmodule Mappings do
@@ -14,7 +12,7 @@ defmodule Mc.Modifier.AppTest do
   end
 
   setup do
-    start_supervised({KvMemory, map: %{
+    start_supervised({Mc.Adapter.KvMemory, map: %{
       "app1" => "script1",
       "app3" => "script3\nscript5",
       "app5" => "script3",

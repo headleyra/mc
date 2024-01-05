@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.IfKTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.IfK
 
   defmodule Mappings do
@@ -12,7 +11,7 @@ defmodule Mc.Modifier.IfKTest do
 
   setup do
     map = %{"compare-key" => "this", "empty-string" => "", "nah" => "that"}
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 

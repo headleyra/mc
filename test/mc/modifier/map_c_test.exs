@@ -1,7 +1,6 @@
 defmodule Mc.Modifier.MapCTest do
   use ExUnit.Case, async: false
 
-  alias Mc.Adapter.KvMemory
   alias Mc.Modifier.MapC
 
   defmodule Mappings do
@@ -17,7 +16,7 @@ defmodule Mc.Modifier.MapCTest do
   end
 
   setup do
-    start_supervised({KvMemory, map: %{}})
+    start_supervised({Mc.Adapter.KvMemory, map: %{}})
     :ok
   end
 

@@ -1,7 +1,5 @@
 defmodule Mc.AppTest do
   use ExUnit.Case, async: false
-
-  alias Mc.Adapter.KvMemory
   alias Mc.App
 
   defmodule Mappings do
@@ -22,7 +20,7 @@ defmodule Mc.AppTest do
       "script7" => "b 1 => ::1, 2 => ::2, all => :::"
     }
 
-    start_supervised({KvMemory, map: map})
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 
