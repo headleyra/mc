@@ -14,13 +14,9 @@ defmodule Mc.Modifier.SplitTest do
       assert Split.modify("mix \n it  \t up\n\n", "", %{}) == {:ok, "mix\nit\nup"}
     end
 
-    test "parses `args` as a regular expression" do
-      assert Split.modify("one two three", "[ ]", %{}) == {:ok, "one\ntwo\nthree"}
-      assert Split.modify("= double == equals =", " == ", %{}) == {:ok, "= double\nequals ="}
-    end
-
-    test "errors with a bad regular expression" do
-      assert Split.modify("bish bosh", "[", %{}) == {:error, "Mc.Modifier.Split: bad regex"}
+    test "parses `args` as a URI-encoded value" do
+      assert Split.modify("one two three", "%20", %{}) == {:ok, "one\ntwo\nthree"}
+      assert Split.modify("foo\tbar", "%09", %{}) == {:ok, "foo\nbar"}
     end
 
     test "works with ok tuples" do
