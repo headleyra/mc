@@ -2,34 +2,23 @@ defmodule Mc.Modifier.Zip do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do
-    with \
-      [key, separator] <- String.split(args) 
-    do
-      zip(buffer, key, separator, mappings)
-    else
-      _bad_args ->
-        oops("parse error")
-    end
+    zip(buffer, args, mappings)
   end
 
-  defp zip(buffer, key, separator, mappings) do
-    buffer_list = String.split(buffer, "\n")
+  defp zip(buffer, script, mappings) do
+    case Mc.modify(buffer, script, mappings) do
+      {:ok, zipee} ->
+        buffer_list = String.split(buffer, "\n")
+        script_list = String.split(zipee, "\n")
 
-    value_list =
-      case Mc.modify("", "get #{key}", mappings) do
-        {:ok, value} ->
-          String.split(value, "\n")
+        {:ok,
+          Enum.zip(buffer_list, script_list)
+          |> Enum.map(fn {a, b} -> "#{a}#{b}" end)
+          |> Enum.join("\n")
+        }
 
-        {:error, "not found"} ->
-          [""]
-      end
-
-    {:ok, decoded_separator} = Mc.Uri.decode(separator)
-
-    {:ok,
-      Enum.zip(buffer_list, value_list)
-      |> Enum.map(fn {a, b} -> "#{a}#{decoded_separator}#{b}" end)
-      |> Enum.join("\n")
-    }
+      {:error, reason} ->
+        oops(reason)
+    end
   end
 end
