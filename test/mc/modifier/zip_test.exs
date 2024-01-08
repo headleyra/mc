@@ -13,12 +13,12 @@ defmodule Mc.Modifier.ZipTest do
   end
 
   describe "modify/3" do
-    test "zips together the `buffer` and a the result of a `script`" do
+    test "zips together the `buffer` and the result of running `args` as a script" do
       assert Zip.modify("one\ntwo\nthree", "range 3", %Mappings{}) == {:ok, "one1\ntwo2\nthree3"}
       assert Zip.modify("wine\ngin", "b -bar; -tonic", %Mappings{}) == {:ok, "wine-bar\ngin-tonic"}
     end
 
-    test "runs `script` against the `buffer`" do
+    test "runs the script against the `buffer`" do
       assert Zip.modify("un\ndeux", "map prepend *", %Mappings{}) == {:ok, "un*un\ndeux*deux"}
     end
 
