@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Wcount do
+defmodule Mc.Modifier.CountW do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do

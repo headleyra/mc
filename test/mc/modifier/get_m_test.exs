@@ -4,12 +4,6 @@ defmodule Mc.Modifier.GetMTest do
 
   @default_separator "\n---\n"
 
-  defmodule Mappings do
-    defstruct [
-      get: Mc.Modifier.Get
-    ]
-  end
-
   setup do
     map = %{
       "key1" => "data one",
@@ -26,32 +20,32 @@ defmodule Mc.Modifier.GetMTest do
     test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
 
     test "parses the `buffer`" do
-      assert GetM.modify("key1 key2", "", %Mappings{}) ==
+      assert GetM.modify("key1 key2", "", %Mc.Mappings{}) ==
         {:ok, "key1\ndata one#{@default_separator}key2\nvalue\ntwo\n"}
 
-      assert GetM.modify("key2 key1", "", %Mappings{}) ==
+      assert GetM.modify("key2 key1", "", %Mc.Mappings{}) ==
         {:ok, "key2\nvalue\ntwo\n#{@default_separator}key1\ndata one"}
 
-      assert GetM.modify("key1", "", %Mappings{}) == {:ok, "key1\ndata one"}
-      assert GetM.modify(" key1\t\n", "", %Mappings{}) == {:ok, "key1\ndata one"}
-      assert GetM.modify("no-exist", "", %Mappings{}) == {:ok, "no-exist\n"}
+      assert GetM.modify("key1", "", %Mc.Mappings{}) == {:ok, "key1\ndata one"}
+      assert GetM.modify(" key1\t\n", "", %Mc.Mappings{}) == {:ok, "key1\ndata one"}
+      assert GetM.modify("no-exist", "", %Mc.Mappings{}) == {:ok, "no-exist\n"}
 
-      assert GetM.modify("no-exist.1 no-exist.2", "", %Mappings{}) ==
+      assert GetM.modify("no-exist.1 no-exist.2", "", %Mc.Mappings{}) ==
         {:ok, "no-exist.1\n#{@default_separator}no-exist.2\n"}
     end
 
     test "accepts a URI-encoded separator" do
-      assert GetM.modify("key1 key2", "; ", %Mappings{}) == {:ok, "key1\ndata one; key2\nvalue\ntwo\n"}
-      assert GetM.modify("key1 key2", " -%09: ", %Mappings{}) == {:ok, "key1\ndata one -\t: key2\nvalue\ntwo\n"}
-      assert GetM.modify("key1", "; ", %Mappings{}) == {:ok, "key1\ndata one"}
+      assert GetM.modify("key1 key2", "; ", %Mc.Mappings{}) == {:ok, "key1\ndata one; key2\nvalue\ntwo\n"}
+      assert GetM.modify("key1 key2", " -%09: ", %Mc.Mappings{}) == {:ok, "key1\ndata one -\t: key2\nvalue\ntwo\n"}
+      assert GetM.modify("key1", "; ", %Mc.Mappings{}) == {:ok, "key1\ndata one"}
     end
 
     test "works with ok tuples" do
-      assert GetM.modify({:ok, "key1"}, "", %Mappings{}) == {:ok, "key1\ndata one"}
+      assert GetM.modify({:ok, "key1"}, "", %Mc.Mappings{}) == {:ok, "key1\ndata one"}
     end
 
     test "allows error tuples to pass through" do
-      assert GetM.modify({:error, "reason"}, "", %Mappings{}) == {:error, "reason"}
+      assert GetM.modify({:error, "reason"}, "", %Mc.Mappings{}) == {:error, "reason"}
     end
   end
 end

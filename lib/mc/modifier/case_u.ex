@@ -1,7 +1,7 @@
-defmodule Mc.Modifier.Lcase do
+defmodule Mc.Modifier.CaseU do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
-    {:ok, String.downcase(buffer)}
+    {:ok, String.upcase(buffer)}
   end
 end

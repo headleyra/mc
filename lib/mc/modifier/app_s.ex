@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Apps do
+defmodule Mc.Modifier.AppS do
   use Mc.Modifier
 
   def modify(_buffer, args, mappings) do

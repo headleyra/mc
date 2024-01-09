@@ -2,12 +2,6 @@ defmodule Mc.AppTest do
   use ExUnit.Case, async: false
   alias Mc.App
 
-  defmodule Mappings do
-    defstruct [
-      get: Mc.Modifier.Get
-    ]
-  end
-
   setup do
     map = %{
       "app1" => "script1",
@@ -26,23 +20,23 @@ defmodule Mc.AppTest do
 
   describe "script/2" do
     test "builds an 'app script' given an 'app key' and mappings" do
-      assert App.script("app1", %Mappings{}) == {:ok, "lcase"}
-      assert App.script("app3", %Mappings{}) == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("app5", %Mappings{}) == {:ok, "r a ::1"}
-      assert App.script("app7", %Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
-      assert App.script("", %Mappings{}) == {:ok, ""}
+      assert App.script("app1", %Mc.Mappings{}) == {:ok, "lcase"}
+      assert App.script("app3", %Mc.Mappings{}) == {:ok, "r a ::1\nr b ::2"}
+      assert App.script("app5", %Mc.Mappings{}) == {:ok, "r a ::1"}
+      assert App.script("app7", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
+      assert App.script("", %Mc.Mappings{}) == {:ok, ""}
     end
 
     test "builds an 'app script' given an 'app key' and placeholder replacements" do
-      assert App.script("app3 one two", %Mappings{}) == {:ok, "r a one\nr b two"}
-      assert App.script("app5 bbb ignored", %Mappings{}) == {:ok, "r a bbb"}
-      assert App.script("app7 foo bar roo", %Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar roo"}
+      assert App.script("app3 one two", %Mc.Mappings{}) == {:ok, "r a one\nr b two"}
+      assert App.script("app5 bbb ignored", %Mc.Mappings{}) == {:ok, "r a bbb"}
+      assert App.script("app7 foo bar roo", %Mc.Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar roo"}
     end
 
     test "ignores leading, internal and trailing whitespace" do
-      assert App.script("   app1", %Mappings{}) == {:ok, "lcase"}
-      assert App.script("   app3 \t  ", %Mappings{}) == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("   app3  \t   one \t   two   ", %Mappings{}) == {:ok, "r a one\nr b two"}
+      assert App.script("   app1", %Mc.Mappings{}) == {:ok, "lcase"}
+      assert App.script("   app3 \t  ", %Mc.Mappings{}) == {:ok, "r a ::1\nr b ::2"}
+      assert App.script("   app3  \t   one \t   two   ", %Mc.Mappings{}) == {:ok, "r a one\nr b two"}
     end
   end
 

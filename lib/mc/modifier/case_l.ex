@@ -1,7 +1,7 @@
-defmodule Mc.Modifier.Ucase do
+defmodule Mc.Modifier.CaseL do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
-    {:ok, String.upcase(buffer)}
+    {:ok, String.downcase(buffer)}
   end
 end
