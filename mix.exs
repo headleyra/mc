@@ -4,8 +4,8 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.73.0",
-      elixir: "~> 1.13",
+      version: "0.74.0",
+      elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps()
