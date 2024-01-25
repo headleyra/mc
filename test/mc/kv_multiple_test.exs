@@ -14,7 +14,7 @@ defmodule Mc.KvMultipleTest do
     :ok
   end
 
-  describe "getm/3" do
+  describe "get/3" do
     test "parses `string` as a set of whitespace-separated keys and expands them into 'setm' format", do: true
     test "assumes `separator` is '#{@default_separator}' when it's an empty string", do: true
     test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
