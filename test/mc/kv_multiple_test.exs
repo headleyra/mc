@@ -15,11 +15,11 @@ defmodule Mc.KvMultipleTest do
   end
 
   describe "get/3" do
-    test "parses `string` as a set of whitespace-separated keys and expands them into 'setm' format", do: true
-    test "assumes `separator` is '#{@default_separator}' when it's an empty string", do: true
+    test "parses `keys` as a set of whitespace-separated keys and expands them into 'setm' format", do: true
+    test "assumes `separator` is #{inspect(@default_separator)} when it's an empty string", do: true
     test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
 
-    test "gets multiple keys" do
+    test "expands multiple keys" do
       assert KvMultiple.get("key1 key2", "", %Mc.Mappings{}) ==
         {:ok, "key1\ndata one#{@default_separator}key2\nvalue\ntwo\n"}
 
@@ -46,8 +46,8 @@ defmodule Mc.KvMultipleTest do
   end
 
   describe "set/3" do
-    test "parses `string` as 'setm' format and sets keys/values as appropriate", do: true
-    test "assumes `separator` is '#{@default_separator}' when it's an empty string", do: true
+    test "parses `setm` as 'setm' format and sets keys/values as appropriate", do: true
+    test "assumes `separator` is #{inspect(@default_separator)} when it's an empty string", do: true
     test "expects `mappings` to contain a 'KV' modifier called `set`", do: true
     test "complements get/3", do: true
 
@@ -74,6 +74,17 @@ defmodule Mc.KvMultipleTest do
 
       assert KvMultiple.set("key\nvalue#{@default_separator}key-only", "", %Mc.Mappings{}) ==
         {:error, "bad format"}
+    end
+  end
+
+  describe "list/2" do
+    test "parses `keys` as a set of whitespace-separated keys and returns a list of key/value tuples" do
+      assert KvMultiple.list("key1 key2", %Mc.Mappings{}) == [{"key1", "data one"}, {"key2", "value\ntwo\n"}]
+      assert KvMultiple.list("key1", %Mc.Mappings{}) == [{"key1", "data one"}]
+      assert KvMultiple.list("key2\nkey1", %Mc.Mappings{}) == [{"key2", "value\ntwo\n"}, {"key1", "data one"}]
+      assert KvMultiple.list("  key1\t\n", %Mc.Mappings{}) == [{"key1", "data one"}]
+      assert KvMultiple.list("no.exist", %Mc.Mappings{}) == [{"no.exist", ""}]
+      assert KvMultiple.list("ne1 ne2", %Mc.Mappings{}) == [{"ne1", ""}, {"ne2", ""}]
     end
   end
 end
