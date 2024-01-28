@@ -2,10 +2,16 @@ defmodule Mc.Modifier.CountL do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
-    {:ok,
-      String.split(buffer, "\n")
-      |> Enum.count()
-      |> Integer.to_string()
-    }
+    case buffer do
+      "" ->
+        {:ok, "0"}
+
+      non_empty_buffer ->
+        {:ok,
+          String.split(non_empty_buffer, "\n")
+          |> Enum.count()
+          |> to_string()
+        }
+    end
   end
 end
