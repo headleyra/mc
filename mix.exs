@@ -4,7 +4,7 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.76.0",
+      version: "0.76.1",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -29,7 +29,8 @@ defmodule Mc.MixProject do
     [
       {:floki, "~> 0.26"},
       {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
 
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
