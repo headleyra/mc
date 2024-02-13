@@ -7,7 +7,9 @@ defmodule Mc.Adapter.KvMemoryTest do
       %{
         "1st" => "foo",
         "2nd" => "foobar",
-        "3rd" => "dosh"
+        "3rd" => "dosh",
+        "4th" => "first: Sam\nlast: Phox",
+        "5th" => "first: Bob\nlast: Builder"
       }
 
     start_supervised({KvMemory, map: map})
@@ -39,8 +41,8 @@ defmodule Mc.Adapter.KvMemoryTest do
       assert KvMemory.findk("rd") == {:ok, "3rd"}
       assert KvMemory.findk("d") == {:ok, "2nd\n3rd"}
       assert KvMemory.findk("2") == {:ok, "2nd"}
-      assert KvMemory.findk(".") == {:ok, "1st\n2nd\n3rd"}
-      assert KvMemory.findk("") == {:ok, "1st\n2nd\n3rd"}
+      assert KvMemory.findk(".") == {:ok, "1st\n2nd\n3rd\n4th\n5th"}
+      assert KvMemory.findk("") == {:ok, "1st\n2nd\n3rd\n4th\n5th"}
     end
 
     test "errors when `regex` is bad" do
@@ -53,7 +55,10 @@ defmodule Mc.Adapter.KvMemoryTest do
     test "finds values matching its regex input and returns their keys" do
       assert KvMemory.findv("os") == {:ok, "3rd"}
       assert KvMemory.findv("foo") == {:ok, "1st\n2nd"}
-      assert KvMemory.findv("") == {:ok, "1st\n2nd\n3rd"}
+      assert KvMemory.findv("") == {:ok, "1st\n2nd\n3rd\n4th\n5th"}
+      assert KvMemory.findv("^last:") == {:ok, "4th\n5th"}
+      assert KvMemory.findv("Sam$") == {:ok, "4th"}
+      assert KvMemory.findv("Builder$") == {:ok, "5th"}
     end
 
     test "errors when `regex` is bad" do

@@ -34,7 +34,7 @@ defmodule Mc.Adapter.KvMemory do
   end
 
   defp finder(map, regx_str, by) do
-    case Regex.compile(regx_str) do
+    case Regex.compile(regx_str, "sm") do
       {:ok, regex} ->
         filter(map, regex, by)
 
