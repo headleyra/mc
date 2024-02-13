@@ -35,6 +35,11 @@ defmodule Mc.Modifier.RegexTest do
       assert Regex.modify(text, "cup.*?coffee", %{}) == {:ok, "cup of coffee"}
     end
 
+    test "handles caret and dollar", %{text: text} do
+      assert Regex.modify(text, "^(Ground.*?)$", %{}) == {:ok, "Ground coffee, I prefer."}
+      assert Regex.modify(text, "(.......coffee).$", %{}) == {:ok, "cup of coffee"}
+    end
+
     test "handles 'captures'", %{text: text} do
       assert Regex.modify(text, ~S"By.+(\d\d)", %{}) == {:ok, "51"}
       assert Regex.modify(text, ~S"By.*(1\d).*?(\d)", %{}) == {:ok, "17\n3"}

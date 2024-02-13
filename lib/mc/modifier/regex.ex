@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Regex do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
-    case Regex.compile(args, "s") do
+    case Regex.compile(args, "sm") do
       {:ok, regx} ->
         case Regex.run(regx, buffer, capture: :all) do
           [complete_match] ->
