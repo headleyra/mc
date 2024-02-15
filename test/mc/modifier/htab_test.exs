@@ -73,7 +73,7 @@ defmodule Mc.Modifier.HtabTest do
 
     test "returns a table (where the CSS selectors target lists of elements)", %{html: html} do
       assert Htab.modify(html, "tr.alt,thead td.rocket-shop,td.space-cinema,th", %{}) ==
-        {:ok, "Leaving\tFrom\tTo\tArriving\nEarth [ERT]\tMars [MRS]\nNeptune [NEP]"}
+        {:ok, "Earth [ERT]\tMars [MRS]\nNeptune [NEP]\nLeaving\tFrom\tTo\tArriving"}
     end
 
     test "returns a table after removing whitespace around content", %{html_whitespace: html_whitespace} do

@@ -4,7 +4,7 @@ defmodule Mc.MixProject do
   def project do
     [
       app: :mc,
-      version: "0.79.0",
+      version: "0.80.0",
       elixir: "~> 1.15",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -27,9 +27,9 @@ defmodule Mc.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:floki, "~> 0.26"},
-      {:httpoison, "~> 1.6"},
-      {:jason, "~> 1.2"},
+      {:floki, "~> 0.35"},
+      {:httpoison, "~> 2.2"},
+      {:jason, "~> 1.4"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false}
 
       # {:dep_from_hexpm, "~> 0.3.0"},
