@@ -16,6 +16,7 @@ defmodule Mc.Mappings do
     countw: Mc.Modifier.CountW,
     delete: Mc.Modifier.Delete,
     email: Mc.Modifier.Email,
+    erase: Mc.Modifier.Erase,
     error: Mc.Modifier.Error,
     find: Mc.Modifier.FindK,
     findv: Mc.Modifier.FindV,

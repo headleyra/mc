@@ -35,7 +35,14 @@ defmodule Mc.Adapter.KvMemory do
 
   @impl true
   def delete(key) do
-    Agent.update(__MODULE__, fn map -> Map.delete(map, key) end)
+    case get(key) do
+      {:ok, _value} ->
+        Agent.update(__MODULE__, fn map -> Map.delete(map, key) end)
+        1
+
+      {:error, :not_found} ->
+        0
+    end
   end
 
   defp finder(map, regx_str, by) do

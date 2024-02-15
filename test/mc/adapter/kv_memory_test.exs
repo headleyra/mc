@@ -68,15 +68,15 @@ defmodule Mc.Adapter.KvMemoryTest do
   end
 
   describe "delete/1" do
-    test "deletes its key and returns ok" do
+    test "deletes its key and returns 1" do
       KvMemory.set("delly", "old data")
       assert KvMemory.get("delly") == {:ok, "old data"}
-      assert KvMemory.delete("delly") == :ok
+      assert KvMemory.delete("delly") == 1
       assert KvMemory.get("delly") == {:error, :not_found}
     end
 
-    test "returns ok when the key doesn't exist" do
-      assert KvMemory.delete("no-exist-key-foo-bar-biz") == :ok
+    test "returns 0 when it thinks (i.e., ignoring potential race conditions) the key doesn't exist" do
+      assert KvMemory.delete("no-exist-key-foo-bar-biz") == 0
     end
   end
 end
