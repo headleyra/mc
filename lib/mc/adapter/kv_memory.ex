@@ -33,6 +33,11 @@ defmodule Mc.Adapter.KvMemory do
     Agent.get(__MODULE__, &finder(&1, regex_str, :value))
   end
 
+  @impl true
+  def delete(key) do
+    Agent.update(__MODULE__, fn map -> Map.delete(map, key) end)
+  end
+
   defp finder(map, regx_str, by) do
     case Regex.compile(regx_str, "sm") do
       {:ok, regex} ->

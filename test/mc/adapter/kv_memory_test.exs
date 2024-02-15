@@ -31,7 +31,7 @@ defmodule Mc.Adapter.KvMemoryTest do
       assert KvMemory.get("3rd") == {:ok, "dosh"}
     end
 
-    test "errors with 'not found' when the `key` doesn't exist" do
+    test "errors when the `key` doesn't exist" do
       assert KvMemory.get("key-no-exist") == {:error, :not_found}
     end
   end
@@ -64,6 +64,19 @@ defmodule Mc.Adapter.KvMemoryTest do
     test "errors when `regex` is bad" do
       assert KvMemory.findv("?") == {:error, "bad regex"}
       assert KvMemory.findv("*") == {:error, "bad regex"}
+    end
+  end
+
+  describe "delete/1" do
+    test "deletes its key and returns ok" do
+      KvMemory.set("delly", "old data")
+      assert KvMemory.get("delly") == {:ok, "old data"}
+      assert KvMemory.delete("delly") == :ok
+      assert KvMemory.get("delly") == {:error, :not_found}
+    end
+
+    test "returns ok when the key doesn't exist" do
+      assert KvMemory.delete("no-exist-key-foo-bar-biz") == :ok
     end
   end
 end
