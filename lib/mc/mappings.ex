@@ -1,9 +1,7 @@
 defmodule Mc.Mappings do
   defstruct [
-    *: Mc.Modifier.Multiply,
-    +: Mc.Modifier.Add,
-    -: Mc.Modifier.Subtract,
-    /: Mc.Modifier.Divide,
+
+    add: Mc.Modifier.Add,
     app: Mc.Modifier.App,
     append: Mc.Modifier.Append,
     appendk: Mc.Modifier.AppendK,
@@ -15,6 +13,7 @@ defmodule Mc.Mappings do
     countl: Mc.Modifier.CountL,
     countw: Mc.Modifier.CountW,
     delete: Mc.Modifier.Delete,
+    div: Mc.Modifier.Divide,
     email: Mc.Modifier.Email,
     erase: Mc.Modifier.Erase,
     error: Mc.Modifier.Error,
@@ -38,6 +37,7 @@ defmodule Mc.Mappings do
     jsona: Mc.Modifier.JsonA,
     map: Mc.Modifier.Map,
     mapc: Mc.Modifier.MapC,
+    mul: Mc.Modifier.Multiply,
     prepend: Mc.Modifier.Prepend,
     prependk: Mc.Modifier.PrependK,
     range: Mc.Modifier.Range,
@@ -51,6 +51,7 @@ defmodule Mc.Mappings do
     sortv: Mc.Modifier.SortV,
     split: Mc.Modifier.Split,
     squeeze: Mc.Modifier.Squeeze,
+    sub: Mc.Modifier.Subtract,
     tail: Mc.Modifier.Tail,
     trim: Mc.Modifier.Trim,
     url: Mc.Modifier.Url,
@@ -59,10 +60,15 @@ defmodule Mc.Mappings do
     zip: Mc.Modifier.Zip,
 
     # Aliases
+    *: Mc.Modifier.Multiply,
+    +: Mc.Modifier.Add,
+    -: Mc.Modifier.Subtract,
+    /: Mc.Modifier.Divide,
     a: Mc.Modifier.App,
     b: Mc.Modifier.Buffer,
     d: Mc.Modifier.Delete,
     g: Mc.Modifier.Grep,
+    gv: Mc.Modifier.GrepV,
     m: Mc.Modifier.Map,
     r: Mc.Modifier.Replace
   ]
