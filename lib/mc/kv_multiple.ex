@@ -31,7 +31,7 @@ defmodule Mc.KvMultiple do
   end
 
   defp stringize({key, {:ok, value}}), do: "#{key}\n#{value}"
-  defp stringize({key, {:error, "not found"}}), do: "#{key}\n"
+  defp stringize({key, {:error, _reason}}), do: "#{key}\n"
 
   defp update(setm, separator, mappings) do
     {:ok, decoded_separator} = Mc.Uri.decode(separator)
@@ -72,5 +72,5 @@ defmodule Mc.KvMultiple do
   end
 
   defp tupleizek({key, {:ok, value}}), do: {key, value}
-  defp tupleizek({key, {:error, "not found"}}), do: {key, ""}
+  defp tupleizek({key, {:error, _reason}}), do: {key, ""}
 end

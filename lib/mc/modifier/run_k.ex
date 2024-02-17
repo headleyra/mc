@@ -6,7 +6,7 @@ defmodule Mc.Modifier.RunK do
       {:ok, script} ->
         Mc.modify(buffer, script, mappings)
 
-      {:error, "not found"} ->
+      {:error, _reason} ->
         {:ok, buffer}
     end
   end

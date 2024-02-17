@@ -64,7 +64,7 @@ defmodule Mc.Modifier.UrlP do
   end
 
   defp build_keyword_list({atom, {:ok, value}}), do: {atom, value}
-  defp build_keyword_list({atom, {:error, "not found"}}), do: {atom, ""}
+  defp build_keyword_list({atom, {:error, _reason}}), do: {atom, ""}
 
   defp adapter do
     Application.get_env(:mc, :http_adapter)

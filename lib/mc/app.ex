@@ -33,7 +33,7 @@ defmodule Mc.App do
         {:ok, keys} ->
           keys
 
-        {:error, "not found"} ->
+        {:error, _reason} ->
           ""
       end
 

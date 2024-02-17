@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Get do
         {:ok, result}
 
       {:error, :not_found} ->
-        {:error, "not found"}
+        oops("not found: #{args}")
     end
   end
 

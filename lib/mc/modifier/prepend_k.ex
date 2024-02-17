@@ -6,7 +6,7 @@ defmodule Mc.Modifier.PrependK do
       {:ok, data} ->
         {:ok, data <> buffer}
 
-      {:error, "not found"} ->
+      {:error, _reason} ->
         {:ok, buffer}
     end
   end

@@ -6,7 +6,7 @@ defmodule Mc.Modifier.AppendK do
       {:ok, data} ->
         {:ok, buffer <> data}
 
-      {:error, "not found"} ->
+      {:error, _reason} ->
         {:ok, buffer}
     end
   end
