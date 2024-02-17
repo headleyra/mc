@@ -3,8 +3,12 @@ defmodule McTest do
 
   describe "modify/3" do
     test "returns a modified `buffer`" do
-      assert Mc.modify("ON THE RADIO\n", "casel", %Mc.Mappings{}) == {:ok, "on the radio\n"}
-      assert Mc.modify("hurry, offer ends SOON!", "countc", %Mc.Mappings{}) == {:ok, "23"}
+      assert Mc.modify("on the radio\n", "caseu", %Mc.Mappings{}) == {:ok, "ON THE RADIO\n"}
+      assert Mc.modify("FOO BAR", "replace O @\ncasel\nappend !", %Mc.Mappings{}) == {:ok, "f@@ bar!"}
+    end
+
+    test "halts the 'chain' when the 'stop' modifier is encountered" do
+      assert Mc.modify("CASH", "casel\nstop\nappend won't be appended", %Mc.Mappings{}) == {:ok, "cash"}
     end
 
     test "ignores leading whitespace in script lines" do

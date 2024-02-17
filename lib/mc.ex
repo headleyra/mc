@@ -2,7 +2,11 @@ defmodule Mc do
   def modify(buffer, script, mappings) do
     listize(script)
     |> Enum.map(fn double -> tripleize(double, mappings) end)
-    |> Enum.reduce(buffer, fn {mod, func_name, args}, acc -> apply(mod, func_name, [acc, args, mappings]) end)
+    |> Enum.reduce_while(
+      buffer,
+      fn {module, func_name, args}, acc ->
+        wrap(module, func_name, args, acc, mappings)
+      end)
     |> tupleize()
   end
 
@@ -32,6 +36,14 @@ defmodule Mc do
 
       module ->
         {module, :modify, args}
+    end
+  end
+
+  defp wrap(module, func_name, args, acc, mappings) do
+    if module == Mc.Modifier.Stop do
+      {:halt, apply(module, func_name, [acc, args, mappings])}
+    else
+      {:cont, apply(module, func_name, [acc, args, mappings])}
     end
   end
 
