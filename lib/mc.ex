@@ -1,25 +1,22 @@
 defmodule Mc do
   def modify(buffer, script, mappings) do
-    listize(script)
-    |> Enum.map(fn double -> tripleize(double, mappings) end)
-    |> Enum.reduce_while(
-      buffer,
-      fn {module, func_name, args}, acc ->
-        wrap(module, func_name, args, acc, mappings)
-      end)
+    script
+    |> doubleize()
+    |> tripleize(mappings)
+    |> transform(buffer, mappings)
     |> tupleize()
   end
 
-  def listize(script) do
+  defp doubleize(script) do
     script
     |> String.split("\n")
-    |> Enum.map(&String.trim_leading/1)
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.reject(&Mc.String.is_comment?/1)
-    |> Enum.map(&doubleize/1)
+    |> Enum.map(fn line -> String.trim_leading(line) end)
+    |> Enum.reject(fn line -> line == "" end)
+    |> Enum.reject(fn line -> Mc.String.comment?(line) end)
+    |> Enum.map(fn line -> double_line(line) end)
   end
 
-  def doubleize(modify_instruction) do
+  defp double_line(modify_instruction) do
     case String.split(modify_instruction, " ", parts: 2) do
       [name, args] ->
         {String.to_atom(name), args}
@@ -29,7 +26,12 @@ defmodule Mc do
     end
   end
 
-  def tripleize({modifier_name, args}, mappings) do
+  defp tripleize(doubles, mappings) do
+    doubles
+    |> Enum.map(fn double -> triple_double(double, mappings) end)
+  end
+
+  defp triple_double({modifier_name, args}, mappings) do
     case Map.get(mappings, modifier_name) do
       nil ->
         {Mc.Modifier.Error, :modify, "modifier not found: #{modifier_name}"}
@@ -39,7 +41,15 @@ defmodule Mc do
     end
   end
 
-  defp wrap(module, func_name, args, acc, mappings) do
+  defp transform(triples, buffer, mappings) do
+    triples
+    |> Enum.reduce_while(
+      buffer,
+      fn {module, func_name, args}, acc -> result_wrapper(module, func_name, args, acc, mappings) end
+    )
+  end
+
+  defp result_wrapper(module, func_name, args, acc, mappings) do
     if module == Mc.Modifier.Stop do
       {:halt, apply(module, func_name, [acc, args, mappings])}
     else

@@ -14,18 +14,18 @@ defmodule Mc.StringTest do
     end
   end
 
-  describe "is_comment?/1" do
+  describe "comment?/1" do
     test "returns true if `string` is a comment" do
-      assert String.is_comment?("# this is a comment")
-      assert String.is_comment?(" \t # so is this")
-      assert String.is_comment?("#")
-      assert String.is_comment?("# foobar #")
-      assert String.is_comment?("\t# and this")
+      assert String.comment?("# this is a comment")
+      assert String.comment?(" \t # so is this")
+      assert String.comment?("#")
+      assert String.comment?("# foobar #")
+      assert String.comment?("\t# and this")
     end
 
     test "returns false when `string` isn't a comment" do
-      refute String.is_comment?("this #is not a comment")
-      refute String.is_comment?("no#r this")
+      refute String.comment?("this #is not a comment")
+      refute String.comment?("no#r this")
     end
   end
 

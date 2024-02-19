@@ -9,7 +9,7 @@ defmodule Mc.String do
     }
   end
 
-  def is_comment?(string) do
+  def comment?(string) do
     String.match?(string, ~r/^\s*#/)
   end
 
