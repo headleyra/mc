@@ -1,10 +1,10 @@
-defmodule Mc.Modifier.Subtract do
+defmodule Mc.Modifier.Sub do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
     case Mc.String.numberize(buffer) do
       {:ok, []} ->
-        oops("no numbers found")
+        {:ok, ""}
 
       {:ok, numbers} ->
         {:ok,

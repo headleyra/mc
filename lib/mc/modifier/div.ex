@@ -1,4 +1,4 @@
-defmodule Mc.Modifier.Divide do
+defmodule Mc.Modifier.Div do
   use Mc.Modifier
 
   def modify(buffer, _args, _mappings) do
@@ -13,7 +13,7 @@ defmodule Mc.Modifier.Divide do
   defp divide(buffer) do
     case Mc.String.numberize(buffer) do
       {:ok, []} ->
-        oops("no numbers found")
+        {:ok, ""}
 
       {:ok, numbers} ->
         {:ok,

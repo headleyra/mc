@@ -4,7 +4,7 @@ defmodule Mc.Modifier.Add do
   def modify(buffer, _args, _mappings) do
     case Mc.String.numberize(buffer) do
       {:ok, []} ->
-        oops("no numbers found")
+        {:ok, ""}
 
       {:ok, numbers} ->
         {:ok,
