@@ -4,14 +4,9 @@ defmodule Mc.AppTest do
 
   setup do
     map = %{
-      "app1" => "script1",
-      "app3" => "script3\nscript5",
-      "app5" => "script3",
-      "app7" => "script7",
-      "script1" => "lcase",
-      "script3" => "r a ::1",
-      "script5" => "r b ::2",
-      "script7" => "b 1 => ::1, 2 => ::2, all => :::"
+      "app1" => "casel",
+      "app2" => "r a ::1",
+      "app3" => "b 1 => ::1, 2 => ::2, all => :::",
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
@@ -19,24 +14,36 @@ defmodule Mc.AppTest do
   end
 
   describe "script/2" do
-    test "builds an 'app script' given an 'app key' and mappings" do
-      assert App.script("app1", %Mc.Mappings{}) == {:ok, "lcase"}
-      assert App.script("app3", %Mc.Mappings{}) == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("app5", %Mc.Mappings{}) == {:ok, "r a ::1"}
-      assert App.script("app7", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
-      assert App.script("", %Mc.Mappings{}) == {:ok, ""}
+    test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
+
+    test "builds an 'app' script given an 'app' key and mappings" do
+      assert App.script("app1", %Mc.Mappings{}) == {:ok, "casel"}
+      assert App.script("app2", %Mc.Mappings{}) == {:ok, "r a ::1"}
+      assert App.script("app3", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
     end
 
-    test "builds an 'app script' given an 'app key' and placeholder replacements" do
-      assert App.script("app3 one two", %Mc.Mappings{}) == {:ok, "r a one\nr b two"}
-      assert App.script("app5 bbb ignored", %Mc.Mappings{}) == {:ok, "r a bbb"}
-      assert App.script("app7 foo bar roo", %Mc.Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar roo"}
+    test "errors when the 'app' key doesn't exist" do
+      assert App.script("no-exist-app", %Mc.Mappings{}) == {:error, :not_found}
+      assert App.script("", %Mc.Mappings{}) == {:error, :not_found}
+    end
+
+    test "assigns arguments to placeholder replacements (::1, ::2, ::: etc.)" do
+      assert App.script("app2 one", %Mc.Mappings{}) == {:ok, "r a one"}
+      assert App.script("app3 foo bar biz", %Mc.Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar biz"}
+    end
+
+    test "ignores extra arguments" do
+      assert App.script("app2 bbb ignored", %Mc.Mappings{}) == {:ok, "r a bbb"}
+    end
+
+    test "doesn't assign placeholders with missing arguments" do
+      assert App.script("app2", %Mc.Mappings{}) == {:ok, "r a ::1"}
     end
 
     test "ignores leading, internal and trailing whitespace" do
-      assert App.script("   app1", %Mc.Mappings{}) == {:ok, "lcase"}
-      assert App.script("   app3 \t  ", %Mc.Mappings{}) == {:ok, "r a ::1\nr b ::2"}
-      assert App.script("   app3  \t   one \t   two   ", %Mc.Mappings{}) == {:ok, "r a one\nr b two"}
+      assert App.script(" app1", %Mc.Mappings{}) == {:ok, "casel"}
+      assert App.script("  app3 \t  ", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
+      assert App.script("app3 \t one two", %Mc.Mappings{}) == {:ok, "b 1 => one, 2 => two, all => one two"}
     end
   end
 
