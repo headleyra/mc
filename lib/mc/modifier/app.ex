@@ -6,8 +6,8 @@ defmodule Mc.Modifier.App do
       {:ok, script} ->
         Mc.modify(buffer, script, mappings)
 
-      {:error, :not_found} ->
-        oops("app not found")
+      {:error, :not_found, key} ->
+        oops("not found: #{key}")
     end
   end
 end

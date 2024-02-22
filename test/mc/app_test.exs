@@ -6,7 +6,8 @@ defmodule Mc.AppTest do
     map = %{
       "app1" => "casel",
       "app2" => "r a ::1",
-      "app3" => "b 1 => ::1, 2 => ::2, all => :::",
+      "app3" => "b 1: ::1, 2: ::2",
+      "app4" => "b all: :::"
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
@@ -16,20 +17,30 @@ defmodule Mc.AppTest do
   describe "script/2" do
     test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
 
-    test "builds an 'app' script given an 'app' key and mappings" do
+    test "gets an app script given an app key and mappings" do
       assert App.script("app1", %Mc.Mappings{}) == {:ok, "casel"}
       assert App.script("app2", %Mc.Mappings{}) == {:ok, "r a ::1"}
-      assert App.script("app3", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
+      assert App.script("app3", %Mc.Mappings{}) == {:ok, "b 1: ::1, 2: ::2"}
     end
 
-    test "errors when the 'app' key doesn't exist" do
-      assert App.script("no-exist-app", %Mc.Mappings{}) == {:error, :not_found}
-      assert App.script("", %Mc.Mappings{}) == {:error, :not_found}
+    test "errors when the app key doesn't exist" do
+      assert App.script("no-exist", %Mc.Mappings{}) == {:error, :not_found, "no-exist"}
+      assert App.script("", %Mc.Mappings{}) == {:error, :not_found, ""}
+      assert App.script("  ", %Mc.Mappings{}) == {:error, :not_found, ""}
     end
 
-    test "assigns arguments to placeholder replacements (::1, ::2, ::: etc.)" do
+    test "assigns arguments to placeholder replacements (::1, ::2, etc.)" do
       assert App.script("app2 one", %Mc.Mappings{}) == {:ok, "r a one"}
-      assert App.script("app3 foo bar biz", %Mc.Mappings{}) == {:ok, "b 1 => foo, 2 => bar, all => foo bar biz"}
+      assert App.script("app3 foo bar", %Mc.Mappings{}) == {:ok, "b 1: foo, 2: bar"}
+    end
+
+    test "assigns arguments to the 'all args' placeholder (::: => arg*)" do
+      assert App.script("app4 yab dab do", %Mc.Mappings{}) == {:ok, "b all: yab dab do"}
+    end
+
+    test "errors when the app doesn't exist and arguments are passed" do
+      assert App.script("no.exist arg1 arg2", %Mc.Mappings{}) == {:error, :not_found, "no.exist"}
+      assert App.script("oops arg1", %Mc.Mappings{}) == {:error, :not_found, "oops"}
     end
 
     test "ignores extra arguments" do
@@ -42,8 +53,8 @@ defmodule Mc.AppTest do
 
     test "ignores leading, internal and trailing whitespace" do
       assert App.script(" app1", %Mc.Mappings{}) == {:ok, "casel"}
-      assert App.script("  app3 \t  ", %Mc.Mappings{}) == {:ok, "b 1 => ::1, 2 => ::2, all => :::"}
-      assert App.script("app3 \t one two", %Mc.Mappings{}) == {:ok, "b 1 => one, 2 => two, all => one two"}
+      assert App.script("  app3 \t  ", %Mc.Mappings{}) == {:ok, "b 1: ::1, 2: ::2"}
+      assert App.script("app3 \t one two", %Mc.Mappings{}) == {:ok, "b 1: one, 2: two"}
     end
   end
 
