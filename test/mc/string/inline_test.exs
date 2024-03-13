@@ -4,21 +4,17 @@ defmodule Mc.String.InlineTest do
 
   describe "decode/1" do
     test "echoes 'normal' text" do
-      assert Inline.decode("foo") == {:ok, "foo"}
-      assert Inline.decode("bish\nbosh") == {:ok, "bish\nbosh"}
-      assert Inline.decode("nothing to see here") == {:ok, "nothing to see here"}
+      assert Inline.decode("foo") == "foo"
+      assert Inline.decode("bish\nbosh") == "bish\nbosh"
+      assert Inline.decode("nothing to see here") == "nothing to see here"
     end
 
     test "splits its input on semicolon-space" do
-      assert Inline.decode("split; into; lines") == {:ok, "split\ninto\nlines"}
-      assert Inline.decode("won't split into;lines") == {:ok, "won't split into;lines"}
-      assert Inline.decode("big; tune; ") == {:ok, "big\ntune\n"}
-      assert Inline.decode("; un; deux") == {:ok, "\nun\ndeux"}
-      assert Inline.decode("foo %") == {:ok, "foo %"}
-    end
-
-    test "expands URI-encoded strings" do
-      assert Inline.decode("nl:%0a, tb:%09, sp:%20, bt:%60") == {:ok, "nl:\n, tb:\t, sp: , bt:`"}
+      assert Inline.decode("split; into; lines") == "split\ninto\nlines"
+      assert Inline.decode("won't split into;lines") == "won't split into;lines"
+      assert Inline.decode("big; tune; ") == "big\ntune\n"
+      assert Inline.decode("; un; deux") == "\nun\ndeux"
+      assert Inline.decode("foo %") == "foo %"
     end
   end
 end

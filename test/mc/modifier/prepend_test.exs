@@ -7,8 +7,7 @@ defmodule Mc.Modifier.PrependTest do
       assert Prepend.modify("23", "1", %{}) == {:ok, "123"}
       assert Prepend.modify("\nbar", "foo", %{}) == {:ok, "foo\nbar"}
       assert Prepend.modify("\nroo", "foo; bar", %{}) == {:ok, "foo\nbar\nroo"}
-      assert Prepend.modify("pend", "pre%09", %{}) == {:ok, "pre\tpend"}
-      assert Prepend.modify("the buff", "%%0a", %{}) == {:ok, "%\nthe buff"}
+      assert Prepend.modify("pend", "pre; ", %{}) == {:ok, "pre\npend"}
       assert Prepend.modify("same same", "", %{}) == {:ok, "same same"}
     end
 

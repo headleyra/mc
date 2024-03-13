@@ -7,8 +7,7 @@ defmodule Mc.Modifier.AppendTest do
       assert Append.modify("12", "3", %{}) == {:ok, "123"}
       assert Append.modify("foo\n", "bar", %{}) == {:ok, "foo\nbar"}
       assert Append.modify("foo\n", "bar; roo", %{}) == {:ok, "foo\nbar\nroo"}
-      assert Append.modify("ap", "%09pend", %{}) == {:ok, "ap\tpend"}
-      assert Append.modify("the buff", "%%0a", %{}) == {:ok, "the buff%\n"}
+      assert Append.modify("ap", "; pend", %{}) == {:ok, "ap\npend"}
     end
 
     test "works with ok tuples" do

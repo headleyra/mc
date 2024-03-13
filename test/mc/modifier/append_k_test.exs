@@ -6,22 +6,22 @@ defmodule Mc.Modifier.AppendKTest do
   setup do
     map = %{"star" => "light", "thing" => "bar"}
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    :ok
+    %{mappings: %Mc.Mappings{}}
   end
 
   describe "modify/3" do
-    test "parses `args` as a 'key' and appends its value to the `buffer`" do
-      assert AppendK.modify("raise the ", "thing", %Mc.Mappings{}) == {:ok, "raise the bar"}
-      assert AppendK.modify("same", "key.no.exist", %Mc.Mappings{}) == {:ok, "same"}
-      assert AppendK.modify("same", "", %Mc.Mappings{}) == {:ok, "same"}
+    test "parses `args` as a 'key' and appends its value to the `buffer`", %{mappings: mappings} do
+      assert AppendK.modify("raise the ", "thing", mappings) == {:ok, "raise the bar"}
+      assert AppendK.modify("same", "key.no.exist", mappings) == {:ok, "same"}
+      assert AppendK.modify("same", "", mappings) == {:ok, "same"}
     end
 
-    test "works with ok tuples" do
-      assert AppendK.modify({:ok, "bright "}, "star", %Mc.Mappings{}) == {:ok, "bright light"}
+    test "works with ok tuples", %{mappings: mappings} do
+      assert AppendK.modify({:ok, "bright "}, "star", mappings) == {:ok, "bright light"}
     end
 
-    test "allows error tuples to pass through" do
-      assert AppendK.modify({:error, "reason"}, "", %Mc.Mappings{}) == {:error, "reason"}
+    test "allows error tuples to pass through", %{mappings: mappings} do
+      assert AppendK.modify({:error, "reason"}, "", mappings) == {:error, "reason"}
     end
   end
 end

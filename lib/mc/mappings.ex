@@ -27,8 +27,6 @@ defmodule Mc.Mappings do
     hsel: Mc.Modifier.Hsel,
     hselc: Mc.Modifier.HselC,
     htab: Mc.Modifier.Htab,
-    if: Mc.Modifier.If,
-    ifk: Mc.Modifier.IfK,
     invert: Mc.Modifier.Invert,
     iword: Mc.Modifier.Iword,
     join: Mc.Modifier.Join,
