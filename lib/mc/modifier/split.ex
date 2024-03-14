@@ -1,22 +1,20 @@
 defmodule Mc.Modifier.Split do
   use Mc.Modifier
 
-  def modify(buffer, "", _mappings) do
-    String.split(buffer)
-    |> split()
-  end
+  def modify(buffer, "", _mappings), do: split(buffer, "\\s+")
+  def modify(buffer, args, _mappings), do: split(buffer, args)
 
-  def modify(buffer, args, _mappings) do
-    {:ok, split_str} = Mc.Uri.decode(args)
+  defp split(buffer, regex_str) do
+    case Regex.compile(regex_str) do
+      {:ok, regex} ->
+        {:ok,
+          buffer
+          |> String.split(regex)
+          |> Enum.join("\n")
+        }
 
-    String.split(buffer, split_str)
-    |> split()
-  end
-
-  defp split(buffer_list) do
-    {:ok,
-      buffer_list
-      |> Enum.join("\n")
-    }
+      {:error, _} ->
+        oops("bad regex")
+    end
   end
 end
