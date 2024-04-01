@@ -16,15 +16,15 @@ defmodule Mc.Modifier.RunKTest do
   end
 
   describe "modify/3" do
-    test "'runs' the script referenced by 'key' on the `buffer`", %{mappings: mappings} do
+    test "runs the script referenced by key, against the `buffer`", %{mappings: mappings} do
       assert RunK.modify("stay in FOO contact", "s1", mappings) == {:ok, "stay in radio contact"}
       assert RunK.modify("one 4 da BASS", "s3", mappings) == {:ok, "one 4 da BASS"}
       assert RunK.modify("one 4 da BASS", "s2", mappings) == {:ok, "two 4 da treble"}
     end
 
-    test "returns `buffer` when 'key' references a script that doesn't exist", %{mappings: mappings} do
-      assert RunK.modify("still the same", "nope", mappings) == {:ok, "still the same"}
-      assert RunK.modify("abc", "", mappings) == {:ok, "abc"}
+    test "errors when the key doesn't exist", %{mappings: mappings} do
+      assert RunK.modify("n/a", "nope", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: nope"}
+      assert RunK.modify("abc", "", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: "}
     end
 
     test "works with ok tuples", %{mappings: mappings} do

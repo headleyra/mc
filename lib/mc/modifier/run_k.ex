@@ -6,8 +6,8 @@ defmodule Mc.Modifier.RunK do
       {:ok, script} ->
         Mc.modify(buffer, script, mappings)
 
-      {:error, _reason} ->
-        {:ok, buffer}
+      {:error, reason} ->
+        oops(reason)
     end
   end
 end
