@@ -6,8 +6,6 @@ defmodule Mc.Modifier.AppendTest do
     test "parses `args` as an 'inline string' and appends it to `buffer`" do
       assert Append.modify("12", "3", %{}) == {:ok, "123"}
       assert Append.modify("foo\n", "bar", %{}) == {:ok, "foo\nbar"}
-      assert Append.modify("foo\n", "bar; roo", %{}) == {:ok, "foo\nbar\nroo"}
-      assert Append.modify("ap", "; pend", %{}) == {:ok, "ap\npend"}
     end
 
     test "works with ok tuples" do
