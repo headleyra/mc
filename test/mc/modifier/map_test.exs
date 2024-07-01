@@ -12,8 +12,8 @@ defmodule Mc.Modifier.MapTest do
     test "run `args` against each line in `buffer` (sequentially)", %{mappings: mappings} do
       assert Map.modify("ApplE  JuicE", "casel", mappings) == {:ok, "apple  juice"}
       assert Map.modify("ApplE\nJuicE", "casel", mappings) == {:ok, "apple\njuice"}
-      assert Map.modify("1\n2", "b `getb`: `getb; iword`", mappings) == {:ok, "1: one\n2: two"}
-      assert Map.modify("1\n2", "b `iword; append -x`", mappings) == {:ok, "one-x\ntwo-x"}
+      assert Map.modify("1\n2", "b {getb}: {getb; iword}", mappings) == {:ok, "1: one\n2: two"}
+      assert Map.modify("1\n2", "b {iword; append -x}", mappings) == {:ok, "one-x\ntwo-x"}
     end
 
     test "reports errors", %{mappings: mappings} do

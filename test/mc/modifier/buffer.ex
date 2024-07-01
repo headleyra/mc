@@ -1,11 +1,11 @@
-defmodule Mc.Modifier.Buffer do
+defmodule Go.Modifier.Buffer do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do
     result =
       args
       |> Mc.String.Inline.decode()
-      |> Mc.Tokenizer.parse()
+      |> Mcex.Tokenizer.parse()
       |> untokenize(buffer, mappings)
 
     case result do
@@ -24,7 +24,7 @@ defmodule Mc.Modifier.Buffer do
     |> Enum.reverse()
   end
 
-  defp expand({:token, chars}, buffer, mappings) do
+  defp expand({:ok, chars}, buffer, mappings) do
     script = IO.chardata_to_string(chars)
     Mc.modify(buffer, script, mappings)
   end

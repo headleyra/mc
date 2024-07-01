@@ -12,8 +12,8 @@ defmodule Mc.Modifier.MapCTest do
     test "run `args` against each line in `buffer` (integer is concurrency)", %{mappings: mappings} do
       assert MapC.modify("ApplE  JuicE", "1 casel", mappings) == {:ok, "apple  juice"}
       assert MapC.modify("ApplE\nJuicE", "2 casel", mappings) == {:ok, "apple\njuice"}
-      assert MapC.modify("1\n2", "3 b `getb`: `getb; iword`", mappings) == {:ok, "1: one\n2: two"}
-      assert MapC.modify("1\n2", "5 b `iword; append -x`", mappings) == {:ok, "one-x\ntwo-x"}
+      assert MapC.modify("1\n2", "3 b {getb}: {getb; iword}", mappings) == {:ok, "1: one\n2: two"}
+      assert MapC.modify("1\n2", "5 b {iword; append -x}", mappings) == {:ok, "one-x\ntwo-x"}
     end
 
     @errmsg "Mc.Modifier.MapC: 'concurrency' should be a positive integer"
