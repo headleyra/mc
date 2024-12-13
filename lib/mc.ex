@@ -7,6 +7,14 @@ defmodule Mc do
     |> tupleize()
   end
 
+  def m(buffer, script, mappings) do
+    modify(buffer, script, mappings)
+  end
+
+  def m(script, mappings) do
+    modify("", script, mappings)
+  end
+
   defp doubleize(script) do
     script
     |> String.split("\n")
