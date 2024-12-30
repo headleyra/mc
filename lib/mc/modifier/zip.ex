@@ -13,8 +13,7 @@ defmodule Mc.Modifier.Zip do
 
         {:ok,
           Enum.zip(buffer_list, script_list)
-          |> Enum.map(fn {a, b} -> "#{a}#{b}" end)
-          |> Enum.join("\n")
+          |> Enum.map_join("\n", fn {a, b} -> "#{a}#{b}" end)
         }
 
       {:error, reason} ->

@@ -5,8 +5,7 @@ defmodule Mc.Modifier.Squeeze do
     {:ok,
       String.split(buffer, "\n")
       |> Enum.map(&String.replace(&1, ~r/\s\s+/, " "))
-      |> Enum.map(&String.trim(&1))
-      |> Enum.join("\n")
+      |> Enum.map_join("\n", &String.trim(&1))
     }
   end
 end

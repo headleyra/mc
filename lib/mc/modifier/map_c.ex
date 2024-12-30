@@ -2,18 +2,22 @@ defmodule Mc.Modifier.MapC do
   use Mc.Modifier
 
   def modify(buffer, args, mappings) do
-    with \
-      {{:ok, concurrency}, script} when concurrency > 0 <- concurrency_with_args(args)
-    do
-      run_concurrent(buffer, script, concurrency, mappings)
-    else
+    case concurrency_with_args(args) do
+      {{:ok, concurrency}, script} when concurrency > 0 ->
+        run_concurrent(buffer, script, concurrency, mappings)
+
       _bad_concurrency ->
         oops("'concurrency' should be a positive integer")
     end
   end
 
   defp concurrency_with_args(args) do
-    case String.trim(args) |> String.split(~r/\s+/, parts: 2) do
+    conc_args =
+      args
+      |> String.trim()
+      |> String.split(~r/\s+/, parts: 2)
+
+    case conc_args do
       [concurrency, script] ->
         {Mc.String.to_int(concurrency), script}
 

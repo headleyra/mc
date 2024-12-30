@@ -19,8 +19,7 @@ defmodule Mc.KvMultiple do
     {:ok,
       keys
       |> listize(mappings)
-      |> Enum.map(fn kv_tuple -> stringize(kv_tuple) end)
-      |> Enum.join(decoded_separator)
+      |> Enum.map_join(decoded_separator, fn kv_tuple -> stringize(kv_tuple) end)
     }
   end
 

@@ -8,11 +8,7 @@ defmodule Mc.Modifier.JsonA do
   defp parse_list(buffer) do
     case Jason.decode(buffer) do
       {:ok, array} when is_list(array) ->
-        {:ok,
-          array
-          |> Enum.map(&Jason.encode!(&1))
-          |> Enum.join("\n")
-        }
+        {:ok, Enum.map_join(array, "\n", &Jason.encode!(&1))}
 
       {:ok, array} when is_map(array) or is_nil(array) ->
         {:ok, ""}

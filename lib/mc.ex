@@ -19,8 +19,7 @@ defmodule Mc do
     script
     |> String.split("\n")
     |> Enum.map(fn line -> String.trim_leading(line) end)
-    |> Enum.reject(fn line -> line == "" end)
-    |> Enum.reject(fn line -> Mc.String.comment?(line) end)
+    |> Enum.reject(fn line -> Mc.String.comment?(line) || line == "" end)
     |> Enum.map(fn line -> double_line(line) end)
   end
 
@@ -51,18 +50,12 @@ defmodule Mc do
 
   defp transform(triples, buffer, mappings) do
     triples
-    |> Enum.reduce_while(
-      buffer,
-      fn {module, func_name, args}, acc -> result_wrapper(module, func_name, args, acc, mappings) end
-    )
+    |> Enum.reduce_while(buffer, fn {mod, fun, args}, acc -> result(mod, fun, args, acc, mappings) end)
   end
 
-  defp result_wrapper(module, func_name, args, acc, mappings) do
-    if module == Mc.Modifier.Stop do
-      {:halt, apply(module, func_name, [acc, args, mappings])}
-    else
-      {:cont, apply(module, func_name, [acc, args, mappings])}
-    end
+  defp result(module, func_name, args, acc, mappings) do
+    result = apply(module, func_name, [acc, args, mappings])
+    if module == Mc.Modifier.Stop, do: {:halt, result}, else: {:cont, result}
   end
 
   defp tupleize(result) do

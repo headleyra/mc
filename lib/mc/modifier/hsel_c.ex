@@ -8,8 +8,7 @@ defmodule Mc.Modifier.HselC do
       html_parsed
       |> Floki.find(args)
       |> Enum.map(fn {_selector, _attributes, content_list} -> Floki.text(content_list, sep: " ") end)
-      |> Enum.map(fn text -> String.trim(text) end)
-      |> Enum.join("\n")
+      |> Enum.map_join("\n", fn text -> String.trim(text) end)
     }
   end
 end

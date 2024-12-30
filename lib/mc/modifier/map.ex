@@ -5,8 +5,7 @@ defmodule Mc.Modifier.Map do
     {:ok,
       String.split(buffer, "\n")
       |> Enum.map(&Mc.modify(&1, args, mappings))
-      |> Enum.map(&detuple/1)
-      |> Enum.join("\n")
+      |> Enum.map_join("\n", &detuple/1)
     }
   end
 

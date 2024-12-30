@@ -63,8 +63,7 @@ defmodule Mc.Adapter.KvMemory do
       map
       |> Enum.to_list()
       |> Enum.filter(func)
-      |> Enum.map(fn {key, _value} -> key end)
-      |> Enum.join("\n")
+      |> Enum.map_join("\n", fn {key, _value} -> key end)
     }
   end
 end
