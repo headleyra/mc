@@ -1,8 +1,18 @@
 # Mc
 
-**ModifyChain. Code like Lego(tm)**
+**ModifyChain &mdash; Code Like Lego<sup>&reg;</sup> · Manual Free System<sup>&reg;</sup>**
 
-A *ModifyChain Script* lists a 'chain' of 'modifiers' that, one by one, modify a
+***Code Like Lego<sup>&reg;</sup>*** describes a programming technique/environment where code is packaged
+into self-contained 'lego bricks' which can be easily configured, and assembled, to produce some useful result
+'model'. Bricks and models (no matter how complex) are functionally indistinguishable, meaning
+we can create ever more complex models by assembling any combination of bricks and other,
+previously created, models.
+
+A ***Manual Free System<sup>&reg;*** is one that requires no manual, because it works, and is operated in a simple,
+consistent way, without exception. All interactions with the system 'look and feel' the same. After an operator
+becomes familiar with basics they almost immediately become an expert &mdash; because there's nothing else to learn!
+
+A ***ModifyChain Script*** lists a 'chain' of 'modifiers' that, one by one, modify a
 'buffer', eventually producing a result.
 
 ## Modifiers
