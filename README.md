@@ -10,7 +10,7 @@ previously created, models.
 
 A ***Manual Free System<sup>&reg;*** is one that requires no manual, because it works, and is operated in a simple,
 consistent way, without exception. All interactions with the system 'look and feel' the same. After an operator
-becomes familiar with basics they almost immediately become an expert &mdash; because there's nothing else to learn!
+becomes familiar with the basics they almost immediately become an expert &mdash; because there's nothing else to learn!
 
 A ***ModifyChain Script*** lists a 'chain' of 'modifiers' that, one by one, modify a
 'buffer', eventually producing a result.
