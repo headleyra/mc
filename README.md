@@ -5,7 +5,7 @@
 A ***ModifyChain Script*** lists a 'chain' of 'modifiers' that, one by one, modify a
 'buffer', eventually producing a result.
 
-We've registered (lol) two new terms to explain the philosphy behind this project:
+We've registered (:-P) two new terms to explain the project philosphy:
 
 ***Code Like Lego<sup>&reg;</sup>*** describes a programming technique/environment where code is packaged
 into self-contained 'lego bricks' which can be easily configured, and assembled, to produce some useful result
