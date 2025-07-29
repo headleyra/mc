@@ -2,36 +2,38 @@ defmodule Mc.Modifier.Json do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
-    parse_object(buffer, args)
+    parse(buffer, args)
   end
 
-  defp parse_object(buffer, args) do
-    case Jason.decode(buffer) do
-      {:ok, data} when is_map(data) ->
-        {:ok, map2json(data, args)}
-
-      {:ok, data} when is_list(data) ->
-        list2el(data, args)
-
+  defp parse(json, accessor) do
+    case Jason.decode(json) do
       {:ok, nil} ->
         {:ok, ""}
+
+      {:ok, map_or_list} ->
+        get(map_or_list, accessor)
 
       {:error, _reason} ->
         oops("bad JSON")
     end
   end
 
-  defp map2json(map, keys) do
-    String.split(keys)
-    |> Enum.reduce([], fn key, acc -> [Map.get(map, key) | acc] end)
-    |> Enum.reverse()
-    |> Jason.encode!()
+  defp get(map, keys) when is_map(map) do
+    {:ok,
+      String.split(keys)
+      |> Enum.reduce([], fn key, acc -> [Map.get(map, key) | acc] end)
+      |> Enum.reverse()
+      |> Jason.encode!()
+    }
   end
 
-  defp list2el(list, index) do
+  defp get(list, index) when is_list(list) do
     case Mc.String.to_int(index) do
       {:ok, i} when i >= 0 ->
-        {:ok, Enum.at(list, i) |> Jason.encode!()}
+        {:ok,
+          Enum.at(list, i)
+          |> Jason.encode!()
+        }
 
       _bad_integer ->
         oops("array index should be >= 0")
