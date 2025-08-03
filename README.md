@@ -13,7 +13,7 @@ into self-contained 'lego bricks' which can be easily configured, and assembled,
 we can create ever more complex models by assembling any combination of bricks and other,
 previously created, models.
 
-A ***Manual Free System<sup>&reg;*** is one that requires no manual, because it works, and is operated in a simple,
+A ***Manual Free System<sup>&reg;*** is one that requires no manual, because it works, and is operated in a simple
 consistent way, without exception. All interactions with the system 'look and feel' the same. After an operator
 becomes familiar with the basics they almost immediately become an expert &mdash; because there's nothing else to learn!
 
