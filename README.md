@@ -107,8 +107,8 @@ Foo.Big.modify(modified_buffer, "", mappings)
 
 So, the output of one modifier is the input to the next, and so on.
 
-If at any point a modifier returns an error tuple the next modifier simply passes it on down the chain,
-unchanged.  For example:
+If at any point a modifier returns an error tuple, the next modifier simply passes it on down the chain,
+unchanged. For example:
 
 ```elixir
 script = """
