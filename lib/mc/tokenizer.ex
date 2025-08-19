@@ -37,8 +37,9 @@ defmodule Mc.Tokenizer do
   end
 
   defp validate(acc) do
-    # an unclosed 'open tuple' can't be detected until the end of processing, we don't mind this, but it
-    # needs amended to include the actual 'open character'
+    # An unclosed 'open tuple' can't be detected until the end of processing...
+    # the fact it's unclosed isn't a problem...
+    # but it needs to be changed to the actual 'open character'
 
     Enum.map(acc, fn
       {:open, chars} ->
