@@ -1,37 +1,38 @@
 defmodule Mc.Adapter.Http do
   @behaviour Mc.Behaviour.HttpAdapter
-  @user_agent "Mozilla/5.0 (Windows NT 6.1; rv:52.0) Gecko/20100101 Firefox/52.0"
-  @http_options [recv_timeout: 40_000]
+  @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.10 Safari/605.1.1"
+  @timeout 40_000
 
   @impl true
   def get(url) do
-    HTTPoison.get(url, ["User-Agent": @user_agent], @http_options)
-    |> reply_for()
+    url
+    |> base_request()
+    |> Req.get()
+    |> parse()
   end
 
   @impl true
   def post(url, params_list) do
-    HTTPoison.post(url, {:form, params_list}, post_header(@user_agent), @http_options)
-    |> reply_for()
+    url
+    |> base_request()
+    |> Req.post(form: params_list)
+    |> parse()
   end
 
-  defp reply_for(response) do
+  defp base_request(url) do
+    Req.new(url: url, decode_body: false, headers: %{timeout: @timeout, user_agent: @user_agent})
+  end
+
+  defp parse(response) do
     case response do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      {:ok, %Req.Response{status: 404}} ->
+        {:error, "http 404"}
+
+      {:ok, %Req.Response{body: body}} ->
         {:ok, body}
 
-      {:ok, %HTTPoison.Response{status_code: 404}} ->
-        {:error, "404"}
-
-      {:ok, %HTTPoison.Response{body: body}} ->
-        {:error, body}
-
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, reason}
+      {:error, reason} ->
+        {:error, inspect(reason)}
     end
-  end
-
-  defp post_header(user_agent) do
-    ["Content-Type": "application/x-www-form-urlencoded", "User-Agent": user_agent]
   end
 end
