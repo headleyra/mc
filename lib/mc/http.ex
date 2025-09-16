@@ -3,8 +3,7 @@ defmodule Mc.Http do
   @user_agent "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.10 Safari/605.1.1"
 
   def request(url) do
-    url
-    |> base_request()
+    base_request(url)
   end
 
   def parse(response) do
