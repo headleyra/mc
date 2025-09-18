@@ -2,14 +2,6 @@ defmodule Mc.Tokenizer do
   @open_char "{"
   @close_char "}"
 
-  def count(list) do
-    list
-    |> Enum.map(fn e -> Integer.parse(e) end)
-    |> Enum.reject(fn e -> e == :error end)
-    |> Enum.map(fn {int, _} -> int end)
-    |> Enum.sum()
-  end
-
   def parse(string) do
     string
     |> String.graphemes()
