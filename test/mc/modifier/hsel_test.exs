@@ -29,16 +29,18 @@ defmodule Mc.Modifier.HselTest do
   end
 
   describe "modify/3" do
-    test "parses `args` as a CSS selector and targets HTML tags in the `buffer`", do: true
-
-    test "returns empty string when `buffer` is empty string" do
+    test "returns empty when `buffer` is empty" do
       assert Hsel.modify("", "", %{}) == {:ok, ""}
       assert Hsel.modify("", "p", %{}) == {:ok, ""}
+      assert Hsel.modify("\n \t", "li", %{}) == {:ok, ""}
     end
 
-    test "targets top level elements", %{html: html} do
+    test "strips newlines from the `buffer` (HTML) before processing", do: true
+    test "uses `args` as a CSS selector to target HTML elements", do: true
+
+    test "targets elements and places them on separate lines", %{html: html} do
       assert Hsel.modify(html, "p", %{}) ==
-        {:ok, "<p class=\"first desc\">\n  Foo bar\n</p><p class=\"deets\">\n  John Doe\n</p>"}
+        {:ok, "<p class=\"first desc\">  Foo bar</p>\n<p class=\"deets\">  John Doe</p>"}
     end
 
     test "ignores elements that don't exist", %{html: html} do
@@ -49,7 +51,7 @@ defmodule Mc.Modifier.HselTest do
       assert Hsel.modify(html, ".item", %{}) == {:ok, "<td class=\"item\">Book</td>"}
     end
 
-    test "does not 'encode' characters (i.e., the '>')", %{html: html} do
+    test "does not 'URI encode' characters (e.g., '>')", %{html: html} do
       assert Hsel.modify(html, "h1", %{}) == {:ok, "<h1>2 > 1</h1>"}
     end
 
@@ -59,7 +61,7 @@ defmodule Mc.Modifier.HselTest do
 
     test "targets lists of elements", %{html: html} do
       assert Hsel.modify(html, ".item, .deets", %{}) ==
-        {:ok, "<td class=\"item\">Book</td><p class=\"deets\">\n  John Doe\n</p>"}
+        {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">  John Doe</p>"}
     end
   end
 end

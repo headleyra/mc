@@ -2,12 +2,13 @@ defmodule Mc.Modifier.Hsel do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
-    {:ok, html_parsed} = Floki.parse_fragment(buffer)
+    html_stripped = String.replace(buffer, "\n", "")
+    {:ok, html_parsed} = Floki.parse_fragment(html_stripped)
 
     {:ok,
       html_parsed
       |> Floki.find(args)
-      |> Floki.raw_html(encode: false)
+      |> Enum.map_join("\n", fn html -> Floki.raw_html(html, encode: false) end)
     }
   end
 end
