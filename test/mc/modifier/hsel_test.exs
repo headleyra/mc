@@ -5,9 +5,8 @@ defmodule Mc.Modifier.HselTest do
   setup do
     %{
       html: """
-      <p class="first desc">
-        Foo bar
-      </p>
+      <h1>two > one</h1>
+      <p class="first desc">Foo Bar</p>
       <div>
         <table>
           <tr><td>Lorem ipsum</td></tr>
@@ -20,10 +19,7 @@ defmodule Mc.Modifier.HselTest do
           <tr><td class="desc">A great read!</td></tr>
         </table>
       </div>
-      <p class="deets">
-        John Doe
-      </p>
-      <h1>2 > 1</h1>
+      <p class="deets">John Doe</p>
       """
     }
   end
@@ -35,12 +31,9 @@ defmodule Mc.Modifier.HselTest do
       assert Hsel.modify("\n \t", "li", %{}) == {:ok, ""}
     end
 
-    test "strips newlines from the `buffer` (HTML) before processing", do: true
-    test "uses `args` as a CSS selector to target HTML elements", do: true
-
-    test "targets elements and places them on separate lines", %{html: html} do
+    test "uses `args` as a CSS selector to target HTML elements", %{html: html} do
       assert Hsel.modify(html, "p", %{}) ==
-        {:ok, "<p class=\"first desc\">  Foo bar</p>\n<p class=\"deets\">  John Doe</p>"}
+        {:ok, "<p class=\"first desc\">Foo Bar</p>\n<p class=\"deets\">John Doe</p>"}
     end
 
     test "ignores elements that don't exist", %{html: html} do
@@ -52,7 +45,7 @@ defmodule Mc.Modifier.HselTest do
     end
 
     test "does not 'URI encode' characters (e.g., '>')", %{html: html} do
-      assert Hsel.modify(html, "h1", %{}) == {:ok, "<h1>2 > 1</h1>"}
+      assert Hsel.modify(html, "h1", %{}) == {:ok, "<h1>two > one</h1>"}
     end
 
     test "targets nested elements", %{html: html} do
@@ -61,7 +54,7 @@ defmodule Mc.Modifier.HselTest do
 
     test "targets lists of elements", %{html: html} do
       assert Hsel.modify(html, ".item, .deets", %{}) ==
-        {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">  John Doe</p>"}
+        {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">John Doe</p>"}
     end
   end
 end
