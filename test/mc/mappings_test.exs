@@ -12,6 +12,6 @@ defmodule Mc.MappingsTest do
 
   defp exists?(module) do
     Code.ensure_loaded(module)
-    assert function_exported?(module, :modify, 3), "#{module} needs to define a modify/3 function"
+    assert function_exported?(module, :modify, 3), "#{module} does not exist or is missing a modify/3 function"
   end
 end
