@@ -57,4 +57,16 @@ defmodule McTest do
       assert Mc.modify("", "foo", mappings) == {:error, "modifier not found: foo"}
     end
   end
+
+  describe "m/3" do
+    test "is the equivalent of modify/3", %{mappings: mappings} do
+      assert Mc.m("FOO", "casel", mappings) == Mc.modify("FOO", "casel", mappings)
+    end
+  end
+
+  describe "m/2" do
+    test "is the equivalent of modify/3 with an empty `buffer`", %{mappings: mappings} do
+      assert Mc.m("append foo", mappings) == Mc.modify("", "append foo", mappings)
+    end
+  end
 end
