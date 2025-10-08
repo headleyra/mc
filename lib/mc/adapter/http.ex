@@ -3,17 +3,29 @@ defmodule Mc.Adapter.Http do
 
   @impl true
   def get(url) do
-    url
-    |> Mc.Http.request()
-    |> Req.get()
-    |> Mc.Http.parse()
+    call(url, fn req -> Req.get(req) end)
   end
 
   @impl true
   def post(url, params_list) do
-    url
-    |> Mc.Http.request()
-    |> Req.post(form: params_list)
-    |> Mc.Http.parse()
+    call(url, fn req -> Req.post(req, form: params_list) end)
+  end
+
+  defp call(url, func) do
+    try do
+      url
+      |> Mc.Http.request()
+      |> func.()
+      |> Mc.Http.parse()
+    rescue
+      e in ArgumentError -> error(e.message)
+    end
+  end
+
+  defp error(message) do
+    cond do
+      String.starts_with?(message, "scheme is required for url") -> {:error, "missing scheme"}
+      true -> {:error, "scheme not supported"}
+    end
   end
 end

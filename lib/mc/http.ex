@@ -14,6 +14,9 @@ defmodule Mc.Http do
       {:ok, %Req.Response{body: body}} ->
         {:ok, body}
 
+      {:error, %Req.TransportError{reason: :nxdomain}} ->
+        {:error, "bad domain"}
+
       {:error, reason} ->
         {:error, inspect(reason)}
     end
