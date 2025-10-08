@@ -16,7 +16,7 @@ defmodule Mc.Adapter.Http do
       url
       |> Mc.Http.request()
       |> func.()
-      |> Mc.Http.parse()
+      |> Mc.Http.decode()
     rescue
       e in ArgumentError -> error(e.message)
     end

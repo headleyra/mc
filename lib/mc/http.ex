@@ -6,7 +6,7 @@ defmodule Mc.Http do
     base_request(url)
   end
 
-  def parse(response) do
+  def decode(response) do
     case response do
       {:ok, %Req.Response{status: 404}} ->
         {:error, "http 404"}
