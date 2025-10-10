@@ -1,5 +1,5 @@
-defmodule Mc.Test.MailAdapter do
-  @behaviour Mc.Behaviour.MailAdapter
+defmodule Mc.Test.EmailAdapter do
+  @behaviour Mc.Behaviour.EmailAdapter
 
   def deliver("trigger-error", _message, _recipients), do: {:error, "email error"}
 

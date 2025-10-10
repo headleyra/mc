@@ -24,6 +24,6 @@ defmodule Mc.Modifier.Email do
   end
 
   defp adapter do
-    Application.get_env(:mc, :mail_adapter)
+    Application.get_env(:mc, :email_adapter)
   end
 end

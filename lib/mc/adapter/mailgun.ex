@@ -1,5 +1,5 @@
 defmodule Mc.Adapter.Mailgun do
-  @behaviour Mc.Behaviour.MailAdapter
+  @behaviour Mc.Behaviour.EmailAdapter
 
   @impl true
   def deliver(subject, message, recipients) do
