@@ -3,17 +3,22 @@ defmodule Mc.Modifier.EmailTest do
   alias Mc.Modifier.Email
 
   describe "modify/3" do
-    test "parses `args` and calls `deliver` on its mail adapter" do
+    test "parses `args` and calls `deliver` on its email adapter" do
       assert Email.modify("a message", "a subject, ale@example.net beer@example.org", %{}) ==
         {:ok, {"a subject", "a message", ["ale@example.net", "beer@example.org"]}}
     end
 
     test "errors when subject and/or recipients are missing" do
       assert Email.modify("hi", "subj", %{}) ==
-        {:error, "Mc.Modifier.Email: missing subject and/or recipients"}
+        {:error, "Mc.Modifier.Email: missing subject/recipients"}
 
       assert Email.modify("hi", "", %{}) ==
-        {:error, "Mc.Modifier.Email: missing subject and/or recipients"}
+        {:error, "Mc.Modifier.Email: missing subject/recipients"}
+    end
+
+    test "wraps errors returned from the email adapter" do
+      assert Email.modify("", "trigger-error, i@example.com", %{}) ==
+        {:error, "Mc.Modifier.Email: email error"}
     end
 
     test "works with ok tuples" do
