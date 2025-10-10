@@ -29,6 +29,10 @@ defmodule Mc.Modifier.UrlPTest do
       assert UrlP.modify("", "url :bar", mappings) == {:error, "Mc.Modifier.UrlP: parse error"}
     end
 
+    test "wraps errors returned from the HTTP adapter" do
+      assert UrlP.modify("", "trigger-error", %{}) == {:error, "Mc.Modifier.UrlP: POST error"}
+    end
+
     test "works with ok tuples", %{mappings: mappings} do
       assert UrlP.modify({:ok, "n/a"}, "url db:big", mappings) == {:ok, {"url", [db: "data"]}}
     end

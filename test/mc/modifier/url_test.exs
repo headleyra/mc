@@ -8,6 +8,10 @@ defmodule Mc.Modifier.UrlTest do
       assert Url.modify("", "http://example.net", %{}) == {:ok, "http://example.net"}
     end
 
+    test "wraps errors returned from the HTTP adapter" do
+      assert Url.modify("", "trigger-error", %{}) == {:error, "Mc.Modifier.Url: GET error"}
+    end
+
     test "works with ok tuples" do
       assert Url.modify({:ok, "n/a"}, "localhost:4000", %{}) == {:ok, "localhost:4000"}
     end

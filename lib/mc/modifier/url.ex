@@ -2,7 +2,13 @@ defmodule Mc.Modifier.Url do
   use Mc.Modifier
 
   def modify(_buffer, args, _mappings) do
-    adapter().get(args)
+    case adapter().get(args) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, reason} ->
+        oops(reason)
+    end
   end
 
   defp adapter do

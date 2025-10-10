@@ -4,10 +4,20 @@ defmodule Mc.Modifier.UrlP do
   def modify(_buffer, args, mappings) do
     case build_url_with_params(args, mappings) do
       {:ok, url_with_params} ->
-        apply(adapter(), :post, url_with_params)
+        fetch(url_with_params)
 
       _error ->
         oops("parse error")
+    end
+  end
+
+  defp fetch(url_with_params) do
+    case apply(adapter(), :post, url_with_params) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, reason} ->
+        oops(reason)
     end
   end
 
