@@ -3,15 +3,15 @@ defmodule Mc.Adapter.Http do
 
   @impl true
   def get(url) do
-    call(url, fn req -> Req.get(req) end)
+    fetch(url, fn req -> Req.get(req) end)
   end
 
   @impl true
   def post(url, params_list) do
-    call(url, fn req -> Req.post(req, form: params_list) end)
+    fetch(url, fn req -> Req.post(req, form: params_list) end)
   end
 
-  defp call(url, func) do
+  defp fetch(url, func) do
     try do
       url
       |> Mc.Http.request()
