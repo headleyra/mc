@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Join do
   use Mc.Modifier
 
   def modify(buffer, args, _mappings) do
-    {:ok, seperator} =  Mc.Uri.decode(args)
+    seperator = URI.decode(args)
 
     {:ok,
       String.split(buffer, "\n")

@@ -22,13 +22,12 @@ defmodule Mc.Modifier.Htab do
   end
 
   defp parse_selectors(args) do
-    with \
-      [row, col] <- String.split(args),
-      {:ok, row_css} <- Mc.Uri.decode(row),
-      {:ok, col_css} <- Mc.Uri.decode(col)
-    do
-      {:ok, row_css, col_css}
-    else
+    case String.split(args) do
+      [row, col] ->
+        row_css = URI.decode(row)
+        col_css = URI.decode(col)
+        {:ok, row_css, col_css}
+
       _error ->
         :error
     end

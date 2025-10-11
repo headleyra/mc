@@ -14,7 +14,7 @@ defmodule Mc.KvMultiple do
   end
 
   defp expand(keys, separator, mappings) do
-    {:ok, decoded_separator} = Mc.Uri.decode(separator)
+    decoded_separator = URI.decode(separator)
 
     {:ok,
       keys
@@ -33,7 +33,7 @@ defmodule Mc.KvMultiple do
   defp stringize({key, {:error, _reason}}), do: "#{key}\n"
 
   defp update(setm, separator, mappings) do
-    {:ok, decoded_separator} = Mc.Uri.decode(separator)
+    decoded_separator = URI.decode(separator)
 
     setm
     |> String.split(decoded_separator)
