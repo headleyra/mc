@@ -3,22 +3,22 @@ defmodule Mc.Modifier.JoinTest do
   alias Mc.Modifier.Join
 
   describe "modify/3" do
-    test "joins lines in the buffer" do
+    test "joins lines in `buffer` and separates them with `args`" do
+      assert Join.modify("one\ntwo\nthree", "/", %{}) == {:ok, "one/two/three"}
+      assert Join.modify("\n double \n\n equals \n", "=", %{}) == {:ok, "= double == equals ="}
+      assert Join.modify("\n\n\n", "A", %{}) == {:ok, "AAA"}
+      assert Join.modify("foo\nbar", "%", %{}) == {:ok, "foo%bar"}
+    end
+
+    test "joins lines with no separator (by default)" do
       assert Join.modify("un\ndeux\ntrois", "", %{}) == {:ok, "undeuxtrois"}
       assert Join.modify("\t\tun\ndeux\ntrois\n\n\t", "", %{}) == {:ok, "\t\tundeuxtrois\t"}
       assert Join.modify("\n\n\n", "", %{}) == {:ok, ""}
     end
 
-    test "joins lines separated by `args`" do
-      assert Join.modify("one\ntwo\nthree", "/", %{}) == {:ok, "one/two/three"}
-      assert Join.modify("\n double \n\n equals \n", "=", %{}) == {:ok, "= double == equals ="}
-      assert Join.modify("\n\n\n", "A", %{}) == {:ok, "AAA"}
-    end
-
-    test "joins lines separated with URI-encoded `args`" do
-      assert Join.modify("once\nupona\ntime", "%20", %{}) == {:ok, "once upona time"}
+    test "joins lines with URI-encoded `args`" do
+      assert Join.modify("once\nupon\na\ntime", "%20", %{}) == {:ok, "once upon a time"}
       assert Join.modify("bish\nbosh", "%09", %{}) == {:ok, "bish\tbosh"}
-      assert Join.modify("foo\nbar", "%", %{}) == {:ok, "foo%bar"}
     end
 
     test "works with ok tuples" do
