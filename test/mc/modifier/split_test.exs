@@ -3,28 +3,21 @@ defmodule Mc.Modifier.SplitTest do
   alias Mc.Modifier.Split
 
   describe "modify/3" do
-    test "splits the buffer on `args`" do
-      assert Split.modify("one-two-three", "-", %{}) == {:ok, "one\ntwo\nthree"}
-      assert Split.modify("= double == equals =", "=", %{}) == {:ok, "\n double \n\n equals \n"}
+    test "splits `buffer` on the URI-encoded string in `args`" do
+      assert Split.modify("one%two%three", "%25", %{}) == {:ok, "one\ntwo\nthree"}
+      assert Split.modify(" marginal\t costs...\n", "%09%20", %{}) == {:ok, " marginal\ncosts...\n"}
+      assert Split.modify("one, two, three\t", ",", %{}) == {:ok, "one\n two\n three\t"}
+      assert Split.modify("one-love", "%09", %{}) == {:ok, "one-love"}
     end
 
-    test "splits the buffer on whitespace by default" do
+    test "splits buffer on a single space by default" do
       assert Split.modify("un deux trois", "", %{}) == {:ok, "un\ndeux\ntrois"}
-      assert Split.modify("foo    bar      biz", "", %{}) == {:ok, "foo\nbar\nbiz"}
-      assert Split.modify("mix \n it  \t up\n\n", "", %{}) == {:ok, "mix\nit\nup\n"}
-    end
-
-    test "parses `args` as a regular expression" do
-      assert Split.modify("one two three", "[ ]", %{}) == {:ok, "one\ntwo\nthree"}
-      assert Split.modify("= double == equals =", " == ", %{}) == {:ok, "= double\nequals ="}
-    end
-
-    test "errors with a bad regular expression" do
-      assert Split.modify("bish bosh", "[", %{}) == {:error, "Mc.Modifier.Split: bad regex"}
+      assert Split.modify("\nfoo  bar   biz", "", %{}) == {:ok, "\nfoo\n\nbar\n\n\nbiz"}
+      assert Split.modify("without-space", "", %{}) == {:ok, "without-space"}
     end
 
     test "works with ok tuples" do
-      assert Split.modify({:ok, "best-of-3"}, "-", %{}) == {:ok, "best\nof\n3"}
+      assert Split.modify({:ok, "best\tof\t3"}, "%09", %{}) == {:ok, "best\nof\n3"}
     end
 
     test "allows error tuples to pass through" do

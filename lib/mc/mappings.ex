@@ -47,6 +47,7 @@ defmodule Mc.Mappings do
     sort: Mc.Modifier.Sort,
     sortv: Mc.Modifier.SortV,
     split: Mc.Modifier.Split,
+    splitr: Mc.Modifier.SplitR,
     squeeze: Mc.Modifier.Squeeze,
     stop: Mc.Modifier.Stop,
     sub: Mc.Modifier.Sub,
