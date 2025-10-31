@@ -64,8 +64,8 @@ mappings =
   }
 ```
 
-We've assigned the name 'capify' to the first modifier, 'change' to the second modifier and 'boom' to
-the third modifier.
+We've assigned the name 'capify' to the first modifier; 'change' to the second; 'boom' to
+the third.
 
 ## Now we can modify stuff
 
