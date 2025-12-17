@@ -9,7 +9,7 @@ defmodule Mc.Modifier.Range do
       [{:ok, finish}] ->
         {:ok, rangeize(1, finish)}
 
-      _bad_args ->
+      _bad_range ->
         oops("bad range")
     end
   end
@@ -19,9 +19,11 @@ defmodule Mc.Modifier.Range do
     |> Enum.map(&Mc.String.to_int/1)
   end
 
-  defp rangeize(start, finish) do
-    start..finish
-    |> Enum.to_list()
+  defp rangeize(start, finish) when finish >= start, do: rangeize(start, finish, 1)
+  defp rangeize(start, finish), do: rangeize(start, finish, -1)
+
+  defp rangeize(start, finish, step) do
+    Range.new(start, finish, step)
     |> Enum.join("\n")
   end
 end
