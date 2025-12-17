@@ -22,7 +22,6 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 mc-*.tar
 
-
 # Elixir
 .elixir-version
 
@@ -34,3 +33,6 @@ mc-*.tar
 
 # Environment
 .env
+
+# Vim
+*.swp
