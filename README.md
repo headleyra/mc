@@ -1,6 +1,6 @@
 # Mc
 
-**ModifyChain &mdash; Code Like Lego<sup>&reg;</sup> · Manual Free System<sup>&reg;</sup>**
+**ModifyChain &mdash; Code Like Lego<sup>&reg;</sup> Manual Free System<sup>&reg;</sup>**
 
 A ***ModifyChain Script*** lists a 'chain' of 'modifiers' that, one by one, modify a
 'buffer', eventually producing a result.
