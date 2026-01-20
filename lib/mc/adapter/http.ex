@@ -23,9 +23,10 @@ defmodule Mc.Adapter.Http do
   end
 
   defp error(message) do
-    cond do
-      String.starts_with?(message, "scheme is required for url") -> {:error, "missing scheme"}
-      true -> {:error, "scheme not supported"}
+    if String.starts_with?(message, "scheme is required for url") do
+      {:error, "missing scheme"}
+    else
+      {:error, "scheme not supported"}
     end
   end
 end
