@@ -11,7 +11,7 @@ defmodule Mc.AppTest do
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "script/2" do

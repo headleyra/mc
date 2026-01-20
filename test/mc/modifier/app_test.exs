@@ -12,7 +12,7 @@ defmodule Mc.Modifier.AppTest do
       "app7" => "b all: :::"
     }})
 
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

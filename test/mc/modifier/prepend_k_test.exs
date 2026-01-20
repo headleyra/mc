@@ -6,7 +6,7 @@ defmodule Mc.Modifier.PrependKTest do
   setup do
     map = %{"star" => "light", "thing" => "ready"}
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

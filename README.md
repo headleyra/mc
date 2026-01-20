@@ -126,7 +126,7 @@ however they like.
 
 ## Standard mappings and modifiers
 
-The `%Mc.Mappings{}` struct defines standard mappings which reference basic (concept-prover) 
+The `Mc.Mappings.standard/0` function returns standard mappings which reference basic (concept-prover) 
 modifiers.  Feel free to create your own custom mappings and modifiers or mix and match as needed.
 
 The snippet `use Mc.Modifier` appears at the top of all standard modifiers.  It creates functions that

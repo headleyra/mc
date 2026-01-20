@@ -1,10 +1,18 @@
-defmodule Mc.MappingsTest do
+defmodule Mc.McTest do
   use ExUnit.Case, async: true
+  alias Mc.Mappings
 
-  describe "%Mc.Mappings{}" do
+  describe "standard/0" do
     test "defines modifiers that exist" do
-      %Mc.Mappings{}
-      |> Map.from_struct()
+      Mappings.standard()
+      |> Map.values()
+      |> Enum.each(fn module -> exists?(module) end)
+    end
+  end
+
+  describe "s/0" do
+    test "defines modifiers that exist" do
+      Mappings.s()
       |> Map.values()
       |> Enum.each(fn module -> exists?(module) end)
     end

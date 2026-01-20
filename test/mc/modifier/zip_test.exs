@@ -4,7 +4,7 @@ defmodule Mc.Modifier.ZipTest do
   alias Mc.Modifier.Zip
 
   setup do
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

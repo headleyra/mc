@@ -3,7 +3,7 @@ defmodule Mc.Modifier.RunTest do
   alias Mc.Modifier.Run
 
   setup do
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

@@ -3,7 +3,7 @@ defmodule Mc.Modifier.BufferTest do
   alias Mc.Modifier.Buffer
 
   setup do
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

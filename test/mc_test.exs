@@ -2,7 +2,7 @@ defmodule McTest do
   use ExUnit.Case, async: true
 
   setup do
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

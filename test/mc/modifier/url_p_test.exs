@@ -6,7 +6,7 @@ defmodule Mc.Modifier.UrlPTest do
   setup do
     map = %{"big" => "data", "x" => "y\nz"}
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

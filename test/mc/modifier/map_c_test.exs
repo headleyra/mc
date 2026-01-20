@@ -5,7 +5,7 @@ defmodule Mc.Modifier.MapCTest do
 
   setup do
     start_supervised({Mc.Adapter.KvMemory, map: %{}})
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "modify/3" do

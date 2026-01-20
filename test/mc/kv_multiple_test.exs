@@ -11,7 +11,7 @@ defmodule Mc.KvMultipleTest do
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: %Mc.Mappings{}}
+    %{mappings: Mc.Mappings.s()}
   end
 
   describe "get/3" do
@@ -52,18 +52,18 @@ defmodule Mc.KvMultipleTest do
     test "complements get/3", do: true
 
     test "sets multiple keys and values", %{mappings: mappings} do
-      KvMultiple.set("k1\nv1#{@default_separator}k2\nv2", "", %Mc.Mappings{})
+      KvMultiple.set("k1\nv1#{@default_separator}k2\nv2", "", Mc.Mappings.s())
       assert KvMultiple.get("k1 k2", "", mappings) == {:ok, "k1\nv1#{@default_separator}k2\nv2"}
 
-      KvMultiple.set("k3\nv3", "", %Mc.Mappings{})
+      KvMultiple.set("k3\nv3", "", Mc.Mappings.s())
       assert KvMultiple.get("k3", "", mappings) == {:ok, "k3\nv3"}
     end
 
     test "accepts a URI-encoded `separator`", %{mappings: mappings} do
-      KvMultiple.set("k1\nv1:\t:k2\nv2", ":%09:", %Mc.Mappings{})
+      KvMultiple.set("k1\nv1:\t:k2\nv2", ":%09:", Mc.Mappings.s())
       assert KvMultiple.get("k1 k2", ":%09:", mappings) == {:ok, "k1\nv1:\t:k2\nv2"}
 
-      KvMultiple.set("key5\nval5: :key7\nval7", ":%20:", %Mc.Mappings{})
+      KvMultiple.set("key5\nval5: :key7\nval7", ":%20:", Mc.Mappings.s())
       assert KvMultiple.get("key5 key7", "*%20*", mappings) == {:ok, "key5\nval5* *key7\nval7"}
     end
 
