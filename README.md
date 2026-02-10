@@ -13,7 +13,7 @@ into self-contained 'lego bricks' which can be easily configured, and assembled,
 we can create ever more complex models by assembling any combination of bricks and other,
 previously created, models.
 
-A ***One Page Manual<sup>&reg;</sup>*** systems are operated in a consistent way (with no exceptions). All interactions with the system 'look and feel' the same. After a user becomes familiar with the basics they almost immediately become an expert &mdash; because there's nothing else to learn.  The clue's in the name &mdash; the manual literally fits on one page!
+***One Page Manual<sup>&reg;</sup>*** systems are operated in a consistent way (with no exceptions). All interactions with the system 'look and feel' the same. After a user becomes familiar with the basics they almost immediately become an expert &mdash; because there's nothing else to learn.  The clue's in the name &mdash; the manual literally fits on one page!
 
 ## Modifiers
 
