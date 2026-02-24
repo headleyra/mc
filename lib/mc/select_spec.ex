@@ -1,4 +1,4 @@
-defmodule Mc.SelectSpec do
+defmodule Mc.Select do
   @valid_part_regx ~r/^[1-9]\d*$|^[1-9]\d*-[1-9]\d*$/
 
   def parse(spec) do
