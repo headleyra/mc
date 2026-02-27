@@ -52,6 +52,8 @@ defmodule Mc.Mappings do
       replace: M.Replace,
       run: M.Run,
       runk: M.RunK,
+      s: M.Script,
+      script: M.Script,
       set: M.Set,
       setm: M.SetM,
       sort: M.Sort,
