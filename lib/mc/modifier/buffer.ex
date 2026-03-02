@@ -4,8 +4,8 @@ defmodule Mc.Modifier.Buffer do
   def modify(buffer, args, mappings) do
     result =
       args
-      |> Mc.String.Inline.decode()
-      |> Mc.Tokenizer.parse()
+      |> decode()
+      |> tokenize()
       |> untokenize(buffer, mappings)
 
     case result do
@@ -15,6 +15,15 @@ defmodule Mc.Modifier.Buffer do
       chardata ->
         {:ok, IO.chardata_to_string(chardata)}
     end
+  end
+
+  defp decode(string) do
+    String.split(string, "; ")
+    |> Enum.join("\n")
+  end
+
+  defp tokenize(string) do
+    Mc.Tokenizer.parse(string)
   end
 
   defp untokenize(tokenized_list, buffer, mappings) do
