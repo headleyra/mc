@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.MapC do
   use Mc.Modifier
 
-  def modify(buffer, args, mappings) do
+  def m(buffer, args, mappings) do
     case concurrency_with_args(args) do
       {{:ok, concurrency}, script} when concurrency > 0 ->
         run_concurrent(buffer, script, concurrency, mappings)
@@ -40,7 +40,7 @@ defmodule Mc.Modifier.MapC do
 
   defp task_stream(buffers, script, maxc, mappings) do
     buffers
-    |> Task.async_stream(&Mc.modify(&1, script, mappings), ordered: true, max_concurrency: maxc, timeout: :infinity)
+    |> Task.async_stream(&Mc.m(&1, script, mappings), ordered: true, max_concurrency: maxc, timeout: :infinity)
   end
 
   defp detuple({:ok, {:ok, result}}), do: result

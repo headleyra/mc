@@ -12,27 +12,27 @@ defmodule Mc.Modifier.RunKTest do
       }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: Mc.Mappings.s()}
+    %{mappings: Mc.Mappings.standard()}
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "runs the script referenced by key, against the `buffer`", %{mappings: mappings} do
-      assert RunK.modify("stay in FOO contact", "s1", mappings) == {:ok, "stay in radio contact"}
-      assert RunK.modify("one 4 da BASS", "s3", mappings) == {:ok, "one 4 da BASS"}
-      assert RunK.modify("one 4 da BASS", "s2", mappings) == {:ok, "two 4 da treble"}
+      assert RunK.m("stay in FOO contact", "s1", mappings) == {:ok, "stay in radio contact"}
+      assert RunK.m("one 4 da BASS", "s3", mappings) == {:ok, "one 4 da BASS"}
+      assert RunK.m("one 4 da BASS", "s2", mappings) == {:ok, "two 4 da treble"}
     end
 
     test "errors when the key doesn't exist", %{mappings: mappings} do
-      assert RunK.modify("n/a", "nope", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: nope"}
-      assert RunK.modify("abc", "", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: "}
+      assert RunK.m("n/a", "nope", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: nope"}
+      assert RunK.m("abc", "", mappings) == {:error, "Mc.Modifier.RunK: Mc.Modifier.Get: not found: "}
     end
 
     test "works with ok tuples", %{mappings: mappings} do
-      assert RunK.modify({:ok, "FOO"}, "s1", mappings) == {:ok, "radio"}
+      assert RunK.m({:ok, "FOO"}, "s1", mappings) == {:ok, "radio"}
     end
 
     test "allows error tuples to pass through", %{mappings: mappings} do
-      assert RunK.modify({:error, "reason"}, "s2", mappings) == {:error, "reason"}
+      assert RunK.m({:error, "reason"}, "s2", mappings) == {:error, "reason"}
     end
   end
 end

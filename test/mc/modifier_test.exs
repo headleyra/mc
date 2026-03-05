@@ -5,20 +5,20 @@ defmodule Mc.ModifierTest do
     use Mc.Modifier
 
     @impl Mc.Behaviour.Modifier
-    def modify(buffer, _args, _mappings) do
+    def m(buffer, _args, _mappings) do
       {:ok, String.downcase(buffer)}
     end
   end
 
   describe "use Mc.Modifier" do
-    test "creates a modify/3 (short-circuit) function that returns error tuples unchanged" do
-      assert Mod.modify({:error, "oops"}, "", %{}) == {:error, "oops"}
-      assert Mod.modify({:error, "boom"}, "n/a", %{}) == {:error, "boom"}
+    test "creates a m/3 (short-circuit) function that returns error tuples unchanged" do
+      assert Mod.m({:error, "oops"}, "", %{}) == {:error, "oops"}
+      assert Mod.m({:error, "boom"}, "n/a", %{}) == {:error, "boom"}
     end
 
-    test "creates a modify/3 function that delegates to the existing modify/3 function (for ok tuples)" do
-      assert Mod.modify({:ok, "BOSH"}, "", %{}) == {:ok, "bosh"}
-      assert Mod.modify({:ok, "DAr\nOrdaR"}, "", %{}) == {:ok, "dar\nordar"}
+    test "creates a m/3 function that delegates to the existing m/3 function (for ok tuples)" do
+      assert Mod.m({:ok, "BOSH"}, "", %{}) == {:ok, "bosh"}
+      assert Mod.m({:ok, "DAr\nOrdaR"}, "", %{}) == {:ok, "dar\nordar"}
     end
 
     test "creates a 'name' function that returns the modifier module name" do

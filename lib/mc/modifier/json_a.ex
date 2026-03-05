@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.JsonA do
   use Mc.Modifier
 
-  def modify(buffer, _args, _mappings) do
+  def m(buffer, _args, _mappings) do
     parse_list(buffer)
   end
 

@@ -26,7 +26,7 @@ defmodule Mc.KvMultiple do
   defp listize(keys, mappings) do
     keys
     |> String.split()
-    |> Enum.map(fn key -> {key, Mc.modify("", "get #{key}", mappings)} end)
+    |> Enum.map(fn key -> {key, Mc.m("", "get #{key}", mappings)} end)
   end
 
   defp stringize({key, {:ok, value}}), do: "#{key}\n#{value}"
@@ -63,7 +63,7 @@ defmodule Mc.KvMultiple do
 
   defp set_multiple(kv_tuple_list, setm, mappings) do
     if kv_tuple_list do
-      Enum.each(kv_tuple_list, fn {key, value} -> Mc.modify(value, "set #{key}", mappings) end)
+      Enum.each(kv_tuple_list, fn {key, value} -> Mc.m(value, "set #{key}", mappings) end)
       {:ok, setm}
     else
       {:error, "bad format"}

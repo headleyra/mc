@@ -8,28 +8,28 @@ defmodule Mc.Modifier.FindKTest do
     :ok
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "finds keys matching the given regex" do
-      assert FindK.modify("n/a", "rd", %{}) == {:ok, "3rd"}
-      assert FindK.modify("", "d", %{}) == {:ok, "2nd\n3rd"}
-      assert FindK.modify("", ".", %{}) == {:ok, "1st\n2nd\n3rd"}
-      assert FindK.modify("", "", %{}) == {:ok, "1st\n2nd\n3rd"}
+      assert FindK.m("n/a", "rd", %{}) == {:ok, "3rd"}
+      assert FindK.m("", "d", %{}) == {:ok, "2nd\n3rd"}
+      assert FindK.m("", ".", %{}) == {:ok, "1st\n2nd\n3rd"}
+      assert FindK.m("", "", %{}) == {:ok, "1st\n2nd\n3rd"}
     end
 
     test "returns emtpy string when key is not found" do
-      assert FindK.modify("", "this-key-wont-be-found", %{}) == {:ok, ""}
+      assert FindK.m("", "this-key-wont-be-found", %{}) == {:ok, ""}
     end
 
     test "errors when the regex is bad" do
-      assert FindK.modify("", "?", %{}) == {:error, "Mc.Modifier.FindK: bad regex"}
+      assert FindK.m("", "?", %{}) == {:error, "Mc.Modifier.FindK: bad regex"}
     end
 
     test "works with ok tuples" do
-      assert FindK.modify({:ok, "n/a"}, "2", %{}) == {:ok, "2nd"}
+      assert FindK.m({:ok, "n/a"}, "2", %{}) == {:ok, "2nd"}
     end
 
     test "allows error tuples to pass through" do
-      assert FindK.modify({:error, "reason"}, "key", %{}) == {:error, "reason"}
+      assert FindK.m({:error, "reason"}, "key", %{}) == {:error, "reason"}
     end
   end
 end

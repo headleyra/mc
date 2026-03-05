@@ -2,19 +2,19 @@ defmodule Mc.Modifier.CountCTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.CountC
 
-  describe "modify/3" do
+  describe "m/3" do
     test "returns the number of characters in the `buffer`" do
-      assert CountC.modify("123", "", %{}) == {:ok, "3"}
-      assert CountC.modify("123\n", "", %{}) == {:ok, "4"}
-      assert CountC.modify("\tStrong and stable\n\n", "", %{}) == {:ok, "20"}
+      assert CountC.m("123", "", %{}) == {:ok, "3"}
+      assert CountC.m("123\n", "", %{}) == {:ok, "4"}
+      assert CountC.m("\tStrong and stable\n\n", "", %{}) == {:ok, "20"}
     end
 
     test "works with ok tuples" do
-      assert CountC.modify({:ok, "Over 50k"}, "", %{}) == {:ok, "8"}
+      assert CountC.m({:ok, "Over 50k"}, "", %{}) == {:ok, "8"}
     end
 
     test "allows error tuples to pass through" do
-      assert CountC.modify({:error, "reason"}, "", %{}) == {:error, "reason"}
+      assert CountC.m({:error, "reason"}, "", %{}) == {:error, "reason"}
     end
   end
 end

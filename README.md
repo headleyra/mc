@@ -18,7 +18,7 @@ previously created, models.
 Modifiers are functions that declare three arguments.  The first argument is the modified buffer from the
 previous modifier (in the chain), the second argument contains the argument string for the modifier itself and the third
 argument is a `Map` ('the mappings').  All modifiers must return either `{:ok, result}` or `{:error, reason}` and
-must be called `modify`.
+must be called `m`.
 
 Let's say we have the following modifiers:
 
@@ -26,7 +26,7 @@ Let's say we have the following modifiers:
 defmodule Foo.Big do
   use Mc.Modifier
 
-  def modify(buffer, _args, _mappings) do
+  def m(buffer, _args, _mappings) do
     {:ok, String.upcase(buffer)}
   end
 end
@@ -34,7 +34,7 @@ end
 defmodule Bar.Replace do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     {:ok, String.replace(buffer, "bar", args)}
   end
 end
@@ -42,7 +42,7 @@ end
 defmodule Boom do
   use Mc.Modifier
 
-  def modify(_buffer, _args, _mappings) do
+  def m(_buffer, _args, _mappings) do
     {:error, "boom!"}
   end
 end
@@ -66,8 +66,8 @@ the third.
 ## Now we can modify stuff
 
 ```elixir
-Mc.modify("wine bar", "change glass", mappings)
-  #=> {:ok, "wine glass"}
+Mc.m("wine bar", "change glass", mappings)
+#=> {:ok, "wine glass"}
 ```
 
 The first argument is the *initial* buffer and the second argument is the ModifyChain Script.  We pass
@@ -77,8 +77,8 @@ The result is obtained by transforming the initial buffer with the named modifie
 Effectively we ran the following code:
 
 ```elixir
-Bar.Replace.modify("wine bar", "glass", mappings)
-  #=> {:ok, "wine glass"}
+Bar.Replace.m("wine bar", "glass", mappings)
+#=> {:ok, "wine glass"}
 ```
 
 But we can chain modifiers together by listing them in the script, like so:
@@ -89,16 +89,16 @@ change bottle
 capify
 """
 
-Mc.modify("wine bar", script, mappings)
-  #=> {:ok, "WINE BOTTLE"}
+Mc.m("wine bar", script, mappings)
+#=> {:ok, "WINE BOTTLE"}
 ```
 
 This effectively runs the following code:
 
 ```elixir
-{:ok, modified_buffer} = Bar.Replace.modify("wine bar", "bottle", mappings)
-Foo.Big.modify(modified_buffer, "", mappings)
-  #=> {:ok, "WINE BOTTLE"}
+{:ok, modified_buffer} = Bar.Replace.m("wine bar", "bottle", mappings)
+Foo.Big.m(modified_buffer, "", mappings)
+#=> {:ok, "WINE BOTTLE"}
 ```
 
 So, the output of one modifier is the input to the next, and so on.
@@ -113,8 +113,8 @@ boom
 capify
 """
 
-Mc.modify("bar chart", script, mappings)
-  #=> {:error, "boom!"}
+Mc.m("bar chart", script, mappings)
+#=> {:error, "boom!"}
 ```
 
 This is the default behaviour for the 'standard modifiers' but modifiers you create can behave

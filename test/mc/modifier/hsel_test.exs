@@ -24,36 +24,36 @@ defmodule Mc.Modifier.HselTest do
     }
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "returns empty when `buffer` is empty" do
-      assert Hsel.modify("", "", %{}) == {:ok, ""}
-      assert Hsel.modify("", "p", %{}) == {:ok, ""}
-      assert Hsel.modify("\n \t", "li", %{}) == {:ok, ""}
+      assert Hsel.m("", "", %{}) == {:ok, ""}
+      assert Hsel.m("", "p", %{}) == {:ok, ""}
+      assert Hsel.m("\n \t", "li", %{}) == {:ok, ""}
     end
 
     test "uses `args` as a CSS selector to target HTML elements", %{html: html} do
-      assert Hsel.modify(html, "p", %{}) ==
+      assert Hsel.m(html, "p", %{}) ==
         {:ok, "<p class=\"first desc\">Foo Bar</p>\n<p class=\"deets\">John Doe</p>"}
     end
 
     test "ignores elements that don't exist", %{html: html} do
-      assert Hsel.modify(html, "tbody", %{}) == {:ok, ""}
+      assert Hsel.m(html, "tbody", %{}) == {:ok, ""}
     end
 
     test "targets elements by class", %{html: html} do
-      assert Hsel.modify(html, ".item", %{}) == {:ok, "<td class=\"item\">Book</td>"}
+      assert Hsel.m(html, ".item", %{}) == {:ok, "<td class=\"item\">Book</td>"}
     end
 
     test "does not 'URI encode' characters (e.g., '>')", %{html: html} do
-      assert Hsel.modify(html, "h1", %{}) == {:ok, "<h1>two > one</h1>"}
+      assert Hsel.m(html, "h1", %{}) == {:ok, "<h1>two > one</h1>"}
     end
 
     test "targets nested elements", %{html: html} do
-      assert Hsel.modify(html, "#second td.desc", %{}) == {:ok, "<td class=\"desc\">A great read!</td>"}
+      assert Hsel.m(html, "#second td.desc", %{}) == {:ok, "<td class=\"desc\">A great read!</td>"}
     end
 
     test "targets lists of elements", %{html: html} do
-      assert Hsel.modify(html, ".item, .deets", %{}) ==
+      assert Hsel.m(html, ".item, .deets", %{}) ==
         {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">John Doe</p>"}
     end
   end

@@ -10,16 +10,8 @@ defmodule Mc.McTest do
     end
   end
 
-  describe "s/0" do
-    test "defines modifiers that exist" do
-      Mappings.s()
-      |> Map.values()
-      |> Enum.each(fn module -> exists?(module) end)
-    end
-  end
-
   defp exists?(module) do
     Code.ensure_loaded(module)
-    assert function_exported?(module, :modify, 3), "#{module} does not exist or is missing a modify/3 function"
+    assert function_exported?(module, :m, 3), "#{module} does not exist or is missing a m/3 function"
   end
 end

@@ -7,24 +7,24 @@ defmodule Mc.Modifier.GetTest do
     :ok
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "gets the value stored under the given key" do
-      Mc.Modifier.Set.modify("some buffer\ndata", "a-key", %{})
-      assert Get.modify("", "a-key", %{}) == {:ok, "some buffer\ndata"}
+      Mc.Modifier.Set.m("some buffer\ndata", "a-key", %{})
+      assert Get.m("", "a-key", %{}) == {:ok, "some buffer\ndata"}
     end
 
     test "errors when the key doesn't exist" do
-      assert Get.modify("", "no-exist", %{}) == {:error, "Mc.Modifier.Get: not found: no-exist"}
+      assert Get.m("", "no-exist", %{}) == {:error, "Mc.Modifier.Get: not found: no-exist"}
     end
 
     test "works with ok tuples" do
-      Mc.Modifier.Set.modify("dance", "funky", %{})
-      assert Get.modify({:ok, "n/a"}, "funky", %{}) == {:ok, "dance"}
-      assert Get.modify({:ok, ""}, "bop", %{}) == {:error, "Mc.Modifier.Get: not found: bop"}
+      Mc.Modifier.Set.m("dance", "funky", %{})
+      assert Get.m({:ok, "n/a"}, "funky", %{}) == {:ok, "dance"}
+      assert Get.m({:ok, ""}, "bop", %{}) == {:error, "Mc.Modifier.Get: not found: bop"}
     end
 
     test "allows error tuples to pass through" do
-      assert Get.modify({:error, "reason"}, "", %{}) == {:error, "reason"}
+      assert Get.m({:error, "reason"}, "", %{}) == {:error, "reason"}
     end
   end
 end

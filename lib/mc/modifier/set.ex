@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Set do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     adapter().set(args, buffer)
   end
 

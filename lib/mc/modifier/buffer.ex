@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Buffer do
   use Mc.Modifier
 
-  def modify(buffer, args, mappings) do
+  def m(buffer, args, mappings) do
     result =
       args
       |> decode()
@@ -35,7 +35,7 @@ defmodule Mc.Modifier.Buffer do
 
   defp expand({:token, chars}, buffer, mappings) do
     script = IO.chardata_to_string(chars)
-    Mc.modify(buffer, script, mappings)
+    Mc.m(buffer, script, mappings)
   end
 
   defp expand(char, _buffer, _mappings), do: char

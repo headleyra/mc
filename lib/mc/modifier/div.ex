@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Div do
   use Mc.Modifier
 
-  def modify(buffer, _args, _mappings) do
+  def m(buffer, _args, _mappings) do
     try do
       divide(buffer)
     rescue

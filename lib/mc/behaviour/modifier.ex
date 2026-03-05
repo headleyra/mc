@@ -5,5 +5,5 @@ defmodule Mc.Behaviour.Modifier do
   @type result :: String.t
   @type reason :: String.t
 
-  @callback modify(buffer, args, mappings) :: {:ok, result} | {:error, reason}
+  @callback m(buffer, args, mappings) :: {:ok, result} | {:error, reason}
 end

@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Get do
   use Mc.Modifier
 
-  def modify(_buffer, args, _mappings) do
+  def m(_buffer, args, _mappings) do
     case adapter().get(args) do
       {:ok, result} ->
         {:ok, result}

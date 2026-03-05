@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Email do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     case String.split(args, ", ", parts: 2) do
       [subject, recipients] ->
         email(buffer, subject, recipients)

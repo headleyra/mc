@@ -14,22 +14,22 @@ defmodule Mc.Modifier.GrepTest do
     }
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "filters lines in `buffer` that match the regex given as `args`", %{text: text} do
-      assert Grep.modify(text, "[Oo]ne", %{}) == {:ok, "One\none"}
-      assert Grep.modify(text, "two", %{}) == {:ok, "two"}
+      assert Grep.m(text, "[Oo]ne", %{}) == {:ok, "One\none"}
+      assert Grep.m(text, "two", %{}) == {:ok, "two"}
     end
 
     test "errors with bad regex" do
-      assert Grep.modify("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Grep: bad regex"}
+      assert Grep.m("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Grep: bad regex"}
     end
 
     test "works with ok tuples" do
-      assert Grep.modify({:ok, "\nfoo\nbar\n"}, "foo", %{}) == {:ok, "foo"}
+      assert Grep.m({:ok, "\nfoo\nbar\n"}, "foo", %{}) == {:ok, "foo"}
     end
 
     test "allows error tuples to pass through" do
-      assert Grep.modify({:error, "reason"}, "", %{}) == {:error, "reason"}
+      assert Grep.m({:error, "reason"}, "", %{}) == {:error, "reason"}
     end
   end
 end

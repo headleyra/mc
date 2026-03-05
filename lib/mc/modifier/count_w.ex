@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.CountW do
   use Mc.Modifier
 
-  def modify(buffer, _args, _mappings) do
+  def m(buffer, _args, _mappings) do
     {:ok,
       String.split(buffer, ~r/\s+/)
       |> Enum.reject(& &1 == "")

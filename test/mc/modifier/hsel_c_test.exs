@@ -28,44 +28,44 @@ defmodule Mc.Modifier.HselCTest do
     }
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "parses `args` as a CSS selector and targets HTML *content* in the `buffer`", do: true
     
     test "returns empty string when `buffer` is empty string" do
-      assert HselC.modify("", "", %{}) == {:ok, ""}
-      assert HselC.modify("", "p", %{}) == {:ok, ""}
+      assert HselC.m("", "", %{}) == {:ok, ""}
+      assert HselC.m("", "p", %{}) == {:ok, ""}
     end
 
     test "returns content without tags", %{html: html} do
-      assert HselC.modify(html, "p", %{}) == {:ok, "Foo bar\nJohn Doe"}
+      assert HselC.m(html, "p", %{}) == {:ok, "Foo bar\nJohn Doe"}
     end
 
     test "targets embedded elements", %{html: html} do
-      assert HselC.modify(html, "table", %{}) == {:ok, "Lorem ipsum The quick fox\nBook A great read!"}
+      assert HselC.m(html, "table", %{}) == {:ok, "Lorem ipsum The quick fox\nBook A great read!"}
     end
 
     test "ignores elements that don't exist", %{html: html} do
-      assert HselC.modify(html, "tbody", %{}) == {:ok, ""}
+      assert HselC.m(html, "tbody", %{}) == {:ok, ""}
     end
 
     test "targets elements ", %{html: html} do
-      assert HselC.modify(html, ".item", %{}) == {:ok, "Book"}
+      assert HselC.m(html, ".item", %{}) == {:ok, "Book"}
     end
 
     test "targets nested elements", %{html: html} do
-      assert HselC.modify(html, "#second td.desc", %{}) == {:ok, "A great read!"}
+      assert HselC.m(html, "#second td.desc", %{}) == {:ok, "A great read!"}
     end
 
     test "targets lists of elements", %{html: html} do
-      assert HselC.modify(html, ".desc, .deets", %{}) == {:ok, "Foo bar\nA great read!\nJohn Doe"}
+      assert HselC.m(html, ".desc, .deets", %{}) == {:ok, "Foo bar\nA great read!\nJohn Doe"}
     end
 
     test "works with ok tuples", %{html: html} do
-      assert HselC.modify({:ok, html}, ".item", %{}) == {:ok, "Book"}
+      assert HselC.m({:ok, html}, ".item", %{}) == {:ok, "Book"}
     end
 
     test "allows error tuples to pass through" do
-      assert HselC.modify({:error, "reason"}, "", %{}) == {:error, "reason"}
+      assert HselC.m({:error, "reason"}, "", %{}) == {:error, "reason"}
     end
   end
 end

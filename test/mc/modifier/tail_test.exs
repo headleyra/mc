@@ -2,38 +2,38 @@ defmodule Mc.Modifier.TailTest do
   use ExUnit.Case, async: true
   alias Mc.Modifier.Tail
 
-  describe "modify/3" do
+  describe "m/3" do
     test "parses `args` as an integer and returns that many lines from the end of `buffer`" do
-      assert Tail.modify("one\ntwo\nthree", "1", %{}) == {:ok, "three"}
-      assert Tail.modify("one\ntwo\nthree", "2", %{}) == {:ok, "two\nthree"}
-      assert Tail.modify("one\ntwo\nthree", "3", %{}) == {:ok, "one\ntwo\nthree"}
-      assert Tail.modify("one\ntwo\nthree", "4", %{}) == {:ok, "one\ntwo\nthree"}
-      assert Tail.modify("one\ntwo\nthree\n", "3", %{}) == {:ok, "two\nthree\n"}
-      assert Tail.modify("\none\n\ntwo\nthree\n\n", "5", %{}) == {:ok, "\ntwo\nthree\n\n"}
+      assert Tail.m("one\ntwo\nthree", "1", %{}) == {:ok, "three"}
+      assert Tail.m("one\ntwo\nthree", "2", %{}) == {:ok, "two\nthree"}
+      assert Tail.m("one\ntwo\nthree", "3", %{}) == {:ok, "one\ntwo\nthree"}
+      assert Tail.m("one\ntwo\nthree", "4", %{}) == {:ok, "one\ntwo\nthree"}
+      assert Tail.m("one\ntwo\nthree\n", "3", %{}) == {:ok, "two\nthree\n"}
+      assert Tail.m("\none\n\ntwo\nthree\n\n", "5", %{}) == {:ok, "\ntwo\nthree\n\n"}
     end
 
     test "returns `buffer` if `args` exceeds lines present" do
-      assert Tail.modify("one\ntwo", "3", %{}) == {:ok, "one\ntwo"}
-      assert Tail.modify("just\nthis", "394", %{}) == {:ok, "just\nthis"}
+      assert Tail.m("one\ntwo", "3", %{}) == {:ok, "one\ntwo"}
+      assert Tail.m("just\nthis", "394", %{}) == {:ok, "just\nthis"}
     end
 
     test "returns empty string when `args` is zero" do
-      assert Tail.modify("foo\nbar", "0", %{}) == {:ok, ""}
+      assert Tail.m("foo\nbar", "0", %{}) == {:ok, ""}
     end
 
     test "errors when `args` isn't a positive integer" do
-      assert Tail.modify("123", "-1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.modify("", "3.1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.modify("oops", "hi", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.modify("nowt", "", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.m("123", "-1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.m("", "3.1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.m("oops", "hi", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.m("nowt", "", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
     end
 
     test "works with ok tuples" do
-      assert Tail.modify({:ok, "some\nbuffer\ntext"}, "2", %{}) == {:ok, "buffer\ntext"}
+      assert Tail.m({:ok, "some\nbuffer\ntext"}, "2", %{}) == {:ok, "buffer\ntext"}
     end
 
     test "allows error tuples to pass through" do
-      assert Tail.modify({:error, "reason"}, "gets ignored", %{}) == {:error, "reason"}
+      assert Tail.m({:error, "reason"}, "gets ignored", %{}) == {:error, "reason"}
     end
   end
 end

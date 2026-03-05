@@ -11,13 +11,19 @@ defmodule Mc.AppTest do
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
-    %{mappings: Mc.Mappings.s()}
+
+    mappings = %{
+      b: Mc.Modifier.Buffer,
+      r: Mc.Modifier.Replace,
+      casel: Mc.Modifier.CaseL,
+      get: Mc.Modifier.Get
+    }
+
+    %{mappings: mappings}
   end
 
   describe "script/2" do
-    test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
-
-    test "gets an app script given an app key and mappings", %{mappings: mappings} do
+    test "gets an 'app script' given a key and mappings", %{mappings: mappings} do
       assert App.script("app1", mappings) == {:ok, "casel"}
       assert App.script("app2", mappings) == {:ok, "r a ::1"}
       assert App.script("app3", mappings) == {:ok, "b 1: ::1, 2: ::2"}

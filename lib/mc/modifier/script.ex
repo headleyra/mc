@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Script do
   use Mc.Modifier
 
-  def modify(buffer, args, mappings) do
+  def m(buffer, args, mappings) do
     script =
       args
       |> Mc.Parse.split()

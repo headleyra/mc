@@ -12,44 +12,44 @@ defmodule Mc.Modifier.AppTest do
       "app7" => "b all: :::"
     }})
 
-    %{mappings: Mc.Mappings.s()}
+    %{mappings: Mc.Mappings.standard()}
   end
 
-  describe "modify/3" do
+  describe "m/3" do
     test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
 
     test "gets an app script using an app key and runs it against the `buffer`", %{mappings: mappings} do
-      assert App.modify("DOT COM", "app1", mappings) == {:ok, "dot com"}
-      assert App.modify("cube", "app4", mappings) == {:ok, "ice-cube"}
+      assert App.m("DOT COM", "app1", mappings) == {:ok, "dot com"}
+      assert App.m("cube", "app4", mappings) == {:ok, "ice-cube"}
     end
 
     test "errors when the app doesn't exist", %{mappings: mappings} do
-      assert App.modify("", "no-exist", mappings) == {:error, "Mc.Modifier.App: not found: no-exist"}
-      assert App.modify("n/a", "no-app", mappings) == {:error, "Mc.Modifier.App: not found: no-app"}
-      assert App.modify("", "", mappings) == {:error, "Mc.Modifier.App: not found: "}
+      assert App.m("", "no-exist", mappings) == {:error, "Mc.Modifier.App: not found: no-exist"}
+      assert App.m("n/a", "no-app", mappings) == {:error, "Mc.Modifier.App: not found: no-app"}
+      assert App.m("", "", mappings) == {:error, "Mc.Modifier.App: not found: "}
     end
 
     test "assigns arguments to placeholders (::1, ::2, ...) before running the script", %{mappings: mappings} do
-      assert App.modify("a b", "app3 arg1 arg2", mappings) == {:ok, "arg1 b"}
-      assert App.modify("a:a", "app3 alpha", mappings) == {:ok, "alpha:alpha"}
-      assert App.modify("FOOBAR", "app1 no.replacements", mappings) == {:ok, "foobar"}
+      assert App.m("a b", "app3 arg1 arg2", mappings) == {:ok, "arg1 b"}
+      assert App.m("a:a", "app3 alpha", mappings) == {:ok, "alpha:alpha"}
+      assert App.m("FOOBAR", "app1 no.replacements", mappings) == {:ok, "foobar"}
     end
 
     test "errors when the app doesn't exist and arguments are passed", %{mappings: mappings} do
-      assert App.modify("n/a", "oops arg1", mappings) == {:error, "Mc.Modifier.App: not found: oops"}
-      assert App.modify("", "no-exist a1 a2", mappings) == {:error, "Mc.Modifier.App: not found: no-exist"}
+      assert App.m("n/a", "oops arg1", mappings) == {:error, "Mc.Modifier.App: not found: oops"}
+      assert App.m("", "no-exist a1 a2", mappings) == {:error, "Mc.Modifier.App: not found: no-exist"}
     end
 
     test "replaces the 'all args' placeholder (::: => arg*)", %{mappings: mappings} do
-      assert App.modify("", "app7 yab dab do", mappings) == {:ok, "all: yab dab do"}
+      assert App.m("", "app7 yab dab do", mappings) == {:ok, "all: yab dab do"}
     end
 
     test "works with ok tuples", %{mappings: mappings} do
-      assert App.modify({:ok, "BIG"}, "app1", mappings) == {:ok, "big"}
+      assert App.m({:ok, "BIG"}, "app1", mappings) == {:ok, "big"}
     end
 
     test "allows error tuples to pass through", %{mappings: mappings} do
-      assert App.modify({:error, "reason"}, "", mappings) == {:error, "reason"}
+      assert App.m({:error, "reason"}, "", mappings) == {:error, "reason"}
     end
   end
 end

@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Delete do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     case Regex.compile(args, "sm") do
       {:ok, regex} ->
         {:ok, String.replace(buffer, regex, "")}

@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Replace do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     case parse_replace(args) do
       {:ok, search_regex, uri_decoded_replace} ->
         result = String.replace(buffer, search_regex, uri_decoded_replace)

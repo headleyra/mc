@@ -27,7 +27,7 @@ defmodule Mc.App do
   end
 
   defp kvget(key, mappings, replacements) do
-    case Mc.modify("", "get #{key}", mappings) do
+    case Mc.m("", "get #{key}", mappings) do
       {:ok, script} ->
         replacements_list = String.split(replacements)
         expand(script, replacements_list)

@@ -1,10 +1,10 @@
 defmodule Mc.Modifier.RunK do
   use Mc.Modifier
 
-  def modify(buffer, args, mappings) do
-    case Mc.modify("", "get #{args}", mappings) do
+  def m(buffer, args, mappings) do
+    case Mc.m("", "get #{args}", mappings) do
       {:ok, script} ->
-        Mc.modify(buffer, script, mappings)
+        Mc.m(buffer, script, mappings)
 
       {:error, reason} ->
         oops(reason)

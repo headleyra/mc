@@ -77,6 +77,4 @@ defmodule Mc.Mappings do
       /: M.Div
     }
   end
-
-  def s, do: standard()
 end

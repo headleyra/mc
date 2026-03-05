@@ -1,5 +1,5 @@
 defmodule Mc do
-  def modify(buffer, script, mappings) do
+  def m(buffer, script, mappings) do
     script
     |> doubleize()
     |> tripleize(mappings)
@@ -7,12 +7,8 @@ defmodule Mc do
     |> tupleize()
   end
 
-  def m(buffer, script, mappings) do
-    modify(buffer, script, mappings)
-  end
-
   def m(script, mappings) do
-    modify("", script, mappings)
+    m("", script, mappings)
   end
 
   defp doubleize(script) do
@@ -41,10 +37,10 @@ defmodule Mc do
   defp triple_double({modifier_name, args}, mappings) do
     case Map.get(mappings, modifier_name) do
       nil ->
-        {Mc.Modifier.Error, :modify, "modifier not found: #{modifier_name}"}
+        {Mc.Modifier.Error, :m, "modifier not found: #{modifier_name}"}
 
       module ->
-        {module, :modify, args}
+        {module, :m, args}
     end
   end
 

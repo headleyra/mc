@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Field do
   use Mc.Modifier
 
-  def modify(buffer, args, _mappings) do
+  def m(buffer, args, _mappings) do
     case String.split(args) do
       [select_spec, separator, joiner] ->
         field(buffer, select_spec, separator, joiner)

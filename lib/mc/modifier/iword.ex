@@ -3,7 +3,7 @@ defmodule Mc.Modifier.Iword do
 
   @max_int 999_999_999_999_999_999_999_999_999_999_999_999
 
-  def modify(buffer, _args, _mappings) do
+  def m(buffer, _args, _mappings) do
     case String.trim(buffer) |> Mc.String.to_int() do
       {:ok, int} when abs(int) > @max_int ->
         {:error, "Mc.Modifier.Iword: out of range"}

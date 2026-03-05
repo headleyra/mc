@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.SetM do
   use Mc.Modifier
 
-  def modify(buffer, args, mappings) do
+  def m(buffer, args, mappings) do
     case Mc.KvMultiple.set(buffer, args, mappings) do
       {:ok, result} ->
         {:ok, result}

@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.Range do
   use Mc.Modifier
 
-  def modify(_buffer, args, _mappings) do
+  def m(_buffer, args, _mappings) do
     case range(args) do
       [{:ok, start}, {:ok, finish}] ->
         {:ok, rangeize(start, finish)}

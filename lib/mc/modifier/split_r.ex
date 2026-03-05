@@ -1,8 +1,8 @@
 defmodule Mc.Modifier.SplitR do
   use Mc.Modifier
 
-  def modify(buffer, "", _mappings), do: split(buffer, "\\s+")
-  def modify(buffer, args, _mappings), do: split(buffer, args)
+  def m(buffer, "", _mappings), do: split(buffer, "\\s+")
+  def m(buffer, args, _mappings), do: split(buffer, args)
 
   defp split(buffer, regex_str) do
     case Regex.compile(regex_str) do

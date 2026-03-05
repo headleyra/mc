@@ -1,7 +1,7 @@
 defmodule Mc.Modifier.UrlP do
   use Mc.Modifier
 
-  def modify(_buffer, args, mappings) do
+  def m(_buffer, args, mappings) do
     case build_url_with_params(args, mappings) do
       {:ok, url_with_params} ->
         fetch(url_with_params)
@@ -68,7 +68,7 @@ defmodule Mc.Modifier.UrlP do
     {:ok,
       params_list
       |> Enum.map(fn params_pair -> String.split(params_pair, ":") end)
-      |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.modify("", "get #{key}", mappings)} end)
+      |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.m("", "get #{key}", mappings)} end)
       |> Keyword.new(&build_keyword_list/1)
     }
   end
