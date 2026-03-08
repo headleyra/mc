@@ -3,7 +3,7 @@ defmodule Mc do
     script
     |> doubleize()
     |> tripleize(mappings)
-    |> transform(buffer, mappings)
+    |> modify(buffer, mappings)
     |> tupleize()
   end
 
@@ -14,27 +14,31 @@ defmodule Mc do
   defp doubleize(script) do
     script
     |> String.split("\n")
-    |> Enum.map(fn line -> String.trim_leading(line) end)
-    |> Enum.reject(fn line -> Mc.String.comment?(line) || line == "" end)
-    |> Enum.map(fn line -> double_line(line) end)
+    |> Enum.map(&String.trim_leading(&1))
+    |> Enum.reject(&(Mc.String.comment?(&1) || &1 == ""))
+    |> Enum.map(&to_double(&1))
   end
 
-  defp double_line(modify_instruction) do
-    case String.split(modify_instruction, " ", parts: 2) do
-      [name, args] ->
-        {String.to_atom(name), args}
+  defp to_double(script_line) do
+    case String.split(script_line, " ", parts: 2) do
+      [modifier_name, args] ->
+        to_double(modifier_name, args)
 
-      [name] ->
-        {String.to_atom(name), ""}
+      [modifier_name] ->
+        to_double(modifier_name, "")
     end
+  end
+
+  defp to_double(modifier_name, args) do
+    {String.to_atom(modifier_name), args}
   end
 
   defp tripleize(doubles, mappings) do
     doubles
-    |> Enum.map(fn double -> triple_double(double, mappings) end)
+    |> Enum.map(fn double -> to_triple(double, mappings) end)
   end
 
-  defp triple_double({modifier_name, args}, mappings) do
+  defp to_triple({modifier_name, args}, mappings) do
     case Map.get(mappings, modifier_name) do
       nil ->
         {Mc.Modifier.Error, :m, "modifier not found: #{modifier_name}"}
@@ -44,14 +48,21 @@ defmodule Mc do
     end
   end
 
-  defp transform(triples, buffer, mappings) do
+  defp modify(triples, buffer, mappings) do
     triples
-    |> Enum.reduce_while(buffer, fn {mod, fun, args}, acc -> result(mod, fun, args, acc, mappings) end)
+    |> Enum.reduce_while(buffer, fn {mod, fun, args}, acc -> eval(mod, fun, args, acc, mappings) end)
   end
 
-  defp result(module, func_name, args, acc, mappings) do
+  defp eval(module, func_name, args, acc, mappings) do
     result = apply(module, func_name, [acc, args, mappings])
-    if module == Mc.Modifier.Stop, do: {:halt, result}, else: {:cont, result}
+
+    case module do
+      Mc.Modifier.Stop ->
+        {:halt, result}
+
+      _module ->
+        {:cont, result}
+    end
   end
 
   defp tupleize(result) do
