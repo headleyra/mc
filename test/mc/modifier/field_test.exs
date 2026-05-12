@@ -3,7 +3,7 @@ defmodule Mc.Modifier.FieldTest do
   alias Mc.Modifier.Field
 
   describe "m/3" do
-    test "parses `args` as: <sep> <select spec><sep> <separator><sep> <joiner>", do: true
+    test "parses `args` as: <select spec> <separator> <joiner>", do: true
     test "see Mc.Select.parse/1", do: true
 
     test "separates, selects and joins the `buffer`" do
