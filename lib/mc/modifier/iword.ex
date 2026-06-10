@@ -1,21 +1,33 @@
 defmodule Mc.Modifier.Iword do
   use Mc.Modifier
 
-  @max_int 999_999_999_999_999_999_999_999_999_999_999_999
-
   def m(buffer, _args, _mappings) do
-    case String.trim(buffer) |> Mc.String.to_int() do
-      {:ok, int} when abs(int) > @max_int ->
-        {:error, "Mc.Modifier.Iword: out of range"}
+    int = get_int(buffer)
 
-      {:ok, int} when int < 0 ->
-        {:ok, "(minus) #{Mc.NumberToWord.say(abs(int))}"}
+    case Ut.NumberToWord.say(int) do
+      {:error, :out_of_range} ->
+        oops("out of range")
 
-      {:ok, int} ->
-        {:ok, Mc.NumberToWord.say(int)}
+      {:error, :negative_integer} ->
+        oops("negative integer")
 
-      :error ->
+      {:error, :non_integer} ->
         oops("no integer found")
+
+      word ->
+        {:ok, word}
+    end
+  end
+
+  def get_int(string) do
+    int =
+      string
+      |> String.trim()
+      |> Ut.String.to_int()
+
+    case int do
+      {:ok, i} -> i
+      :error -> nil
     end
   end
 end

@@ -12,7 +12,7 @@ defmodule Mc.Modifier.Field do
   end
 
   defp field(buffer, select_spec, separator, joiner) do
-    case Mc.Field.parse(buffer, select_spec, separator, joiner) do
+    case Ut.Field.join(buffer, select_spec, separator, joiner) do
       {:error, :bad_spec} ->
         oops("bad select spec")
 

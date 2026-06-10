@@ -28,7 +28,7 @@ defmodule Mc.Modifier.Json do
   end
 
   defp get(list, index) when is_list(list) do
-    case Mc.String.to_int(index) do
+    case Ut.String.to_int(index) do
       {:ok, i} when i >= 0 ->
         {:ok,
           Enum.at(list, i)

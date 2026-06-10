@@ -19,10 +19,10 @@ defmodule Mc.Modifier.MapC do
 
     case conc_args do
       [concurrency, script] ->
-        {Mc.String.to_int(concurrency), script}
+        {Ut.String.to_int(concurrency), script}
 
       [concurrency] ->
-        {Mc.String.to_int(concurrency), ""}
+        {Ut.String.to_int(concurrency), ""}
 
       _error ->
         :error

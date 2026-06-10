@@ -11,7 +11,7 @@ defmodule Mc.Modifier.Div do
   end
 
   defp divide(buffer) do
-    case Mc.String.numberize(buffer) do
+    case Ut.String.numberize(buffer) do
       {:ok, []} ->
         {:ok, ""}
 

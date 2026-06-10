@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Zip do
   use Mc.Modifier
 
   def m(buffer, args, mappings) do
-    case Mc.Parse.split(args) do
+    case Ut.Parse.split(args) do
       [script1, script2] ->
         zip(script1, script2, "", buffer, mappings)
 

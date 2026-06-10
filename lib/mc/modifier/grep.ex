@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Grep do
   use Mc.Modifier
 
   def m(buffer, args, _mappings) do
-    case Mc.String.grep(buffer, args, match: true) do
+    case Ut.String.grep(buffer, args, match: true) do
       {:error, reason} ->
         oops(reason)
 

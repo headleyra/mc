@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Head do
   use Mc.Modifier
 
   def m(buffer, args, _mappings) do
-    case Mc.String.to_int(args) do
+    case Ut.String.to_int(args) do
       {:ok, count} when count >= 0 ->
         first(buffer, count)
 

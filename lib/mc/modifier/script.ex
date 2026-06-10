@@ -4,7 +4,7 @@ defmodule Mc.Modifier.Script do
   def m(buffer, args, mappings) do
     script =
       args
-      |> Mc.Parse.split()
+      |> Ut.Parse.split()
       |> Enum.join("\n")
 
     Mc.m(buffer, script, mappings)

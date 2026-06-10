@@ -15,7 +15,7 @@ defmodule Mc do
     script
     |> String.split("\n")
     |> Enum.map(&String.trim_leading(&1))
-    |> Enum.reject(&(Mc.String.comment?(&1) || &1 == ""))
+    |> Enum.reject(&(Ut.String.comment?(&1) || &1 == ""))
     |> Enum.map(&to_double(&1))
   end
 

@@ -3,7 +3,7 @@ defmodule Mc.Modifier.SelectTest do
   alias Mc.Modifier.Select
 
   describe "m/3" do
-    test "see Mc.Select.parse/1", do: true
+    test "uses 'select specs' as defined in `Ut.Select`", do: true
 
     test "selects lines from `buffer` using a 'select spec'" do
       assert Select.m("one\ntwo\nthree", "2", %{}) == {:ok, "two"}

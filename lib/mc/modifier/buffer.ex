@@ -23,7 +23,7 @@ defmodule Mc.Modifier.Buffer do
   end
 
   defp tokenize(string) do
-    Mc.Tokenizer.parse(string)
+    Ut.Tokenizer.parse(string)
   end
 
   defp untokenize(tokenized_list, buffer, mappings) do

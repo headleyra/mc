@@ -16,7 +16,7 @@ defmodule Mc.Modifier.Range do
 
   defp range(args) do
     String.split(args)
-    |> Enum.map(&Mc.String.to_int/1)
+    |> Enum.map(&Ut.String.to_int/1)
   end
 
   defp rangeize(start, finish) when finish >= start, do: rangeize(start, finish, 1)

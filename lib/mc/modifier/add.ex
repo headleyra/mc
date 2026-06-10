@@ -2,7 +2,7 @@ defmodule Mc.Modifier.Add do
   use Mc.Modifier
 
   def m(buffer, _args, _mappings) do
-    case Mc.String.numberize(buffer) do
+    case Ut.String.numberize(buffer) do
       {:ok, []} ->
         {:ok, ""}
 

@@ -4,7 +4,7 @@ defmodule Mc.Modifier.FieldTest do
 
   describe "m/3" do
     test "parses `args` as: <select spec> <separator> <joiner>", do: true
-    test "see Mc.Select.parse/1", do: true
+    test "uses 'select specs' as defined in `Ut.Select`", do: true
 
     test "separates, selects and joins the `buffer`" do
       assert Field.m("one.two.three", "1,3,2 . //", %{}) == {:ok, "one//three//two"}

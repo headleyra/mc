@@ -3,27 +3,24 @@ defmodule Mc.Modifier.IwordTest do
   alias Mc.Modifier.Iword
 
   @max_int 999_999_999_999_999_999_999_999_999_999_999_999
-  @max_word "nine hundred and ninety nine decillion, nine hundred and ninety nine nonillion, nine hundred and ninety nine octillion, nine hundred and ninety nine septillion, nine hundred and ninety nine sextillion, nine hundred and ninety nine quintillion, nine hundred and ninety nine quadrillion, nine hundred and ninety nine trillion, nine hundred and ninety nine billion, nine hundred and ninety nine million, nine hundred and ninety nine thousand, nine hundred and ninety nine"
 
   describe "m/3" do
-    test "parses the `buffer` as an integer and converts it into its word equivalent" do
+    test "converts `buffer` into its word equivalent" do
       assert Iword.m("0", "n/a", %{}) == {:ok, "zero"}
       assert Iword.m("1", "", %{}) == {:ok, "one"}
       assert Iword.m("11", "", %{}) == {:ok, "eleven"}
       assert Iword.m("1024", "", %{}) == {:ok, "one thousand and twenty four"}
-      assert Iword.m("#{@max_int}", "", %{}) == {:ok, @max_word}
-    end
-
-    test "works with negative integers" do
-      assert Iword.m("-1", "", %{}) == {:ok, "(minus) one"}
-      assert Iword.m("-3142", "", %{}) == {:ok, "(minus) three thousand, one hundred and forty two"}
-      assert Iword.m("-#{@max_int}", "", %{}) == {:ok, "(minus) #{@max_word}"}
     end
 
     test "works with integers embedded in whitespace" do
-      assert Iword.m("   -15", "", %{}) == {:ok, "(minus) fifteen"}
+      assert Iword.m("   15", "", %{}) == {:ok, "fifteen"}
       assert Iword.m("5\n\n", "", %{}) == {:ok, "five"}
       assert Iword.m("\t 17 \n", "", %{}) == {:ok, "seventeen"}
+    end
+
+    test "errors with negative integers" do
+      assert Iword.m("-1", "", %{}) == {:error, "Mc.Modifier.Iword: negative integer"}
+      assert Iword.m("-31", "", %{}) == {:error, "Mc.Modifier.Iword: negative integer"}
     end
 
     test "errors when `buffer` is empty" do
@@ -39,8 +36,7 @@ defmodule Mc.Modifier.IwordTest do
     end
 
     test "errors when the integer is too big (+/-)" do
-      assert Iword.m("#{@max_int+1}", "", %{}) == {:error, "Mc.Modifier.Iword: out of range"}
-      assert Iword.m("-#{@max_int+1}", "", %{}) == {:error, "Mc.Modifier.Iword: out of range"}
+      assert Iword.m("#{@max_int + 1}", "", %{}) == {:error, "Mc.Modifier.Iword: out of range"}
     end
 
     test "works with ok tuples" do
