@@ -40,6 +40,12 @@ defmodule Mc.Modifier.SetMTest do
       assert GetM.m("key7 key8", ":::", mappings) == {:ok, buffer}
     end
 
+    test "returns `buffer`", %{mappings: mappings} do
+      buffer = "k1\nv1-k2\nv2"
+      {:ok, result} = SetM.m(buffer, "-", mappings)
+      assert result == buffer
+    end
+
     test "errors when the 'setm' format is bad", %{mappings: mappings} do
       assert SetM.m("key-with-no-value", "", mappings) == {:error, "Mc.Modifier.SetM: bad format"}
       assert SetM.m("key\nvalue#{@separator}key-with-no-value", "", mappings) == {:error, "Mc.Modifier.SetM: bad format"}

@@ -7,6 +7,7 @@ defmodule Mc.Modifier.SetM do
     case Ut.Kv.string_to_kv_list(buffer, separator) do
       {:ok, kv_list} ->
         Enum.each(kv_list, fn {key, value} -> Mc.m(value, "set #{key}", mappings) end)
+        {:ok, buffer}
 
       {:error, :bad_format} ->
         oops("bad format")
