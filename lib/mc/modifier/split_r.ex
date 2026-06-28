@@ -14,7 +14,7 @@ defmodule Mc.Modifier.SplitR do
         }
 
       {:error, _} ->
-        oops("bad regex")
+        oops(:bad_regex, regex_str)
     end
   end
 end

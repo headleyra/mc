@@ -3,11 +3,11 @@ defmodule Mc.Modifier.GrepV do
 
   def m(buffer, args, _mappings) do
     case Ut.String.grep(buffer, args, match: false) do
-      {:error, reason} ->
-        oops(reason)
+      {:error, _reason} ->
+        oops(:bad_regex, args)
 
-      result ->
-        result
+      {:ok, result} ->
+        {:ok, result}
     end
   end
 end

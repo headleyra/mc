@@ -3,16 +3,16 @@ defmodule Mc.Modifier.CaseUTest do
   alias Mc.Modifier.CaseU
 
   describe "m/3" do
-    test "uppercases the `buffer`" do
+    test "uppercases `buffer`" do
       assert CaseU.m("Apples aNd Pears", "n/a", %{}) == {:ok, "APPLES AND PEARS"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert CaseU.m({:ok, "one, two\n3"}, "", %{}) == {:ok, "ONE, TWO\n3"}
     end
 
-    test "allows error tuples to pass through" do
-      assert CaseU.m({:error, {:file, :not_found}}, "", %{}) == {:error, {:file, :not_found}}
+    test "allows error-tuples to pass through" do
+      assert CaseU.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

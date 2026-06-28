@@ -2,26 +2,16 @@ defmodule Mc.Modifier.UrlP do
   use Mc.Modifier
 
   def m(_buffer, args, mappings) do
-    case build_url_with_params(args, mappings) do
-      {:ok, url_with_params} ->
-        fetch(url_with_params)
+    case url_params(args, mappings) do
+      {:ok, url_params} ->
+        fetch(url_params)
 
       _error ->
-        oops("parse error")
+        oops(:bad_params_list, args)
     end
   end
 
-  defp fetch(url_with_params) do
-    case apply(adapter(), :post, url_with_params) do
-      {:ok, result} ->
-        {:ok, result}
-
-      {:error, reason} ->
-        oops(reason)
-    end
-  end
-
-  defp build_url_with_params(args, mappings) do
+  defp url_params(args, mappings) do
     case String.split(args, ~r/\s+/, parts: 2) do
       [""] ->
         :error
@@ -33,12 +23,12 @@ defmodule Mc.Modifier.UrlP do
         {:ok, [url, []]}
 
       [url, params] ->
-        argsify(url, params, mappings)
+        argsize(url, params, mappings)
     end
   end
 
-  defp argsify(url, params, mappings) do
-    case build_params_list(params, mappings) do
+  defp argsize(url, params, mappings) do
+    case params_list(params, mappings) do
       {:ok, params_list} ->
         {:ok, [url, params_list]}
 
@@ -47,11 +37,25 @@ defmodule Mc.Modifier.UrlP do
     end
   end
 
-  defp build_params_list(params, mappings) do
+  defp fetch(url_params) do
+    case apply(adapter(), :post, url_params) do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, _reason} ->
+        oops(:adapter_error, nil)
+    end
+  end
+
+  defp params_list(params, mappings) do
     params
     |> split()
     |> validate()
-    |> listify(mappings)
+    |> listize(mappings)
+  end
+
+  defp split(params) do
+    String.split(params)
   end
 
   defp validate(params_list) do
@@ -59,22 +63,23 @@ defmodule Mc.Modifier.UrlP do
     if valid, do: params_list, else: false
   end
 
-  defp split(params) do
-    String.split(params)
-  end
+  defp listize(false, _mappings), do: :error
 
-  defp listify(false, _mappings), do: :error
-  defp listify(params_list, mappings) do
+  defp listize(params_list, mappings) do
     {:ok,
       params_list
       |> Enum.map(fn params_pair -> String.split(params_pair, ":") end)
-      |> Enum.map(fn [param_name, key] -> {String.to_atom(param_name), Mc.m("", "get #{key}", mappings)} end)
-      |> Keyword.new(&build_keyword_list/1)
+      |> Enum.map(fn [param_name, key] -> param_value(param_name, key, mappings) end)
+      |> Keyword.new(fn e -> detuple(e) end)
     }
   end
 
-  defp build_keyword_list({atom, {:ok, value}}), do: {atom, value}
-  defp build_keyword_list({atom, {:error, _reason}}), do: {atom, ""}
+  defp param_value(param_name, key, mappings) do
+     {String.to_atom(param_name), Mc.m("get #{key}", mappings)}
+  end
+
+  defp detuple({atom, {:ok, value}}), do: {atom, value}
+  defp detuple({atom, {:error, _, _, _, _}}), do: {atom, ""}
 
   defp adapter do
     Application.get_env(:mc, :http_adapter)

@@ -8,7 +8,8 @@ defmodule Mc.Modifier.CountL do
 
       non_empty_buffer ->
         {:ok,
-          String.split(non_empty_buffer, "\n")
+          non_empty_buffer
+          |> String.split("\n")
           |> Enum.count()
           |> to_string()
         }

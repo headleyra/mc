@@ -9,12 +9,12 @@ defmodule Mc.Modifier.CountCTest do
       assert CountC.m("\tStrong and stable\n\n", "", %{}) == {:ok, "20"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert CountC.m({:ok, "Over 50k"}, "", %{}) == {:ok, "8"}
     end
 
-    test "allows error tuples to pass through" do
-      assert CountC.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert CountC.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

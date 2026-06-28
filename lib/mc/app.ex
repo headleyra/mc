@@ -5,13 +5,13 @@ defmodule Mc.App do
   def script(key_with_optional_replacements, mappings) do
     case String.split(key_with_optional_replacements, " ", parts: 2, trim: true) do
       [key] ->
-        kvget(key, mappings, "")
+        kv_get(key, mappings, "")
 
       [key, replacements] ->
-        kvget(key, mappings, replacements)
+        kv_get(key, mappings, replacements)
 
       [] ->
-        {:error, :not_found, ""}
+        {:error, :missing_app_key, nil}
     end
   end
 
@@ -26,13 +26,13 @@ defmodule Mc.App do
     }
   end
 
-  defp kvget(key, mappings, replacements) do
-    case Mc.m("", "get #{key}", mappings) do
+  defp kv_get(key, mappings, replacements) do
+    case Mc.m("get #{key}", mappings) do
       {:ok, script} ->
         replacements_list = String.split(replacements)
         expand(script, replacements_list)
 
-      {:error, _reason} ->
+      {:error, _, :key_not_found, key, _} ->
         {:error, :not_found, key}
     end
   end

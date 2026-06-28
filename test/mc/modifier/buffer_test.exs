@@ -21,43 +21,39 @@ defmodule Mc.Modifier.BufferTest do
       assert Buffer.m("", "; ;tumble; weed; ", mappings) == {:ok, "\n;tumble\nweed\n"}
     end
 
-    test "expands back-quoted scripts", %{mappings: mappings} do
+    test "expands curly-quoted scripts", %{mappings: mappings} do
       assert Buffer.m("", "zero {range 4} five", mappings) == {:ok, "zero 1\n2\n3\n4 five"}
       assert Buffer.m("", "do you {buffer foo}?", mappings) == {:ok, "do you foo?"}
-
-      assert Buffer.m("", "yes {buffer WHEE; casel; replace whee we} can", mappings) ==
-        {:ok, "yes we can"}
+      assert Buffer.m("", "yes {buffer WHEE; casel; replace whee we} can", mappings) == {:ok, "yes we can"}
     end
 
-    test "runs back-quoted scripts against `buffer`", %{mappings: mappings} do
+    test "runs curly-quoted scripts against `buffer`", %{mappings: mappings} do
       assert Buffer.m("TWO", "one {casel} three", mappings) == {:ok, "one two three"}
       assert Buffer.m("", "empty :{}: script", mappings) == {:ok, "empty :: script"}
       assert Buffer.m("foo", "empty :{buffer}: script2", mappings) == {:ok, "empty :: script2"}
-      assert Buffer.m("stuff", "{caseu; replace T N}, achew!", mappings) == {:ok, "SNUFF, achew!"}
+      assert Buffer.m("pepsi", "{caseu; replace SI PER}, achew!", mappings) == {:ok, "PEPPER, achew!"}
     end
 
-    test "expands multiple back-quoted scripts", %{mappings: mappings} do
-      assert Buffer.m("TREBLE", "14da {casel} 24da {replace TREBLE bass}", mappings) ==
-        {:ok, "14da treble 24da bass"}
-
-      assert Buffer.m("HI", "{casel} {buffer low}, {buffer let's go!}", mappings) ==
-        {:ok, "hi low, let's go!"}
-
-      assert Buffer.m("", "one; :{buffer two}:{buffer three}", mappings) ==
-        {:ok, "one\n:two:three"}
+    test "expands multiple curly-quoted scripts", %{mappings: mappings} do
+      assert Buffer.m("TREBLE", "14da {casel} 24da {replace TREBLE bass}", mappings) == {:ok, "14da treble 24da bass"}
+      assert Buffer.m("HI", "{casel} {buffer low}, {buffer let's go!}", mappings) == {:ok, "hi low, let's go!"}
+      assert Buffer.m("", "one; :{buffer two}:{buffer three}", mappings) == {:ok, "one\n:two:three"}
     end
 
-    test "returns back-quoted script errors", %{mappings: mappings} do
-      assert Buffer.m("", "{error oops}", mappings) == {:error, "oops"}
-      assert Buffer.m("", "{error first} {error second}", mappings) == {:error, "first"}
+    test "returns curly-quoted script errors", %{mappings: mappings} do
+      assert Buffer.m("", "{error 1st} {error 2nd}", mappings) ==
+        {:error, Mc.Modifier.Buffer, :script_error, "{error 1st} {error 2nd}", [{Mc.Modifier.Error, :error, "1st"}]}
+
+      assert Buffer.m("", "{range x; m rand 7}", mappings) ==
+        {:error, Mc.Modifier.Buffer, :script_error, "{range x; m rand 7}", [{Mc.Modifier.Range, :bad_limits, "x"}]}
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "works with ok-tuples", %{mappings: mappings} do
       assert Buffer.m({:ok, "LOCKDOWN"}, "full {casel}", mappings) == {:ok, "full lockdown"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert Buffer.m({:error, "reason"}, "", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Buffer.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

@@ -10,12 +10,12 @@ defmodule Mc.Modifier.AppendTest do
       assert Append.m("tab", "%09itha", %{}) == {:ok, "tab\titha"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Append.m({:ok, "best of "}, "three", %{}) == {:ok, "best of three"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Append.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Append.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

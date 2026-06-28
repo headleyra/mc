@@ -6,9 +6,9 @@ defmodule Mc.Modifier.AppSTest do
   setup do
     map = %{
       "app1" => "casel",
-      "app3" => "r a ::1\nr b ::2",
-      "app5" => "r b ::2",
-      "app7" => "b all: :::"
+      "app2" => "replace x ::1\nreplace y ::2",
+      "app3" => "replace y ::2",
+      "app4" => "buffer all: :::"
     }
 
     start_supervised({Mc.Adapter.KvMemory, map: map})
@@ -16,41 +16,40 @@ defmodule Mc.Modifier.AppSTest do
   end
 
   describe "m/3" do
-    test "expects `mappings` to contain a 'KV' modifier called `get`", do: true
-
-    test "gets an 'app script' using an app key", %{mappings: mappings} do
+    test "gets an 'app script' using an 'app key' (`args`)", %{mappings: mappings} do
       assert AppS.m("n/a", "app1", mappings) == {:ok, "casel"}
-      assert AppS.m("", "app3", mappings) == {:ok, "r a ::1\nr b ::2"}
-      assert AppS.m("", "app5", mappings) == {:ok, "r b ::2"}
-      assert AppS.m("", "app7", mappings) == {:ok, "b all: :::"}
-    end
-
-    test "errors when the app doesn't exist", %{mappings: mappings} do
-      assert AppS.m("n/a", "oops", mappings) == {:error, "Mc.Modifier.AppS: not found: oops"}
-      assert AppS.m("", "nah", mappings) == {:error, "Mc.Modifier.AppS: not found: nah"}
+      assert AppS.m("", "app2", mappings) == {:ok, "replace x ::1\nreplace y ::2"}
+      assert AppS.m("", "app3", mappings) == {:ok, "replace y ::2"}
+      assert AppS.m("", "app4", mappings) == {:ok, "buffer all: :::"}
     end
 
     test "assigns arguments to placeholders (::1, ::2, ...)", %{mappings: mappings} do
-      assert AppS.m("n/a", "app3 arg1 arg2", mappings) == {:ok, "r a arg1\nr b arg2"}
-      assert AppS.m("", "app5 ignored cash", mappings) == {:ok, "r b cash"}
+      assert AppS.m("n/a", "app2 arg1 arg2", mappings) == {:ok, "replace x arg1\nreplace y arg2"}
+      assert AppS.m("", "app3 ignored cash", mappings) == {:ok, "replace y cash"}
       assert AppS.m("", "app1 no.replacements.in.this.app", mappings) == {:ok, "casel"}
     end
 
-    test "replaces the 'all args' placeholder (::: => arg*)", %{mappings: mappings} do
-      assert AppS.m("", "app7 uno dos", mappings) == {:ok, "b all: uno dos"}
+    test "replaces the 'all args' placeholder (:::)", %{mappings: mappings} do
+      assert AppS.m("", "app4 uno dos", mappings) == {:ok, "buffer all: uno dos"}
     end
 
-    test "errors when the app doesn't exist and arguments are passed", %{mappings: mappings} do
-      assert AppS.m("n/a", "oops", mappings) == {:error, "Mc.Modifier.AppS: not found: oops"}
-      assert AppS.m("", "nah arg1", mappings) == {:error, "Mc.Modifier.AppS: not found: nah"}
+    test "errors when the 'app key' doesn't exist", %{mappings: mappings} do
+      assert AppS.m("n/a", "oops", mappings) == {:error, Mc.Modifier.AppS, :not_found, "oops", []}
+      assert AppS.m("", "nah", mappings) == {:error, Mc.Modifier.AppS, :not_found, "nah", []}
+      assert AppS.m("", "no-exist", mappings) == {:error, Mc.Modifier.AppS, :not_found, "no-exist", []}
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "errors when the 'app key' is missing", %{mappings: mappings} do
+      assert AppS.m("n/a", "", mappings) == {:error, Mc.Modifier.AppS, :missing_app_key, nil, []}
+      assert AppS.m("", "  ", mappings) == {:error, Mc.Modifier.AppS, :missing_app_key, nil, []}
+    end
+
+    test "works with ok-tuples", %{mappings: mappings} do
       assert AppS.m("", "app1", mappings) == {:ok, "casel"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert AppS.m({:error, "reason"}, "", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert AppS.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

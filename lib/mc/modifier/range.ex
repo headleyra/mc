@@ -10,13 +10,14 @@ defmodule Mc.Modifier.Range do
         {:ok, rangeize(1, finish)}
 
       _bad_range ->
-        oops("bad range")
+        oops(:bad_limits, args)
     end
   end
 
   defp range(args) do
-    String.split(args)
-    |> Enum.map(&Ut.String.to_int/1)
+    args
+    |> String.split()
+    |> Enum.map(fn limit -> Ut.String.to_int(limit) end)
   end
 
   defp rangeize(start, finish) when finish >= start, do: rangeize(start, finish, 1)

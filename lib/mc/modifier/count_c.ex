@@ -3,7 +3,8 @@ defmodule Mc.Modifier.CountC do
 
   def m(buffer, _args, _mappings) do
     {:ok, 
-      String.length(buffer)
+      buffer
+      |> String.length()
       |> to_string()
     }
   end

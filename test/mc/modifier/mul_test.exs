@@ -3,7 +3,7 @@ defmodule Mc.Modifier.MulTest do
   alias Mc.Modifier.Mul
 
   describe "m/3" do
-    test "is able to 'multiply' the `buffer`" do
+    test "multiplies `buffer`" do
       assert Mul.m("3\n17", "", %{}) == {:ok, "51"}
       assert Mul.m("0", "", %{}) == {:ok, "0"}
       assert Mul.m("2", "", %{}) == {:ok, "2"}
@@ -18,12 +18,12 @@ defmodule Mc.Modifier.MulTest do
       assert Mul.m("foo bar", "", %{}) == {:ok, ""}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Mul.m({:ok, "3\n4"}, "", %{}) == {:ok, "12"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Mul.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Mul.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

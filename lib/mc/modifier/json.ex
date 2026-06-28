@@ -2,10 +2,10 @@ defmodule Mc.Modifier.Json do
   use Mc.Modifier
 
   def m(buffer, args, _mappings) do
-    parse(buffer, args)
+    json(buffer, args)
   end
 
-  defp parse(json, accessor) do
+  defp json(json, accessor) do
     case Jason.decode(json) do
       {:ok, nil} ->
         {:ok, ""}
@@ -14,7 +14,7 @@ defmodule Mc.Modifier.Json do
         get(map_or_list, accessor)
 
       {:error, _reason} ->
-        oops("bad JSON")
+        oops(:bad_json, json)
     end
   end
 
@@ -36,7 +36,7 @@ defmodule Mc.Modifier.Json do
         }
 
       _bad_integer ->
-        oops("array index should be >= 0")
+        oops(:bad_index, index)
     end
   end
 end

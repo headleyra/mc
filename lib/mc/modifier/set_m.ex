@@ -10,7 +10,7 @@ defmodule Mc.Modifier.SetM do
         {:ok, buffer}
 
       {:error, :bad_format} ->
-        oops("bad format")
+        oops(:bad_setm_format, nil)
     end
   end
 end

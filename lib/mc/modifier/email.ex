@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Email do
         email(buffer, subject, recipients)
 
       _bad_args ->
-        oops("missing subject/recipients")
+        oops(:missing_subject_recipients, args)
     end
   end
 
@@ -18,8 +18,8 @@ defmodule Mc.Modifier.Email do
       {:ok, result} ->
         {:ok, result}
 
-      {:error, reason} ->
-        oops(reason)
+      {:error, _reason} ->
+        oops(:adapter_error, nil)
     end
   end
 

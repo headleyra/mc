@@ -25,15 +25,15 @@ defmodule Mc.Modifier.FindVTest do
     end
 
     test "errors when the regex is bad" do
-      assert FindV.m("", "*", %{}) == {:error, "Mc.Modifier.FindV: bad regex"}
+      assert FindV.m("", "*]", %{}) == {:error, Mc.Modifier.FindV, :bad_regex, "*]", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert FindV.m({:ok, "n/a"}, "foo", %{}) == {:ok, "1st\n2nd"}
     end
 
-    test "allows error tuples to pass through" do
-      assert FindV.m({:error, "reason"}, "key", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert FindV.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

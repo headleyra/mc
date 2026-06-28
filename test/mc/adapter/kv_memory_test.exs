@@ -3,14 +3,13 @@ defmodule Mc.Adapter.KvMemoryTest do
   alias Mc.Adapter.KvMemory
 
   setup do
-    map =
-      %{
-        "1st" => "foo",
-        "2nd" => "foobar",
-        "3rd" => "dosh",
-        "4th" => "first: Sam\nlast: Phox",
-        "5th" => "first: Bob\nlast: Builder"
-      }
+    map = %{
+      "1st" => "foo",
+      "2nd" => "foobar",
+      "3rd" => "dosh",
+      "4th" => "first: Sam\nlast: Phox",
+      "5th" => "first: Bob\nlast: Builder"
+    }
 
     start_supervised({KvMemory, map: map})
     :ok
@@ -46,8 +45,8 @@ defmodule Mc.Adapter.KvMemoryTest do
     end
 
     test "errors when `regex` is bad" do
-      assert KvMemory.findk("?") == {:error, "bad regex"}
-      assert KvMemory.findk("*") == {:error, "bad regex"}
+      assert KvMemory.findk("?") == {:error, :bad_regex}
+      assert KvMemory.findk("*") == {:error, :bad_regex}
     end
   end
 
@@ -62,8 +61,8 @@ defmodule Mc.Adapter.KvMemoryTest do
     end
 
     test "errors when `regex` is bad" do
-      assert KvMemory.findv("?") == {:error, "bad regex"}
-      assert KvMemory.findv("*") == {:error, "bad regex"}
+      assert KvMemory.findv("?") == {:error, :bad_regex}
+      assert KvMemory.findv("*") == {:error, :bad_regex}
     end
   end
 

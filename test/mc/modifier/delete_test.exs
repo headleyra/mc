@@ -3,7 +3,7 @@ defmodule Mc.Modifier.DeleteTest do
   alias Mc.Modifier.Delete
 
   describe "m/3" do
-    test "interprets `args` as a regex and returns the `buffer` with matching terms deleted" do
+    test "reads `args` as a regex and returns `buffer` with matching terms deleted" do
       assert Delete.m("", "foo", %{}) == {:ok, ""}
       assert Delete.m("something", "foo", %{}) == {:ok, "something"}
       assert Delete.m("original", "al", %{}) == {:ok, "origin"}
@@ -13,17 +13,15 @@ defmodule Mc.Modifier.DeleteTest do
     test "deletes multiple occurences" do
       assert Delete.m("bar means bar", "bar", %{}) == {:ok, " means "}
 
-      times =
-        """
-        \t11:16\t[ABC]
-        \t11:16\t[XYZ]
-        """
+      times = """
+      \t11:16\t[ABC]
+      \t11:16\t[XYZ]
+      """
 
-      times_modified =
-        """
-        11:16\t[ABC]
-        11:16\t[XYZ]
-        """
+      times_modified = """
+      11:16\t[ABC]
+      11:16\t[XYZ]
+      """
 
       assert Delete.m(times, ~S"^\t", %{}) == {:ok, times_modified}
     end
@@ -33,21 +31,21 @@ defmodule Mc.Modifier.DeleteTest do
       assert Delete.m("one\ntwo\ntwo", ~S"one.*?two", %{}) == {:ok, "\ntwo"}
     end
 
-    test "handles greedy and non-greedy" do
+    test "handles greedy and non-greedy regex" do
       assert Delete.m("They're gre gre great!", ~S"They.*gre\s", %{}) == {:ok, "great!"}
       assert Delete.m("They're gre gre great!", ~S"They.*?gre\s", %{}) == {:ok, "gre great!"}
     end
 
     test "errors when the regex is bad" do
-      assert Delete.m("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Delete: bad regex"}
+      assert Delete.m("one\ntwo", "?", %{}) == {:error, Mc.Modifier.Delete, :bad_regex, "?", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Delete.m({:ok, "chill on the beach"}, ~S"chill\s", %{}) == {:ok, "on the beach"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Delete.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Delete.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

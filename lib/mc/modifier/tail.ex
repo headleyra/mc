@@ -6,8 +6,8 @@ defmodule Mc.Modifier.Tail do
       {:ok, count} when count >= 0 ->
         last(buffer, count)
 
-      _bad_args ->
-        oops("negative or non-integer line count")
+      _bad_line_count ->
+        oops(:bad_line_count, args)
     end
   end
 

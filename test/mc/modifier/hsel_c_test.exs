@@ -3,29 +3,29 @@ defmodule Mc.Modifier.HselCTest do
   alias Mc.Modifier.HselC
 
   setup do
-    %{
-      html: """
-      <p class="first desc">
-        Foo bar
-      </p>
-      <div>
-        <table>
-          <tr><td>Lorem ipsum</td></tr>
-          <tr><td>The quick fox</td></tr>
-        </table>
-      </div>
-      <div id="second">
-        <table>
-          <tr><td class="item">Book</td></tr>
-          <tr><td class="desc">A great read!</td></tr>
-        </table>
-      </div>
-      <p class="deets">
-        John Doe
-      </p>
-      <h1>2 > 1</h1>
-      """
-    }
+    html = """
+    <p class="first desc">
+      Foo bar
+    </p>
+    <div>
+      <table>
+        <tr><td>Lorem ipsum</td></tr>
+        <tr><td>The quick fox</td></tr>
+      </table>
+    </div>
+    <div id="second">
+      <table>
+        <tr><td class="item">Book</td></tr>
+        <tr><td class="desc">A great read!</td></tr>
+      </table>
+    </div>
+    <p class="deets">
+      John Doe
+    </p>
+    <h1>2 > 1</h1>
+    """
+
+    %{html: html}
   end
 
   describe "m/3" do
@@ -48,7 +48,7 @@ defmodule Mc.Modifier.HselCTest do
       assert HselC.m(html, "tbody", %{}) == {:ok, ""}
     end
 
-    test "targets elements ", %{html: html} do
+    test "targets elements by class", %{html: html} do
       assert HselC.m(html, ".item", %{}) == {:ok, "Book"}
     end
 
@@ -60,12 +60,12 @@ defmodule Mc.Modifier.HselCTest do
       assert HselC.m(html, ".desc, .deets", %{}) == {:ok, "Foo bar\nA great read!\nJohn Doe"}
     end
 
-    test "works with ok tuples", %{html: html} do
+    test "works with ok-tuples", %{html: html} do
       assert HselC.m({:ok, html}, ".item", %{}) == {:ok, "Book"}
     end
 
-    test "allows error tuples to pass through" do
-      assert HselC.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert HselC.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

@@ -12,22 +12,22 @@ defmodule Mc.Modifier.DivTest do
       assert Div.m("\n   -30.0\t 3  4.0", "", %{}) == {:ok, "-2.5"}
     end
 
-    test "errors on divide-by-zero" do
-      assert Div.m("5\n0", "", %{}) == {:error, "Mc.Modifier.Div: divide-by-zero attempt"}
-      assert Div.m("1\n0.0", "", %{}) == {:error, "Mc.Modifier.Div: divide-by-zero attempt"}
-    end
-
     test "returns empty string when numbers aren't found" do
       assert Div.m("", "", %{}) == {:ok, ""}
       assert Div.m("foo bar", "", %{}) == {:ok, ""}
     end
 
-    test "works with ok tuples" do
+    test "errors on divide-by-zero" do
+      assert Div.m("5\n0", "", %{}) == {:error, Mc.Modifier.Div, :divide_by_zero, nil, []}
+      assert Div.m("1\n0.0", "", %{}) == {:error, Mc.Modifier.Div, :divide_by_zero, nil, []}
+    end
+
+    test "works with ok-tuples" do
       assert Div.m({:ok, "3\n4"}, "", %{}) == {:ok, "0.75"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Div.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Div.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

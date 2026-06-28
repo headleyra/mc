@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Delete do
         {:ok, String.replace(buffer, regex, "")}
 
       {:error, _} ->
-        oops("bad regex")
+        oops(:bad_regex, args)
     end
   end
 end

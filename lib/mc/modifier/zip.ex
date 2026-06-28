@@ -4,17 +4,17 @@ defmodule Mc.Modifier.Zip do
   def m(buffer, args, mappings) do
     case Ut.Parse.split(args) do
       [script1, script2] ->
-        zip(script1, script2, "", buffer, mappings)
+        zip(script1, script2, "", buffer, args, mappings)
 
       [script1, script2, separator] ->
-        zip(script1, script2, URI.decode(separator), buffer, mappings)
+        zip(script1, script2, URI.decode(separator), buffer, args, mappings)
 
       _parse_error ->
-        oops("parse error")
+        oops(:script_parse_error, args)
     end
   end
 
-  defp zip(script1, script2, separator, buffer, mappings) do
+  defp zip(script1, script2, separator, buffer, args, mappings) do
     with \
       {:ok, result1} <- Mc.m(buffer, script1, mappings),
       {:ok, result2} <- Mc.m(buffer, script2, mappings)
@@ -29,8 +29,8 @@ defmodule Mc.Modifier.Zip do
 
       {:ok, zipped}
     else
-      {:error, reason} ->
-        oops(reason)
+      error ->
+        oops(:script_error, args, error)
     end
   end
 

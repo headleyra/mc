@@ -8,7 +8,7 @@ defmodule Mc.Modifier.Replace do
         {:ok, result}
 
       :error ->
-        oops("bad search/replace or search regex")
+        oops(:bad_search_replace, args)
     end
   end
 

@@ -3,8 +3,8 @@ defmodule Mc.Modifier.HselTest do
   alias Mc.Modifier.Hsel
 
   setup do
-    %{
-      html: """
+    html =
+      """
       <h1>two > one</h1>
       <p class="first desc">Foo Bar</p>
       <div>
@@ -21,7 +21,8 @@ defmodule Mc.Modifier.HselTest do
       </div>
       <p class="deets">John Doe</p>
       """
-    }
+
+    %{html: html}
   end
 
   describe "m/3" do
@@ -32,8 +33,7 @@ defmodule Mc.Modifier.HselTest do
     end
 
     test "uses `args` as a CSS selector to target HTML elements", %{html: html} do
-      assert Hsel.m(html, "p", %{}) ==
-        {:ok, "<p class=\"first desc\">Foo Bar</p>\n<p class=\"deets\">John Doe</p>"}
+      assert Hsel.m(html, "p", %{}) == {:ok, "<p class=\"first desc\">Foo Bar</p>\n<p class=\"deets\">John Doe</p>"}
     end
 
     test "ignores elements that don't exist", %{html: html} do
@@ -53,8 +53,15 @@ defmodule Mc.Modifier.HselTest do
     end
 
     test "targets lists of elements", %{html: html} do
-      assert Hsel.m(html, ".item, .deets", %{}) ==
-        {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">John Doe</p>"}
+      assert Hsel.m(html, ".item, .deets", %{}) == {:ok, "<td class=\"item\">Book</td>\n<p class=\"deets\">John Doe</p>"}
+    end
+
+    test "works with ok-tuples", %{html: html} do
+      assert Hsel.m({:ok, html}, "h1", %{}) == {:ok, "<h1>two > one</h1>"} 
+    end
+
+    test "allows error-tuples to pass through" do
+      assert Hsel.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

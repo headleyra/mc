@@ -3,17 +3,17 @@ defmodule Mc.Modifier.RegexTest do
   alias Mc.Modifier.Regex
 
   setup do
-    %{
-      text: """
-      I wake up in the morning
-      and make a cup of coffee.
+    text = """
+    I wake up in the morning
+    and make a cup of coffee.
 
-      Ground coffee, I prefer.
+    Ground coffee, I prefer.
 
-      By my reckoning, 17 times 3
-      equals 51
-      """
-    }
+    By my reckoning, 17 times 3
+    equals 51
+    """
+
+    %{text: text}
   end
 
   describe "m/3" do
@@ -50,15 +50,15 @@ defmodule Mc.Modifier.RegexTest do
     end
 
     test "errors when the regex is bad" do
-      assert Regex.m("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Regex: bad regex"}
+      assert Regex.m("one\ntwo", "?", %{}) == {:error, Mc.Modifier.Regex, :bad_regex, "?", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Regex.m({:ok, "some buffer text"}, "me.*uf", %{}) == {:ok, "me buf"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Regex.m({:error, "reason"}, "gets ignored", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Regex.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

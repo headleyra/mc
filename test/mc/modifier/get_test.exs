@@ -3,28 +3,31 @@ defmodule Mc.Modifier.GetTest do
   alias Mc.Modifier.Get
 
   setup do
-    start_supervised({Mc.Adapter.KvMemory, map: %{}})
+    map = %{
+      "funky" => "dance",
+      "a-key" => "some\ndata"
+    }
+
+    start_supervised({Mc.Adapter.KvMemory, map: map})
     :ok
   end
 
   describe "m/3" do
     test "gets the value stored under the given key" do
-      Mc.Modifier.Set.m("some buffer\ndata", "a-key", %{})
-      assert Get.m("", "a-key", %{}) == {:ok, "some buffer\ndata"}
+      assert Get.m("", "a-key", %{}) == {:ok, "some\ndata"}
     end
 
     test "errors when the key doesn't exist" do
-      assert Get.m("", "no-exist", %{}) == {:error, "Mc.Modifier.Get: not found: no-exist"}
+      assert Get.m("", "no-exist", %{}) == {:error, Mc.Modifier.Get, :key_not_found, "no-exist", []}
     end
 
-    test "works with ok tuples" do
-      Mc.Modifier.Set.m("dance", "funky", %{})
+    test "works with ok-tuples" do
       assert Get.m({:ok, "n/a"}, "funky", %{}) == {:ok, "dance"}
-      assert Get.m({:ok, ""}, "bop", %{}) == {:error, "Mc.Modifier.Get: not found: bop"}
+      assert Get.m({:ok, ""}, "bop", %{}) == {:error, Mc.Modifier.Get, :key_not_found, "bop", []}
     end
 
-    test "allows error tuples to pass through" do
-      assert Get.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Get.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

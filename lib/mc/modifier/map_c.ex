@@ -2,47 +2,50 @@ defmodule Mc.Modifier.MapC do
   use Mc.Modifier
 
   def m(buffer, args, mappings) do
-    case concurrency_with_args(args) do
+    case concurrency_with_script(args) do
       {{:ok, concurrency}, script} when concurrency > 0 ->
-        run_concurrent(buffer, script, concurrency, mappings)
+        run(buffer, script, concurrency, mappings)
 
-      _bad_concurrency ->
-        oops("'concurrency' should be a positive integer")
+      _error ->
+        oops(:bad_concurrency, args)
     end
   end
 
-  defp concurrency_with_args(args) do
-    conc_args =
+  defp concurrency_with_script(args) do
+    concurrency_script =
       args
       |> String.trim()
       |> String.split(~r/\s+/, parts: 2)
 
-    case conc_args do
+    case concurrency_script do
       [concurrency, script] ->
         {Ut.String.to_int(concurrency), script}
 
       [concurrency] ->
         {Ut.String.to_int(concurrency), ""}
-
-      _error ->
-        :error
     end
   end
   
-  defp run_concurrent(buffer, script, maxc, mappings) do
+  defp run(buffer, script, maxc, mappings) do
     {:ok,
       String.split(buffer, "\n")
       |> task_stream(script, maxc, mappings)
-      |> Stream.map(&detuple/1)
+      |> Stream.map(fn e -> detuple(e) end)
       |> Enum.join("\n")
     }
   end
 
   defp task_stream(buffers, script, maxc, mappings) do
-    buffers
-    |> Task.async_stream(&Mc.m(&1, script, mappings), ordered: true, max_concurrency: maxc, timeout: :infinity)
+    Task.async_stream(
+      buffers,
+      fn buffer -> Mc.m(buffer, script, mappings) end,
+      ordered: true,
+      max_concurrency: maxc,
+      timeout: :infinity
+    )
   end
 
   defp detuple({:ok, {:ok, result}}), do: result
-  defp detuple({:ok, {:error, reason}}), do: "ERROR: #{reason}"
+  defp detuple({:ok, {:error, Mc.Modifier.Unknown, _, message, _}}), do: "ERROR: modifier unknown: #{message}"
+  defp detuple({:ok, {:error, _, _, message, _}}), do: "ERROR: #{message}"
 end

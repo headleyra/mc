@@ -3,14 +3,14 @@ defmodule Mc.Modifier.HeadTest do
   alias Mc.Modifier.Head
 
   setup do
-    %{
-      text: """
-      line one
-      line 2
+    text = """
+    line one
+    line 2
 
-      line four
-      """
-    }
+    line four
+    """
+
+    %{text: text}
   end
 
   describe "m/3" do
@@ -30,19 +30,19 @@ defmodule Mc.Modifier.HeadTest do
       assert Head.m(text, "0", %{}) == {:ok, ""}
     end
 
-    test "errors when `args` isn't an integer or is negative", %{text: text} do
-      assert Head.m(text, "-1", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
-      assert Head.m(text, "hi", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
-      assert Head.m(text, "2.7", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
-      assert Head.m(text, "", %{}) == {:error, "Mc.Modifier.Head: negative or non-integer line count"}
+    test "errors when `args` isn't a positive integer", %{text: text} do
+      assert Head.m(text, "-1", %{}) == {:error, Mc.Modifier.Head, :bad_line_count, "-1", []}
+      assert Head.m(text, "hi", %{}) == {:error, Mc.Modifier.Head, :bad_line_count, "hi", []}
+      assert Head.m(text, "2.7", %{}) == {:error, Mc.Modifier.Head, :bad_line_count, "2.7", []}
+      assert Head.m(text, "", %{}) == {:error, Mc.Modifier.Head, :bad_line_count, "", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Head.m({:ok, "some\nbuffer\ntext"}, "2", %{}) == {:ok, "some\nbuffer"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Head.m({:error, "reason"}, "gets ignored", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Head.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

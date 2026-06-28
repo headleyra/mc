@@ -8,13 +8,13 @@ defmodule Mc.Adapter.KvMemory do
 
   @impl true
   def set(key, value) do
-    Agent.update(__MODULE__, &Map.put(&1, key, value))
+    Agent.update(__MODULE__, fn map -> Map.put(map, key, value) end)
     {:ok, value}
   end
 
   @impl true
   def get(key) do
-    case Agent.get(__MODULE__, &Map.fetch(&1, key)) do
+    case Agent.get(__MODULE__, fn map -> Map.fetch(map, key) end) do
       {:ok, value} ->
         {:ok, value}
 
@@ -25,12 +25,12 @@ defmodule Mc.Adapter.KvMemory do
 
   @impl true
   def findk(regex_str) do
-    Agent.get(__MODULE__, &finder(&1, regex_str, :key))
+    Agent.get(__MODULE__, fn map -> finder(map, regex_str, :key) end)
   end
 
   @impl true
   def findv(regex_str) do
-    Agent.get(__MODULE__, &finder(&1, regex_str, :value))
+    Agent.get(__MODULE__, fn map -> finder(map, regex_str, :value) end)
   end
 
   @impl true
@@ -51,7 +51,7 @@ defmodule Mc.Adapter.KvMemory do
         filter(map, regex, by)
 
       {:error, _} ->
-        {:error, "bad regex"}
+        {:error, :bad_regex}
     end
   end
 

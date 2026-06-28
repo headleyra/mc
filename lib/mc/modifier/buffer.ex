@@ -2,23 +2,16 @@ defmodule Mc.Modifier.Buffer do
   use Mc.Modifier
 
   def m(buffer, args, mappings) do
-    result =
       args
-      |> decode()
+      |> split()
       |> tokenize()
       |> untokenize(buffer, mappings)
-
-    case result do
-      [{:error, reason}] ->
-        {:error, reason}
-
-      chardata ->
-        {:ok, IO.chardata_to_string(chardata)}
-    end
+      |> result(args)
   end
 
-  defp decode(string) do
-    String.split(string, "; ")
+  defp split(string) do
+    string
+    |> String.split("; ")
     |> Enum.join("\n")
   end
 
@@ -29,7 +22,7 @@ defmodule Mc.Modifier.Buffer do
   defp untokenize(tokenized_list, buffer, mappings) do
     tokenized_list
     |> Enum.map(fn char_or_token -> expand(char_or_token, buffer, mappings) end)
-    |> Enum.reduce_while([], fn char_or_result, acc -> wrap_result(char_or_result, acc) end)
+    |> Enum.reduce_while([], fn char_or_result, acc -> wrap(char_or_result, acc) end)
     |> Enum.reverse()
   end
 
@@ -40,7 +33,26 @@ defmodule Mc.Modifier.Buffer do
 
   defp expand(char, _buffer, _mappings), do: char
 
-  defp wrap_result({:ok, result}, acc), do: {:cont, [result | acc]}
-  defp wrap_result({:error, reason}, _acc), do: {:halt, [{:error, reason}]}
-  defp wrap_result(char, acc), do: {:cont, [char | acc]}
+  defp wrap({:ok, result}, acc) do
+    {:cont, [result | acc]}
+  end
+
+  defp wrap({:error, mod, type, msg, list}, _acc) do
+    {:halt, [{:error, mod, type, msg, list}]}
+  end
+
+  defp wrap(char, acc) do
+    {:cont, [char | acc]}
+  end
+
+  defp result(untokenized_list, args) do
+    case untokenized_list do
+      [{:error, mod, tpe, msg, lst}] ->
+        error = {:error, mod, tpe, msg, lst}
+        oops(:script_error, args, error)
+
+      chardata ->
+        {:ok, IO.chardata_to_string(chardata)}
+    end
+  end
 end

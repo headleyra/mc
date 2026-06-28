@@ -1,9 +1,16 @@
 defmodule Mc.Behaviour.Modifier do
-  @type buffer :: String.t | {:ok, result} | {:error, reason}
-  @type args :: String.t
-  @type mappings :: Map.t
-  @type result :: String.t
-  @type reason :: String.t
+  @type modifier_module :: atom()
+  @type error_type :: atom()
+  @type error_message :: binary() | nil
+  @type mini_error :: {modifier_module(), error_type(), error_message()}
+  @type error_list :: [] | [mini_error(), ...]
 
-  @callback m(buffer, args, mappings) :: {:ok, result} | {:error, reason}
+  @type error :: {:error, modifier_module(), error_type(), error_message(), error_list()}
+  @type result :: {:ok, binary()}
+
+  @type buffer :: binary() | result() | error()
+  @type args :: binary()
+  @type mappings :: map()
+
+  @callback m(buffer, args, mappings) :: result() | error()
 end

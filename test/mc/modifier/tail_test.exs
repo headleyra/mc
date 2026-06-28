@@ -22,18 +22,18 @@ defmodule Mc.Modifier.TailTest do
     end
 
     test "errors when `args` isn't a positive integer" do
-      assert Tail.m("123", "-1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.m("", "3.1", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.m("oops", "hi", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
-      assert Tail.m("nowt", "", %{}) == {:error, "Mc.Modifier.Tail: negative or non-integer line count"}
+      assert Tail.m("123", "-1", %{}) == {:error, Mc.Modifier.Tail, :bad_line_count, "-1", []}
+      assert Tail.m("", "3.1", %{}) == {:error, Mc.Modifier.Tail, :bad_line_count, "3.1", []}
+      assert Tail.m("oops", "hi", %{}) == {:error, Mc.Modifier.Tail, :bad_line_count, "hi", []}
+      assert Tail.m("nowt", "", %{}) == {:error, Mc.Modifier.Tail, :bad_line_count, "", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Tail.m({:ok, "some\nbuffer\ntext"}, "2", %{}) == {:ok, "buffer\ntext"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Tail.m({:error, "reason"}, "gets ignored", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Tail.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

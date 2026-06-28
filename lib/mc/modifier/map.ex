@@ -4,11 +4,12 @@ defmodule Mc.Modifier.Map do
   def m(buffer, args, mappings) do
     {:ok,
       String.split(buffer, "\n")
-      |> Enum.map(&Mc.m(&1, args, mappings))
-      |> Enum.map_join("\n", &detuple/1)
+      |> Enum.map(fn buffer -> Mc.m(buffer, args, mappings) end)
+      |> Enum.map_join("\n", fn result -> detuple(result) end)
     }
   end
 
   defp detuple({:ok, result}), do: result
-  defp detuple({:error, reason}), do: "ERROR: #{reason}"
+  defp detuple({:error, Mc.Modifier.Unknown, _, modifier_name, _}), do: "ERROR: modifier unknown: #{modifier_name}"
+  defp detuple({:error, _, _, message, _}), do: "ERROR: #{message}"
 end

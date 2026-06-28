@@ -3,10 +3,11 @@ defmodule Mc.Modifier.CountW do
 
   def m(buffer, _args, _mappings) do
     {:ok,
-      String.split(buffer, ~r/\s+/)
-      |> Enum.reject(& &1 == "")
+      buffer
+      |> String.split(~r/\s+/)
+      |> Enum.reject(fn word -> word == "" end)
       |> Enum.count()
-      |> Integer.to_string()
+      |> to_string()
     }
   end
 end

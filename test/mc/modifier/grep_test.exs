@@ -3,33 +3,33 @@ defmodule Mc.Modifier.GrepTest do
   alias Mc.Modifier.Grep
 
   setup do
-    %{
-      text: """
-      One
-      one
-      two
+    text = """
+    One
+    one
+    two
 
-      Two
-      """
-    }
+    Two
+    """
+
+    %{text: text}
   end
 
   describe "m/3" do
-    test "filters lines in `buffer` that match the regex given as `args`", %{text: text} do
+    test "selects lines in `buffer` that match the regex given as `args`", %{text: text} do
       assert Grep.m(text, "[Oo]ne", %{}) == {:ok, "One\none"}
       assert Grep.m(text, "two", %{}) == {:ok, "two"}
     end
 
     test "errors with bad regex" do
-      assert Grep.m("one\ntwo", "?", %{}) == {:error, "Mc.Modifier.Grep: bad regex"}
+      assert Grep.m("one\ntwo", "[[", %{}) == {:error, Mc.Modifier.Grep, :bad_regex, "[[", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Grep.m({:ok, "\nfoo\nbar\n"}, "foo", %{}) == {:ok, "foo"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Grep.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Grep.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

@@ -18,17 +18,15 @@ defmodule Mc.Modifier.MapTest do
 
     test "reports errors", %{mappings: mappings} do
       assert Map.m("FOO\nBAR", "error oops", mappings) == {:ok, "ERROR: oops\nERROR: oops"}
-
-      assert Map.m("1\n2", "ex", mappings) ==
-        {:ok, "ERROR: modifier not found: ex\nERROR: modifier not found: ex"}
+      assert Map.m("1\n2", "ex", mappings) == {:ok, "ERROR: modifier unknown: ex\nERROR: modifier unknown: ex"}
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "works with ok-tuples", %{mappings: mappings} do
       assert Map.m({:ok, "bish\nbosh"}, "caseu", mappings) == {:ok, "BISH\nBOSH"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert Map.m({:error, "reason"}, "casel", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Map.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

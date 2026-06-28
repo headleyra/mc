@@ -1,4 +1,6 @@
 defmodule Mc do
+  @modifier_function_name :m
+
   def m(buffer, script, mappings) do
     script
     |> doubleize()
@@ -14,43 +16,41 @@ defmodule Mc do
   defp doubleize(script) do
     script
     |> String.split("\n")
-    |> Enum.map(&String.trim_leading(&1))
-    |> Enum.reject(&(Ut.String.comment?(&1) || &1 == ""))
-    |> Enum.map(&to_double(&1))
+    |> Enum.map(fn mod_str -> String.trim_leading(mod_str) end)
+    |> Enum.reject(fn mod_str -> Ut.String.comment?(mod_str) || mod_str == "" end)
+    |> Enum.map(fn mod_str -> double(mod_str) end)
   end
 
-  defp to_double(script_line) do
-    case String.split(script_line, " ", parts: 2) do
+  defp double(mod_str) do
+    case String.split(mod_str, " ", parts: 2) do
       [modifier_name, args] ->
-        to_double(modifier_name, args)
+        double(modifier_name, args)
 
       [modifier_name] ->
-        to_double(modifier_name, "")
+        double(modifier_name, "")
     end
   end
 
-  defp to_double(modifier_name, args) do
+  defp double(modifier_name, args) do
     {String.to_atom(modifier_name), args}
   end
 
   defp tripleize(doubles, mappings) do
-    doubles
-    |> Enum.map(fn double -> to_triple(double, mappings) end)
+    Enum.map(doubles, fn double -> triple(double, mappings) end)
   end
 
-  defp to_triple({modifier_name, args}, mappings) do
+  defp triple({modifier_name, args}, mappings) do
     case Map.get(mappings, modifier_name) do
       nil ->
-        {Mc.Modifier.Error, :m, "modifier not found: #{modifier_name}"}
+        {Mc.Modifier.Unknown, @modifier_function_name, to_string(modifier_name)}
 
       module ->
-        {module, :m, args}
+        {module, @modifier_function_name, args}
     end
   end
 
   defp modify(triples, buffer, mappings) do
-    triples
-    |> Enum.reduce_while(buffer, fn {mod, fun, args}, acc -> eval(mod, fun, args, acc, mappings) end)
+    Enum.reduce_while(triples, buffer, fn {mod, fun, args}, acc -> eval(mod, fun, args, acc, mappings) end)
   end
 
   defp eval(module, func_name, args, acc, mappings) do
@@ -60,14 +60,14 @@ defmodule Mc do
       Mc.Modifier.Stop ->
         {:halt, result}
 
-      _module ->
+      _any_other_module ->
         {:cont, result}
     end
   end
 
   defp tupleize(result) do
     case result do
-      {:error, _} -> result
+      {:error, _, _, _, _} -> result
       {:ok, _} -> result
       string -> {:ok, string}
     end

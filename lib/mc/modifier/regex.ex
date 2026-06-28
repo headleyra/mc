@@ -3,20 +3,25 @@ defmodule Mc.Modifier.Regex do
 
   def m(buffer, args, _mappings) do
     case Regex.compile(args, "sm") do
-      {:ok, regx} ->
-        case Regex.run(regx, buffer, capture: :all) do
-          [complete_match] ->
-            {:ok, complete_match}
-
-          [_complete_match | explicit_captures] ->
-            {:ok, Enum.join(explicit_captures, "\n")}
-
-          nil ->
-            {:ok, ""}
-        end
+      {:ok, regex} ->
+        match(regex, buffer)
 
       {:error, _} ->
-        oops("bad regex")
+        oops(:bad_regex, args)
+    end
+  end
+
+  defp match(regex, buffer) do
+    case Regex.run(regex, buffer, capture: :all) do
+      [complete_match] ->
+        {:ok, complete_match}
+
+      [_complete_match | explicit_captures] ->
+        captures = Enum.join(explicit_captures, "\n")
+        {:ok, captures}
+
+      nil ->
+        {:ok, ""}
     end
   end
 end

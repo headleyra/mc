@@ -3,7 +3,7 @@ defmodule Mc.Modifier.SubTest do
   alias Mc.Modifier.Sub
 
   describe "m/3" do
-    test "subtracts the `buffer`" do
+    test "subtracts `buffer`" do
       assert Sub.m("17\n3", "", %{}) == {:ok, "14"}
       assert Sub.m("3", "", %{}) == {:ok, "3"}
       assert Sub.m("bosh\n\n2\n4\n\n", "", %{}) == {:ok, "-2"}
@@ -17,12 +17,12 @@ defmodule Mc.Modifier.SubTest do
       assert Sub.m("foo bar", "", %{}) == {:ok, ""}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Sub.m({:ok, "3\n4"}, "", %{}) == {:ok, "-1"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Sub.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Sub.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

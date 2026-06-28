@@ -7,7 +7,10 @@ defmodule Mc.Modifier.AppS do
         {:ok, script}
 
       {:error, :not_found, key} ->
-        oops("not found: #{key}")
+        oops(:not_found, key)
+
+      {:error, :missing_app_key, key} ->
+        oops(:missing_app_key, key)
     end
   end
 end

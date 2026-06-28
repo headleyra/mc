@@ -46,18 +46,20 @@ defmodule Mc.Modifier.SetMTest do
       assert result == buffer
     end
 
+    @err {:error, Mc.Modifier.SetM, :bad_setm_format, nil, []}
+
     test "errors when the 'setm' format is bad", %{mappings: mappings} do
-      assert SetM.m("key-with-no-value", "", mappings) == {:error, "Mc.Modifier.SetM: bad format"}
-      assert SetM.m("key\nvalue#{@separator}key-with-no-value", "", mappings) == {:error, "Mc.Modifier.SetM: bad format"}
+      assert SetM.m("key-with-no-value", "", mappings) == @err
+      assert SetM.m("key\nvalue#{@separator}key-with-no-value", "", mappings) == @err
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "works with ok-tuples", %{mappings: mappings} do
       SetM.m({:ok, "cash\nmoney"}, "", mappings)
       assert Mc.m("get cash", mappings) == {:ok, "money"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert SetM.m({:error, "reason"}, "", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert SetM.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

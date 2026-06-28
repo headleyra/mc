@@ -7,7 +7,7 @@ defmodule Mc.Modifier.Head do
         first(buffer, count)
 
       _error ->
-        oops("negative or non-integer line count")
+        oops(:bad_line_count, args)
     end
   end
 

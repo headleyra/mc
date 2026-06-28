@@ -6,13 +6,13 @@ defmodule Mc.Modifier.Iword do
 
     case Ut.NumberToWord.say(int) do
       {:error, :out_of_range} ->
-        oops("out of range")
+        oops(:maximum_integer_exceeded, nil)
 
       {:error, :negative_integer} ->
-        oops("negative integer")
+        oops(:negative_integer, buffer)
 
       {:error, :non_integer} ->
-        oops("no integer found")
+        oops(:no_integer_found, buffer)
 
       word ->
         {:ok, word}
@@ -27,7 +27,7 @@ defmodule Mc.Modifier.Iword do
 
     case int do
       {:ok, i} -> i
-      :error -> nil
+      :error -> :error
     end
   end
 end

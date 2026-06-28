@@ -4,21 +4,22 @@ defmodule Mc.Modifier.SetTest do
 
   setup do
     start_supervised({Mc.Adapter.KvMemory, map: %{}})
-    :ok
+    %{mappings: Mc.Mappings.standard()}
   end
 
   describe "m/3" do
-    test "stores `buffer` under the given key and returns `buffer`" do
-      assert Set.m("random data", "rand", %{}) == {:ok, "random data"}
-      assert Set.m("stuff", "_x", %{}) == {:ok, "stuff"}
+    test "stores `buffer` under the given key and returns `buffer`", %{mappings: mappings} do
+      assert Set.m("random\ndata", "x", %{}) == {:ok, "random\ndata"}
+      assert Mc.m("get x", mappings) == {:ok, "random\ndata"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples", %{mappings: mappings} do
       assert Set.m({:ok, "big tune"}, "yeah", %{}) == {:ok, "big tune"}
+      assert Mc.m("get yeah", mappings) == {:ok, "big tune"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Set.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Set.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

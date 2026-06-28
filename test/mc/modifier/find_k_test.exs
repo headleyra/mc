@@ -13,6 +13,7 @@ defmodule Mc.Modifier.FindKTest do
       assert FindK.m("n/a", "rd", %{}) == {:ok, "3rd"}
       assert FindK.m("", "d", %{}) == {:ok, "2nd\n3rd"}
       assert FindK.m("", ".", %{}) == {:ok, "1st\n2nd\n3rd"}
+      assert FindK.m("", "[13]", %{}) == {:ok, "1st\n3rd"}
       assert FindK.m("", "", %{}) == {:ok, "1st\n2nd\n3rd"}
     end
 
@@ -21,15 +22,15 @@ defmodule Mc.Modifier.FindKTest do
     end
 
     test "errors when the regex is bad" do
-      assert FindK.m("", "?", %{}) == {:error, "Mc.Modifier.FindK: bad regex"}
+      assert FindK.m("", "?", %{}) == {:error, Mc.Modifier.FindK, :bad_regex, "?", []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert FindK.m({:ok, "n/a"}, "2", %{}) == {:ok, "2nd"}
     end
 
-    test "allows error tuples to pass through" do
-      assert FindK.m({:error, "reason"}, "key", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert FindK.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

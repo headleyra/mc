@@ -9,15 +9,15 @@ defmodule Mc.Modifier.UrlTest do
     end
 
     test "wraps errors returned from the HTTP adapter" do
-      assert Url.m("", "trigger-error", %{}) == {:error, "Mc.Modifier.Url: GET error"}
+      assert Url.m("", "trigger-error", %{}) == {:error, Mc.Modifier.Url, :adapter_error, nil, []}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Url.m({:ok, "n/a"}, "localhost:4000", %{}) == {:ok, "localhost:4000"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Url.m({:error, "reason"}, "url", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Url.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

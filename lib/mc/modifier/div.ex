@@ -6,7 +6,7 @@ defmodule Mc.Modifier.Div do
       divide(buffer)
     rescue
       ArithmeticError ->
-        oops("divide-by-zero attempt")
+        oops(:divide_by_zero, nil)
     end
   end
 

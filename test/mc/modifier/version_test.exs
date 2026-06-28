@@ -7,16 +7,16 @@ defmodule Mc.Modifier.VersionTest do
   end
 
   describe "m/3" do
-    test "returns the system version" do
+    test "returns the software build version" do
       assert Version.m("", "", %{}) == {:ok, current_version()}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Version.m({:ok, "BEST\nOF 3"}, "", %{}) == {:ok, current_version()}
     end
 
-    test "allows error tuples to pass through" do
-      assert Version.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Version.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

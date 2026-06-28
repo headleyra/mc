@@ -10,19 +10,24 @@ defmodule Mc.Modifier.PrependKTest do
   end
 
   describe "m/3" do
-    test "prepends the 'value' associated with the 'key' to the `buffer`", %{mappings: mappings} do
+    test "reads `args` as a key", do: true
+
+    test "prepends the 'value' associated with 'key', to the `buffer`", %{mappings: mappings} do
       assert PrependK.m(" steady go!", "thing", mappings) == {:ok, "ready steady go!"}
       assert PrependK.m(" switch", "star", mappings) == {:ok, "light switch"}
-      assert PrependK.m("same", "key-no-exist", mappings) == {:ok, "same"}
-      assert PrependK.m("same", "", mappings) == {:ok, "same"}
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "returns `buffer` if the key is not found", %{mappings: mappings} do
+      assert PrependK.m("same", "key-no-exist", mappings) == {:ok, "same"}
+      assert PrependK.m("same", "nokey", mappings) == {:ok, "same"}
+    end
+
+    test "works with ok-tuples", %{mappings: mappings} do
       assert PrependK.m({:ok, " beam"}, "star", mappings) == {:ok, "light beam"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert PrependK.m({:error, "reason"}, "", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert PrependK.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

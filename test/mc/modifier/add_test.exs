@@ -3,7 +3,7 @@ defmodule Mc.Modifier.AddTest do
   alias Mc.Modifier.Add
 
   describe "m/3" do
-    test "sums the `buffer`" do
+    test "sums `buffer`" do
       assert Add.m("1\n7", "", %{}) == {:ok, "8"}
       assert Add.m("1", "", %{}) == {:ok, "1"}
       assert Add.m("foo bar\n\n1\n4\n\n", "", %{}) == {:ok, "5"}
@@ -18,12 +18,12 @@ defmodule Mc.Modifier.AddTest do
       assert Add.m("foo bar", "", %{}) == {:ok, ""}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Add.m({:ok, "3\n4"}, "", %{}) == {:ok, "7"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Add.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Add.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

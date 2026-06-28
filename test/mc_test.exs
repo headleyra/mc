@@ -11,10 +11,6 @@ defmodule McTest do
       assert Mc.m("FOO BAR", "replace O @\ncasel\nappend !", mappings) == {:ok, "f@@ bar!"}
     end
 
-    test "halts the 'chain' when the 'stop' modifier is encountered", %{mappings: mappings} do
-      assert Mc.m("CASH", "casel\nstop\nappend won't be appended", mappings) == {:ok, "cash"}
-    end
-
     test "ignores leading whitespace in script lines", %{mappings: mappings} do
       assert Mc.m("one\ntwo", "    countl", mappings) == {:ok, "2"}
       assert Mc.m("ZONE", " \t casel\n      replace z t", mappings) == {:ok, "tone"}
@@ -27,6 +23,7 @@ defmodule McTest do
       assert Mc.m("\n\n", "     ", mappings) == {:ok, "\n\n"}
       assert Mc.m("foobar", "", mappings) == {:ok, "foobar"}
       assert Mc.m("", "", mappings) == {:ok, ""}
+      assert Mc.m({:error, Mod, :foo, "bar", []}, "", mappings) == {:error, Mod, :foo, "bar", []}
     end
 
     test "ignores blank lines in `script`", %{mappings: mappings} do
@@ -38,28 +35,27 @@ defmodule McTest do
       assert Mc.m("four4", "replace four 4\n \t #another comment", mappings) == {:ok, "44"}
     end
 
-    test "accepts an ok tuple as `buffer`", %{mappings: mappings} do
+    test "halts the 'chain' when the 'stop' modifier is encountered", %{mappings: mappings} do
+      assert Mc.m("CASH", "casel\nstop\nappend won't be appended", mappings) == {:ok, "cash"}
+    end
+
+    test "works with ok-tuples", %{mappings: mappings} do
       assert Mc.m({:ok, "BIG"}, "casel", mappings) == {:ok, "big"}
     end
 
-    test "accepts an error tuple as `buffer`", %{mappings: mappings} do
-      assert Mc.m({:error, "buffer error"}, "n/a", mappings) == {:error, "buffer error"}
-      assert Mc.m({:error, "foobar"}, "", mappings) == {:error, "foobar"}
-    end
-
-    test "errors for the first modifier in the 'chain' that produces an error", %{mappings: mappings} do
-      assert Mc.m("", "error an error message", mappings) == {:error, "an error message"}
-      assert Mc.m("FOOBAR", "casel\nerror 1st error\nerror 2nd error", mappings) == {:error, "1st error"}
+    test "returns the error of the first modifier to generate one", %{mappings: mappings} do
+      assert Mc.m("n/a", "error boom", mappings) == {:error, Mc.Modifier.Error, :error, "boom", []}
+      assert Mc.m("", "error 1st\nerror 2nd", mappings) == {:error, Mc.Modifier.Error, :error, "1st", []}
     end
 
     test "errors when a modifier doesn't exist", %{mappings: mappings} do
-      assert Mc.m("n/a", "nope", mappings) == {:error, "modifier not found: nope"}
-      assert Mc.m("", "foo", mappings) == {:error, "modifier not found: foo"}
+      assert Mc.m("n/a", "nope", mappings) == {:error, Mc.Modifier.Unknown, :modifier_unknown, "nope", []}
+      assert Mc.m("", "foo", mappings) == {:error, Mc.Modifier.Unknown, :modifier_unknown, "foo", []}
     end
   end
 
   describe "m/2" do
-    test "is the equivalent of m/3 with an empty `buffer`", %{mappings: mappings} do
+    test "delegates to m/3 with an empty `buffer`", %{mappings: mappings} do
       assert Mc.m("append foo", mappings) == Mc.m("", "append foo", mappings)
     end
   end

@@ -2,12 +2,14 @@ defmodule Mc.Modifier.RunK do
   use Mc.Modifier
 
   def m(buffer, args, mappings) do
-    case Mc.m("", "get #{args}", mappings) do
+    case Mc.m("get #{args}", mappings) do
       {:ok, script} ->
-        Mc.m(buffer, script, mappings)
+        buffer
+        |> Mc.m(script, mappings)
+        |> oops(:script_error, script)
 
-      {:error, reason} ->
-        oops(reason)
+      error ->
+        oops(:key_not_found, args, error)
     end
   end
 end

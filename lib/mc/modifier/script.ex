@@ -7,6 +7,8 @@ defmodule Mc.Modifier.Script do
       |> Ut.Parse.split()
       |> Enum.join("\n")
 
-    Mc.m(buffer, script, mappings)
+    buffer
+    |> Mc.m(script, mappings)
+    |> oops(:script_error, args)
   end
 end

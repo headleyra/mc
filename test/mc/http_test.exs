@@ -19,7 +19,7 @@ defmodule Mc.HttpTest do
       assert Http.decode({:error, %Req.TransportError{reason: :nxdomain}}) == {:error, "bad domain"}
     end
 
-    test "decodes an unknown error tuple into a 'stringy' equivalent" do
+    test "decodes an unknown error-tuple into a 'stringy' equivalent" do
       assert Http.decode({:error, %{random: 5}}) == {:error, "%{random: 5}"}
       assert Http.decode({:error, {"foo", :bar}}) == {:error, ~s({"foo", :bar})}
     end

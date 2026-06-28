@@ -3,17 +3,17 @@ defmodule Mc.Modifier.TrimTest do
   alias Mc.Modifier.Trim
 
   describe "m/3" do
-    test "trims whitespace on the `buffer`" do
+    test "trims whitespace in `buffer`" do
       assert Trim.m("\t\n\n  relevant stuff \n\n\n\n \t ", "n/a", %{}) == {:ok, "relevant stuff"}
       assert Trim.m("already trim", "", %{}) == {:ok, "already trim"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Trim.m({:ok, "bat and ball \t\n"}, "n/a", %{}) == {:ok, "bat and ball"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Trim.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Trim.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

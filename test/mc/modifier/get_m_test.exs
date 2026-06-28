@@ -34,12 +34,12 @@ defmodule Mc.Modifier.GetMTest do
       assert GetM.m("key1 key2", ":%0a-%09:", mappings) == {:ok, "key1\ndata one:\n-\t:key2\nvalue\ntwo\n"}
     end
 
-    test "works with ok tuples", %{mappings: mappings} do
+    test "works with ok-tuples", %{mappings: mappings} do
       assert GetM.m({:ok, "key1"}, "", mappings) == {:ok, "key1\ndata one"}
     end
 
-    test "allows error tuples to pass through", %{mappings: mappings} do
-      assert GetM.m({:error, "reason"}, "", mappings) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert GetM.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

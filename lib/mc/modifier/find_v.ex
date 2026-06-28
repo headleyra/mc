@@ -6,8 +6,8 @@ defmodule Mc.Modifier.FindV do
       {:ok, result} ->
         {:ok, result}
 
-      {:error, reason} ->
-        oops(reason)
+      {:error, :bad_regex} ->
+        oops(:bad_regex, args)
     end
   end
 

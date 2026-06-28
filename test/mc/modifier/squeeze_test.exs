@@ -13,12 +13,12 @@ defmodule Mc.Modifier.SqueezeTest do
       assert Squeeze.m("   \n  \n ", "", %{}) == {:ok, "\n\n"}
     end
 
-    test "works with ok tuples" do
+    test "works with ok-tuples" do
       assert Squeeze.m({:ok, " 1   2\n \t 3 \t"}, "n/a", %{}) == {:ok, "1 2\n3"}
     end
 
-    test "allows error tuples to pass through" do
-      assert Squeeze.m({:error, "reason"}, "", %{}) == {:error, "reason"}
+    test "allows error-tuples to pass through" do
+      assert Squeeze.m({:error, Mod, :fuel, "low", []}, "", %{}) == {:error, Mod, :fuel, "low", []}
     end
   end
 end

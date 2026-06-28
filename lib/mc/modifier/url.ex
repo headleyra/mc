@@ -6,8 +6,8 @@ defmodule Mc.Modifier.Url do
       {:ok, result} ->
         {:ok, result}
 
-      {:error, reason} ->
-        oops(reason)
+      {:error, _reason} ->
+        oops(:adapter_error, nil)
     end
   end
 
