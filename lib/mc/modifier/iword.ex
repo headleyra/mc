@@ -27,7 +27,7 @@ defmodule Mc.Modifier.Iword do
 
     case int do
       {:ok, i} -> i
-      :error -> :error
+      {:error, _} -> :error
     end
   end
 end
