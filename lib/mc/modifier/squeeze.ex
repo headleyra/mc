@@ -6,7 +6,7 @@ defmodule Mc.Modifier.Squeeze do
       buffer
       |> String.split("\n")
       |> Enum.map(fn line -> String.replace(line, ~r/\s\s+/, " ") end)
-      |> Enum.map_join("\n", fn squashed_line -> String.trim(squashed_line) end)
+      |> Enum.map_join("\n", fn squeezed_line -> String.trim(squeezed_line) end)
     }
   end
 end
