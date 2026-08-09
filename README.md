@@ -45,7 +45,7 @@ mappings = %{
 }
 ```
 
-When 'replace' is encountered in a script we know that we should execute a function in the `Mc.Modifier.Replace` module.  This works in the same way for 'casel' and 'range'.  As dictated by the `use Mc.Modifier` snippet, we expect that function to be called `m`.  All modifiers should use this snippet (unless they have good reason not to).
+When 'replace' is encountered in a script we know that we should execute a function in the `Mc.Modifier.Replace` module.  This works in the same way for 'casel' and 'range'.  As dictated by the `use Mc.Modifier` snippet, we expect that function to be called `m`.  All modifiers should use this snippet (unless they have a good reason not to).
 
 ## Modifiers
 
