@@ -65,9 +65,9 @@ The runner function calls modifiers with the following values: the current buffe
 
 ## OK Tuples And Error Tuples
 
-Modifiers return one of two things: 'OK tuples' or 'error tuples'.
+Modifiers return one of two things: 'ok tuples' or 'error tuples'.
 
-As you'd expect, an OK tuple signals that 'all went well' and an error tuple indicates that something went wrong.
+As you'd expect, an ok tuple signals that 'all went well' and an error tuple indicates that 'something went wrong'.
 
 OK tuples look like this:
 
