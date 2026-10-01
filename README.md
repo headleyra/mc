@@ -85,7 +85,7 @@ Error tuples look like this:
 
 `modifier_module` is the modifier module where the error occurred; `error_type` is an atom that describes the overall error type; `error_message` is a string that provides more detail about the error; `list_of_errors` is a `list` of (previous) modifier errors (similar to a stacktrace).
 
-If at any point a modifier returns an error tuple, the expectation is that the next modifier 'in the chain' returns that error tuple unchanged, or more likely, and more desirably, that it 'wraps' it in its own error and returns that instead.  This short-circuiting behaviour is facilatated by the `use Mc.Modifier` snippet.
+If at any point a modifier returns an error tuple, the expectation is that the next modifier 'in the chain' returns that error tuple unchanged, or 'wraps' it, in any error it itself produces.  This 'short-circuiting' behaviour is facilatated by the `use Mc.Modifier` snippet.
 
 So, we might have something like:
 
